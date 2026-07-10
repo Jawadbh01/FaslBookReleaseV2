@@ -26,7 +26,7 @@ setPersistence(auth, browserLocalPersistence).catch(() => {});
 
 export const db = initializeFirestore(app, {
   localCache: persistentLocalCache({
-    tabManager: persistentSingleTabManager(),
+    tabManager: persistentSingleTabManager(undefined),
     cacheSizeBytes: CACHE_SIZE_UNLIMITED,
   }),
 });

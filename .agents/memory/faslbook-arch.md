@@ -64,3 +64,6 @@ Any modal with `max-h-[NNvh]` + a `shrink-0` sticky footer button (Save/Confirm)
 **Why:** Confirmed root cause of a real "Save/Confirm button doesn't appear on mobile" bug in edit modals.
 
 **How to apply:** Use `max-h-[NNdvh]` (dynamic viewport height) instead of `max-h-[NNvh]` for any full-height/bottom-sheet modal container that has a sticky footer sibling. Tailwind's arbitrary-value bracket syntax supports `dvh` even without native config support.
+
+## Firebase SDK v12 persistentSingleTabManager requires explicit arg
+`persistentSingleTabManager()` (no args) is a TypeScript error in Firebase v12 — the function signature requires `PersistentSingleTabManagerSettings | undefined`. Always call it as `persistentSingleTabManager(undefined)`.
