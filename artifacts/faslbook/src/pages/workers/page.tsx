@@ -68,7 +68,7 @@ export default function WorkersPage() {
   const [approvingId, setApprovingId] = useState<string | null>(null);
   const [rejectingId, setRejectingId] = useState<string | null>(null);
 
-  const [fForm, setFForm] = useState({ name: "", phone: "", assignedParcel: "", notes: "" });
+  const [fForm, setFForm] = useState({ name: "", phone: "", notes: "" });
   const [wForm, setWForm] = useState({ name: "", phone: "", workerType: "daily" as "daily" | "monthly", dailyRate: "", monthlySalary: "", notes: "" });
 
   const todayStr = new Date().toISOString().split("T")[0];
@@ -108,10 +108,10 @@ export default function WorkersPage() {
 
   const closeModal = () => { setModal(null); setEditTarget(null); setError(""); };
 
-  const openAddFarmer = () => { setFForm({ name: "", phone: "", assignedParcel: "", notes: "" }); setModal("addFarmer"); };
+  const openAddFarmer = () => { setFForm({ name: "", phone: "", notes: "" }); setModal("addFarmer"); };
   const openEditFarmer = (f: ManualFarmer) => {
     setEditTarget(f);
-    setFForm({ name: f.name, phone: f.phone, assignedParcel: f.assignedParcel || "", notes: f.notes || "" });
+    setFForm({ name: f.name, phone: f.phone, notes: f.notes || "" });
     setModal("editFarmer");
   };
   const openAddWorker = () => { setWForm({ name: "", phone: "", workerType: "daily", dailyRate: "", monthlySalary: "", notes: "" }); setModal("addWorker"); };
@@ -128,7 +128,7 @@ export default function WorkersPage() {
       setSaving(true); setError("");
       const payload = {
         name: fForm.name.trim(), phone: fForm.phone.trim(),
-        workerType: "farmer", assignedParcel: fForm.assignedParcel,
+        workerType: "farmer",
         notes: fForm.notes.trim(), status: "active",
         organizationId: orgId, syncStatus: "synced",
       };
@@ -308,7 +308,7 @@ export default function WorkersPage() {
               ) : (
                 <div className="flex flex-col gap-3">
                   {farmers.map((farmer) => {
-                    const farmerParcels = parcels.filter((p) => p.id === farmer.assignedParcel);
+                    const farmerParcels = parcels.filter((p) => p.assignedFarmer === farmer.id);
                     const attBadge = getAttLabel(farmer.id);
                     return (
                       <div key={farmer.id} className="bg-white rounded-2xl px-4 py-4 shadow-sm">
@@ -550,18 +550,6 @@ export default function WorkersPage() {
                 </div>
               </div>
             ))}
-
-            <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Assigned Parcel</label>
-              <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
-                <MapPin size={18} color="#9E9E9E" className="mr-3 shrink-0" />
-                <select value={fForm.assignedParcel} onChange={(e) => setFForm({ ...fForm, assignedParcel: e.target.value })}
-                  className="flex-1 outline-none text-gray-800 text-base bg-transparent">
-                  <option value="">No parcel assigned</option>
-                  {parcels.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-                </select>
-              </div>
-            </div>
 
             <div className="mb-8">
               <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>

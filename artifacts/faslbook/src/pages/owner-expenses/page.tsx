@@ -8,12 +8,16 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "@/lib/firebase/config";
 import { useAuthStore } from "@/store/authStore";
 import { notifyOfflineSave } from "@/lib/offlineSync";
+import { subscribeTransactions, type Transaction } from "@/lib/firebase/transactions";
 import {
-  ArrowLeft, Plus, Search, Loader2, Camera, X,
-  Trash2, Pencil, CheckCircle, SlidersHorizontal, Receipt,
+  Plus, Loader2, Camera, X,
+  Trash2, Pencil, CheckCircle, Receipt,
+  TrendingUp, TrendingDown, Wallet, Scale,
+  ChevronRight, ArrowUpRight, ArrowDownRight,
 } from "lucide-react";
 import { auth } from "@/lib/firebase/auth";
 import { createNotification } from "@/lib/notifications/createNotification";
+import { useLocation } from "wouter";
 
 // ── Types ─────────────────────────────────────────────────────
 interface OwnerExpense {
@@ -56,6 +60,43 @@ const PAYMENT_METHODS: Record<string, string> = {
   jazzcash: "JazzCash/EasyPaisa",
 };
 
+// ── Date filter helpers ───────────────────────────────────────
+type DateFilterKey = "today" | "last7" | "last30" | "last90" | "last180" | "thisYear" | "custom";
+
+const DATE_FILTER_OPTIONS: { key: DateFilterKey; label: string }[] = [
+  { key: "today",    label: "Today" },
+  { key: "last7",    label: "Last 7 Days" },
+  { key: "last30",   label: "Last 30 Days" },
+  { key: "last90",   label: "Last 3 Months" },
+  { key: "last180",  label: "Last 6 Months" },
+  { key: "thisYear", label: "This Year" },
+  { key: "custom",   label: "Custom Range" },
+];
+
+function getDateRange(filter: DateFilterKey, customFrom: string, customTo: string): { start: string; end: string } {
+  const today = new Date();
+  const todayStr = today.toISOString().split("T")[0];
+  const sub = (days: number) => {
+    const d = new Date(today); d.setDate(d.getDate() - days);
+    return d.toISOString().split("T")[0];
+  };
+  switch (filter) {
+    case "today":    return { start: todayStr, end: todayStr };
+    case "last7":    return { start: sub(6), end: todayStr };
+    case "last30":   return { start: sub(29), end: todayStr };
+    case "last90":   return { start: sub(89), end: todayStr };
+    case "last180":  return { start: sub(179), end: todayStr };
+    case "thisYear": return { start: `${today.getFullYear()}-01-01`, end: todayStr };
+    case "custom":   return { start: customFrom || sub(29), end: customTo || todayStr };
+  }
+}
+
+function applyDateFilter<T extends { date: string }>(items: T[], filter: DateFilterKey, customFrom: string, customTo: string): T[] {
+  const { start, end } = getDateRange(filter, customFrom, customTo);
+  return items.filter((i) => i.date >= start && i.date <= end);
+}
+
+// ── Utilities ────────────────────────────────────────────────
 const todayStr = () => new Date().toISOString().split("T")[0];
 const fmt = (n: number) => "Rs. " + Math.round(n).toLocaleString("en-PK");
 const fmtDate = (s: string) => {
@@ -95,20 +136,29 @@ function ReceiptModal({ url, onClose }: { url: string; onClose: () => void }) {
 }
 
 // ── Main Page ─────────────────────────────────────────────────
-export default function OwnerExpensesPage() {
+export default function FarmKhataPage() {
   const { organization, role } = useAuthStore();
+  const [, navigate] = useLocation();
   const orgId = organization?.id;
   const canEdit = role === "landlord" || role === "manager";
 
+  // ── Active tab ────────────────────────────────────────────
+  const [tab, setTab] = useState<"income" | "expenses">("income");
+
+  // ── Date filter ───────────────────────────────────────────
+  const [dateFilter, setDateFilter] = useState<DateFilterKey>("last30");
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const [customFrom, setCustomFrom] = useState("");
+  const [customTo, setCustomTo] = useState(todayStr());
+
+  // ── Data ──────────────────────────────────────────────────
+  const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
   const [expenses, setExpenses]   = useState<OwnerExpense[]>([]);
   const [dealers, setDealers]     = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading]     = useState(true);
 
+  // ── Expense add form ─────────────────────────────────────
   const [view, setView]           = useState<"list" | "add">("list");
-  const [search, setSearch]       = useState("");
-  const [filterCat, setFilterCat] = useState("all");
-  const [showFilters, setShowFilters] = useState(false);
-
   const blankForm = () => ({
     category: "fuel", amount: "", date: todayStr(),
     paymentMethod: "cash", vendor: "", description: "",
@@ -120,6 +170,7 @@ export default function OwnerExpensesPage() {
   const [formError, setFormError] = useState("");
   const [success, setSuccess]     = useState(false);
 
+  // ── Expense detail/edit modal ─────────────────────────────
   const [selected, setSelected]   = useState<OwnerExpense | null>(null);
   const [editMode, setEditMode]   = useState(false);
   const [editForm, setEditForm]   = useState({ amount: "", date: "", vendor: "", description: "", paymentMethod: "cash" });
@@ -134,49 +185,45 @@ export default function OwnerExpensesPage() {
     if (!orgId) return;
     const unsubs: (() => void)[] = [];
 
+    unsubs.push(subscribeTransactions(orgId, (txns) => {
+      setAllTransactions(txns);
+      setLoading(false);
+    }));
+
     unsubs.push(onSnapshot(
       query(collection(db, "ownerExpenses"), where("organizationId", "==", orgId)),
       (snap) => {
-        const rows = snap.docs.map((d) => ({ id: d.id, ...d.data() } as OwnerExpense))
-          .sort((a, b) => (b.date > a.date ? 1 : -1));
-        setExpenses(rows);
-        setLoading(false);
+        setExpenses(
+          snap.docs.map((d) => ({ id: d.id, ...d.data() } as OwnerExpense))
+            .sort((a, b) => (b.date > a.date ? 1 : -1))
+        );
       }
     ));
 
     unsubs.push(onSnapshot(
       query(collection(db, "dealers"), where("organizationId", "==", orgId)),
-      (snap) => {
-        setDealers(snap.docs.map((d) => ({ id: d.id, name: d.data().name as string }))
-          .sort((a, b) => a.name.localeCompare(b.name)));
-      }
+      (snap) => setDealers(
+        snap.docs.map((d) => ({ id: d.id, name: d.data().name as string }))
+          .sort((a, b) => a.name.localeCompare(b.name))
+      )
     ));
 
     return () => unsubs.forEach((u) => u());
   }, [orgId]);
 
-  const filtered = expenses.filter((e) => {
-    if (filterCat !== "all" && e.category !== filterCat) return false;
-    if (search) {
-      const q = search.toLowerCase();
-      return (
-        e.categoryLabel?.toLowerCase().includes(q) ||
-        e.vendor?.toLowerCase().includes(q) ||
-        e.description?.toLowerCase().includes(q)
-      );
-    }
-    return true;
-  });
+  // ── Filtered data ─────────────────────────────────────────
+  const incomeTransactions = allTransactions.filter((t) => t.type === "income");
+  const filteredIncome  = applyDateFilter(incomeTransactions, dateFilter, customFrom, customTo);
+  const filteredExpenses = applyDateFilter(expenses, dateFilter, customFrom, customTo);
 
-  const totalFiltered = filtered.reduce((s, e) => s + e.amount, 0);
+  const totalIncome   = filteredIncome.reduce((s, t) => s + (Number(t.amount) || 0), 0);
+  const totalExpenses = filteredExpenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
+  const netProfit     = totalIncome - totalExpenses;
+  const balance       = netProfit;
 
-  async function uploadReceipt(file: File, id: string): Promise<string> {
-    const blob = await compressImage(file);
-    const r = ref(storage, `owner-receipts/${orgId}/${id}_receipt.jpg`);
-    await uploadBytes(r, blob);
-    return getDownloadURL(r);
-  }
+  const filterLabel = DATE_FILTER_OPTIONS.find((o) => o.key === dateFilter)?.label ?? "Last 30 Days";
 
+  // ── Expense add ───────────────────────────────────────────
   const handleAdd = async () => {
     if (!form.amount || Number(form.amount) <= 0) { setFormError("Enter a valid amount"); return; }
     if (!form.date) { setFormError("Select a date"); return; }
@@ -198,14 +245,12 @@ export default function OwnerExpensesPage() {
         createdAt: serverTimestamp(),
         syncStatus: isOnline ? "synced" : "pending",
       };
-
       if (!isOnline) {
         addDoc(collection(db, "ownerExpenses"), payload).catch(console.error);
         notifyOfflineSave("Farm Expense");
         setSuccess(true); setSaving(false);
         return;
       }
-
       const docRef = await addDoc(collection(db, "ownerExpenses"), payload);
       if (receiptFile) {
         uploadReceipt(receiptFile, docRef.id)
@@ -227,6 +272,13 @@ export default function OwnerExpensesPage() {
       setSaving(false);
     }
   };
+
+  async function uploadReceipt(file: File, id: string): Promise<string> {
+    const blob = await compressImage(file);
+    const r = ref(storage, `owner-receipts/${orgId}/${id}_receipt.jpg`);
+    await uploadBytes(r, blob);
+    return getDownloadURL(r);
+  }
 
   const handleEditSave = async () => {
     if (!editForm.amount || Number(editForm.amount) <= 0 || !selected) return;
@@ -275,21 +327,20 @@ export default function OwnerExpensesPage() {
         {CATEGORIES[form.category]?.emoji} {CATEGORIES[form.category]?.label}
       </p>
       <p className="text-2xl font-bold mb-10" style={{ color: "#C62828" }}>−{fmt(Number(form.amount))}</p>
-      <button onClick={() => { resetForm(); setView("list"); }}
+      <button onClick={() => { resetForm(); setView("list"); setTab("expenses"); }}
         className="w-full py-4 rounded-2xl text-white font-bold text-base active:scale-95 transition-transform"
         style={{ backgroundColor: "#1B5E20" }}>
-        Back to Farm Expenses
+        Back to Farm Khata
       </button>
     </div>
   );
 
-  // ═══ ADD FORM ═══
+  // ═══ ADD EXPENSE FORM ═══
   if (view === "add") return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Header */}
       <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
         <button onClick={() => { resetForm(); setView("list"); }} className="text-white mr-3">
-          <ArrowLeft size={24} />
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         </button>
         <div>
           <h1 className="text-white text-xl font-bold">Add Farm Expense</h1>
@@ -302,7 +353,6 @@ export default function OwnerExpensesPage() {
           <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>
         )}
 
-        {/* Category grid */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-3 block">Expense Type</label>
         <div className="grid grid-cols-3 gap-2 mb-6">
           {Object.entries(CATEGORIES).map(([key, cfg]) => (
@@ -321,7 +371,6 @@ export default function OwnerExpensesPage() {
           ))}
         </div>
 
-        {/* Amount */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Amount (Rs.)</label>
         <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 focus-within:border-green-700 bg-white">
           <input type="number" inputMode="numeric" placeholder="e.g. 15,000" value={form.amount}
@@ -329,7 +378,6 @@ export default function OwnerExpensesPage() {
             className="w-full outline-none text-gray-800 text-xl font-semibold bg-transparent" />
         </div>
 
-        {/* Date */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Date</label>
         <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white flex items-center">
           <input type="date" value={form.date}
@@ -340,40 +388,31 @@ export default function OwnerExpensesPage() {
           </span>
         </div>
 
-        {/* Vendor / Dealer */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Vendor / Dealer (Optional)</label>
         <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
-          <select value={form.vendor}
-            onChange={(e) => setForm({ ...form, vendor: e.target.value })}
+          <select value={form.vendor} onChange={(e) => setForm({ ...form, vendor: e.target.value })}
             className="w-full outline-none text-gray-800 text-base bg-transparent">
             <option value="">— No vendor —</option>
-            {dealers.map((d) => (
-              <option key={d.id} value={d.name}>{d.name}</option>
-            ))}
+            {dealers.map((d) => <option key={d.id} value={d.name}>{d.name}</option>)}
           </select>
         </div>
 
-        {/* Payment Method */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Payment Method</label>
         <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
           <select value={form.paymentMethod} onChange={(e) => setForm({ ...form, paymentMethod: e.target.value })}
             className="w-full outline-none text-gray-800 text-base bg-transparent">
-            {Object.entries(PAYMENT_METHODS).map(([k, v]) => (
-              <option key={k} value={k}>{v}</option>
-            ))}
+            {Object.entries(PAYMENT_METHODS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
         </div>
 
-        {/* Notes */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Notes (Optional)</label>
         <div className="border border-gray-200 rounded-2xl px-4 py-3 mb-5 bg-white">
-          <textarea placeholder="e.g. Engine oil change, 50L diesel for pump, replaced belt…"
+          <textarea placeholder="e.g. Engine oil change, 50L diesel for pump…"
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             rows={3} className="w-full outline-none text-gray-800 text-base bg-transparent resize-none" />
         </div>
 
-        {/* Receipt */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Receipt / Bill Photo (Optional)</label>
         <input type="file" accept="image/*" id="farmReceiptInput" className="hidden" onChange={(e) => {
           const file = e.target.files?.[0];
@@ -403,15 +442,12 @@ export default function OwnerExpensesPage() {
 
       {receiptViewUrl && <ReceiptModal url={receiptViewUrl} onClose={() => setReceiptViewUrl(null)} />}
 
-      {/* ── Detail / Edit Modal ── */}
+      {/* ── Expense Detail / Edit Modal ── */}
       {selected && createPortal(
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40"
-          onClick={closeModal}>
-          <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden"
-            onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40" onClick={closeModal}>
+          <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="px-6 pt-6 pb-6 overflow-y-auto flex-1 min-h-0">
 
-              {/* Header */}
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-3">
                   <div className="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl"
@@ -455,7 +491,6 @@ export default function OwnerExpensesPage() {
                 </div>
 
               ) : !editMode ? (
-                // ── View mode ──
                 <>
                   <div className="space-y-0 mb-6">
                     <div className="flex justify-between items-center py-2.5 border-b border-gray-50">
@@ -492,7 +527,6 @@ export default function OwnerExpensesPage() {
                 </>
 
               ) : (
-                // ── Edit mode ──
                 <>
                   <div className="mb-4">
                     <label className="text-gray-600 text-sm font-medium mb-2 block">Amount (Rs.)</label>
@@ -508,23 +542,17 @@ export default function OwnerExpensesPage() {
                   </div>
                   <div className="mb-4">
                     <label className="text-gray-600 text-sm font-medium mb-2 block">Vendor / Dealer</label>
-                    <select value={editForm.vendor}
-                      onChange={(e) => setEditForm({ ...editForm, vendor: e.target.value })}
+                    <select value={editForm.vendor} onChange={(e) => setEditForm({ ...editForm, vendor: e.target.value })}
                       className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700 bg-white">
                       <option value="">— No vendor —</option>
-                      {dealers.map((d) => (
-                        <option key={d.id} value={d.name}>{d.name}</option>
-                      ))}
+                      {dealers.map((d) => <option key={d.id} value={d.name}>{d.name}</option>)}
                     </select>
                   </div>
                   <div className="mb-4">
                     <label className="text-gray-600 text-sm font-medium mb-2 block">Payment Method</label>
-                    <select value={editForm.paymentMethod}
-                      onChange={(e) => setEditForm({ ...editForm, paymentMethod: e.target.value })}
+                    <select value={editForm.paymentMethod} onChange={(e) => setEditForm({ ...editForm, paymentMethod: e.target.value })}
                       className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700 bg-white">
-                      {Object.entries(PAYMENT_METHODS).map(([k, v]) => (
-                        <option key={k} value={k}>{v}</option>
-                      ))}
+                      {Object.entries(PAYMENT_METHODS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                     </select>
                   </div>
                   <div className="mb-2">
@@ -537,7 +565,6 @@ export default function OwnerExpensesPage() {
                 </>
               )}
 
-              {/* Action buttons */}
               <div className="pt-4 mt-2 border-t border-gray-100 flex gap-3">
                 {editSaved || delConfirm ? (
                   <button onClick={closeModal}
@@ -579,114 +606,245 @@ export default function OwnerExpensesPage() {
       )}
 
       {/* ── Header ── */}
-      <div className="px-4 pt-12 pb-5" style={{ backgroundColor: "#1B5E20" }}>
+      <div className="px-4 pt-12 pb-0" style={{ backgroundColor: "#1B5E20" }}>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-white text-2xl font-bold">Farm Expenses</h1>
-            <p className="text-green-200 text-xs mt-0.5">Owner-paid costs · fuel, repair, machinery & more</p>
+            <h1 className="text-white text-2xl font-bold">Farm Khata</h1>
+            <p className="text-green-200 text-xs mt-0.5">Income & expenses overview</p>
           </div>
-          <button onClick={() => window.location.href = "/reports/print?type=owner"}
+          <button
+            onClick={() => window.location.href = "/reports/print?type=owner"}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
             style={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }}>
             🖨 Print
           </button>
         </div>
-        <div className="flex items-center gap-2 bg-white/15 rounded-2xl px-4 py-2.5">
-          <Search size={16} color="rgba(255,255,255,0.7)" />
-          <input type="text" placeholder="Search expenses…" value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 bg-transparent outline-none text-white placeholder-white/60 text-sm" />
+
+        {/* Tabs */}
+        <div className="flex">
+          {([
+            { key: "income" as const,   label: "Income",   icon: <ArrowUpRight size={13} /> },
+            { key: "expenses" as const, label: "Expenses", icon: <ArrowDownRight size={13} /> },
+          ]).map(({ key, label, icon }) => (
+            <button key={key} onClick={() => setTab(key)}
+              className="flex-1 py-3 text-sm font-semibold flex items-center justify-center gap-1.5 transition-all"
+              style={{
+                color: tab === key ? "white" : "rgba(255,255,255,0.55)",
+                borderBottom: tab === key ? "3px solid white" : "3px solid transparent",
+              }}>
+              {icon} {label}
+            </button>
+          ))}
         </div>
       </div>
 
       <div className="px-4 pt-4">
 
-        {/* Summary + filter row */}
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <p className="text-gray-500 text-xs">
-              {filtered.length} record{filtered.length !== 1 ? "s" : ""}
-              {filterCat !== "all" ? " (filtered)" : ""}
-            </p>
-            <p className="text-gray-800 font-bold text-base">{fmt(totalFiltered)}</p>
-          </div>
-          <button onClick={() => setShowFilters((v) => !v)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium"
-            style={{ backgroundColor: filterCat !== "all" ? "#E8F5E9" : "#EEEEEE", color: "#374151" }}>
-            <SlidersHorizontal size={14} />
-            Filter {filterCat !== "all" ? "•" : ""}
-          </button>
-        </div>
+        {/* ── Dashboard Cards + Filter ── */}
+        <div className="bg-white rounded-2xl p-4 shadow-md mb-4">
+          {/* Filter row */}
+          <div className="flex items-center justify-between mb-3 relative">
+            <p className="font-bold text-gray-800 text-sm">Summary</p>
+            <button
+              onClick={() => setShowFilterMenu((v) => !v)}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium max-w-[160px]"
+              style={{ backgroundColor: "#E8F5E9", color: "#1B5E20" }}
+            >
+              <span className="truncate">{filterLabel}</span>
+              <ChevronRight size={12} className={`shrink-0 transition-transform ${showFilterMenu ? "-rotate-90" : "rotate-90"}`} color="#1B5E20" />
+            </button>
 
-        {/* Filter panel */}
-        {showFilters && (
-          <div className="bg-white rounded-2xl shadow-sm p-4 mb-3">
-            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wide block mb-2">Expense Type</label>
-            <div className="flex flex-wrap gap-2">
-              <button onClick={() => setFilterCat("all")}
-                className="px-3 py-1.5 rounded-full text-xs font-semibold border-2"
-                style={{ borderColor: filterCat === "all" ? "#1B5E20" : "#E5E7EB", backgroundColor: filterCat === "all" ? "#E8F5E9" : "white", color: filterCat === "all" ? "#1B5E20" : "#6B7280" }}>
-                All
-              </button>
-              {Object.entries(CATEGORIES).map(([k, cfg]) => (
-                <button key={k} onClick={() => setFilterCat(k)}
-                  className="px-3 py-1.5 rounded-full text-xs font-semibold border-2 flex items-center gap-1"
-                  style={{ borderColor: filterCat === k ? cfg.color : "#E5E7EB", backgroundColor: filterCat === k ? cfg.bg : "white", color: filterCat === k ? cfg.color : "#6B7280" }}>
-                  {cfg.emoji} {cfg.label.split(" ")[0]}
-                </button>
-              ))}
-            </div>
-            {filterCat !== "all" && (
-              <button onClick={() => setFilterCat("all")} className="mt-3 text-xs text-red-500 font-medium">Clear filter</button>
+            {showFilterMenu && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setShowFilterMenu(false)} />
+                <div className="absolute right-0 top-9 z-20 bg-white rounded-2xl shadow-lg border border-gray-100 py-2 min-w-[180px]">
+                  {DATE_FILTER_OPTIONS.map(({ key, label }) => (
+                    <button
+                      key={key}
+                      onClick={() => { setDateFilter(key); setShowFilterMenu(false); }}
+                      className="w-full text-left px-4 py-2 text-sm"
+                      style={{
+                        color: dateFilter === key ? "#1B5E20" : "#374151",
+                        fontWeight: dateFilter === key ? 700 : 400,
+                        backgroundColor: dateFilter === key ? "#E8F5E9" : "transparent",
+                      }}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </>
             )}
           </div>
+
+          {/* Custom date range inputs */}
+          {dateFilter === "custom" && (
+            <div className="flex gap-2 mb-3">
+              <div className="flex-1">
+                <p className="text-gray-400 text-xs mb-1">From</p>
+                <input type="date" value={customFrom}
+                  onChange={(e) => setCustomFrom(e.target.value)}
+                  className="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-700" />
+              </div>
+              <div className="flex-1">
+                <p className="text-gray-400 text-xs mb-1">To</p>
+                <input type="date" value={customTo}
+                  onChange={(e) => setCustomTo(e.target.value)}
+                  className="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-700" />
+              </div>
+            </div>
+          )}
+
+          {/* 4 stat cards */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-xl p-3" style={{ backgroundColor: "#E8F5E9" }}>
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-xs font-medium" style={{ color: "#1B5E20" }}>Total Income</p>
+                <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: "#1B5E2022" }}>
+                  <TrendingUp size={14} color="#1B5E20" />
+                </div>
+              </div>
+              <p className="font-bold text-base leading-tight" style={{ color: "#1B5E20" }}>{fmt(totalIncome)}</p>
+            </div>
+            <div className="rounded-xl p-3" style={{ backgroundColor: "#FFEBEE" }}>
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-xs font-medium" style={{ color: "#C62828" }}>Total Expenses</p>
+                <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: "#C6282822" }}>
+                  <TrendingDown size={14} color="#C62828" />
+                </div>
+              </div>
+              <p className="font-bold text-base leading-tight" style={{ color: "#C62828" }}>{fmt(totalExpenses)}</p>
+            </div>
+            <div className="rounded-xl p-3" style={{ backgroundColor: netProfit >= 0 ? "#E3F2FD" : "#FFEBEE" }}>
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-xs font-medium" style={{ color: netProfit >= 0 ? "#1565C0" : "#C62828" }}>Net Profit</p>
+                <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: (netProfit >= 0 ? "#1565C0" : "#C62828") + "22" }}>
+                  <Wallet size={14} color={netProfit >= 0 ? "#1565C0" : "#C62828"} />
+                </div>
+              </div>
+              <p className="font-bold text-base leading-tight" style={{ color: netProfit >= 0 ? "#1565C0" : "#C62828" }}>
+                {netProfit >= 0 ? "" : "−"}{fmt(Math.abs(netProfit))}
+              </p>
+            </div>
+            <div className="rounded-xl p-3" style={{ backgroundColor: balance >= 0 ? "#F1F8E9" : "#FFF3E0" }}>
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-xs font-medium" style={{ color: balance >= 0 ? "#558B2F" : "#E65100" }}>Balance</p>
+                <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: (balance >= 0 ? "#558B2F" : "#E65100") + "22" }}>
+                  <Scale size={14} color={balance >= 0 ? "#558B2F" : "#E65100"} />
+                </div>
+              </div>
+              <p className="font-bold text-base leading-tight" style={{ color: balance >= 0 ? "#558B2F" : "#E65100" }}>
+                {balance >= 0 ? "" : "−"}{fmt(Math.abs(balance))}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Income Tab ── */}
+        {tab === "income" && (
+          <>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-gray-500 text-xs">
+                {filteredIncome.length} record{filteredIncome.length !== 1 ? "s" : ""}
+              </p>
+              {canEdit && (
+                <button
+                  onClick={() => navigate("/ledger?form=income")}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold active:scale-95 transition-transform"
+                  style={{ backgroundColor: "#E8F5E9", color: "#1B5E20" }}>
+                  <Plus size={14} /> Add Income
+                </button>
+              )}
+            </div>
+
+            {loading ? (
+              <div className="flex justify-center py-16"><Loader2 size={28} className="animate-spin" style={{ color: "#1B5E20" }} /></div>
+            ) : filteredIncome.length === 0 ? (
+              <div className="text-center py-16">
+                <p className="text-4xl mb-3">💰</p>
+                <p className="text-gray-500 text-sm">No income in this period</p>
+                <p className="text-gray-400 text-xs mt-1">Tap "Add Income" to record farm income</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {[...filteredIncome].sort((a, b) => (b.date > a.date ? 1 : -1)).map((t) => (
+                  <div key={t.id} className="w-full bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm">
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "#E8F5E9" }}>
+                      <ArrowUpRight size={20} color="#1B5E20" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-gray-800 font-semibold text-sm leading-tight">
+                        {t.categoryLabel || t.category || t.description || "Income"}
+                      </p>
+                      <p className="text-gray-400 text-xs mt-0.5 truncate">
+                        {t.farmerName ? `${t.farmerName} · ` : ""}
+                        {t.parcelName ? `${t.parcelName} · ` : ""}
+                        {fmtDate(t.date)}
+                      </p>
+                      {t.cropCycleName && (
+                        <p className="text-gray-400 text-xs truncate">{t.cropCycleName}</p>
+                      )}
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="font-bold text-sm" style={{ color: "#1B5E20" }}>+{fmt(t.amount)}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         )}
 
-        {/* List */}
-        {loading ? (
-          <div className="flex justify-center py-16"><Loader2 size={28} className="animate-spin text-green-700" /></div>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-4xl mb-3">🚜</p>
-            <p className="text-gray-500 text-sm">No expenses yet</p>
-            <p className="text-gray-400 text-xs mt-1">Tap + to record fuel, repairs, and other farm costs</p>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            {filtered.map((e) => {
-              const cfg = CATEGORIES[e.category];
-              return (
-                <button key={e.id} onClick={() => setSelected(e)}
-                  className="w-full bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform text-left">
-                  {/* Icon */}
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                    style={{ backgroundColor: cfg?.bg || "#F5F5F5" }}>
-                    {cfg?.emoji || "💰"}
-                  </div>
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-gray-800 font-semibold text-sm leading-tight">{e.categoryLabel}</p>
-                    <p className="text-gray-400 text-xs mt-0.5 truncate">
-                      {e.vendor ? `${e.vendor} · ` : ""}{fmtDate(e.date)}
-                    </p>
-                    {e.description && (
-                      <p className="text-gray-400 text-xs truncate">{e.description}</p>
-                    )}
-                  </div>
-                  {/* Amount */}
-                  <div className="text-right flex-shrink-0">
-                    <p className="font-bold text-sm" style={{ color: "#C62828" }}>−{fmt(e.amount)}</p>
-                    <p className="text-gray-400 text-[10px] mt-0.5">{PAYMENT_METHODS[e.paymentMethod] || e.paymentMethod}</p>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+        {/* ── Expenses Tab ── */}
+        {tab === "expenses" && (
+          <>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-gray-500 text-xs">
+                {filteredExpenses.length} record{filteredExpenses.length !== 1 ? "s" : ""}
+              </p>
+            </div>
+
+            {loading ? (
+              <div className="flex justify-center py-16"><Loader2 size={28} className="animate-spin" style={{ color: "#1B5E20" }} /></div>
+            ) : filteredExpenses.length === 0 ? (
+              <div className="text-center py-16">
+                <p className="text-4xl mb-3">🚜</p>
+                <p className="text-gray-500 text-sm">No expenses in this period</p>
+                <p className="text-gray-400 text-xs mt-1">Tap + to record fuel, repairs, and other farm costs</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {filteredExpenses.map((e) => {
+                  const cfg = CATEGORIES[e.category];
+                  return (
+                    <button key={e.id} onClick={() => setSelected(e)}
+                      className="w-full bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform text-left">
+                      <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                        style={{ backgroundColor: cfg?.bg || "#F5F5F5" }}>
+                        {cfg?.emoji || "💰"}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-gray-800 font-semibold text-sm leading-tight">{e.categoryLabel}</p>
+                        <p className="text-gray-400 text-xs mt-0.5 truncate">
+                          {e.vendor ? `${e.vendor} · ` : ""}{fmtDate(e.date)}
+                        </p>
+                        {e.description && <p className="text-gray-400 text-xs truncate">{e.description}</p>}
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <p className="font-bold text-sm" style={{ color: "#C62828" }}>−{fmt(e.amount)}</p>
+                        <p className="text-gray-400 text-[10px] mt-0.5">{PAYMENT_METHODS[e.paymentMethod] || e.paymentMethod}</p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </>
         )}
       </div>
 
-      {/* FAB */}
-      {canEdit && (
+      {/* FAB — only on expenses tab */}
+      {canEdit && tab === "expenses" && (
         <button onClick={() => setView("add")}
           className="fixed bottom-24 right-5 w-14 h-14 rounded-full shadow-xl flex items-center justify-center active:scale-95 transition-transform z-40"
           style={{ backgroundColor: "#1B5E20" }}>
