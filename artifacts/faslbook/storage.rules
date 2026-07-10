@@ -1,0 +1,41 @@
+rules_version = '2';
+
+// FaslBook Firebase Storage security rules.
+// Deploy via: firebase deploy --only storage
+// (or paste into Firebase Console → Storage → Rules)
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Profile photos: profiles/{uid}/*
+    match /profiles/{uid}/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    // Ledger / receipt / farmer proof photos: any authenticated org member
+    // can read/write, since access control is enforced at the app layer via
+    // organizationId membership (mirrors Firestore rules).
+    match /ledger/{allPaths=**} {
+      allow read, write: if request.auth != null
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    match /receipts/{allPaths=**} {
+      allow read, write: if request.auth != null
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    // Fallback: any other authenticated upload path used by the app.
+    match /{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "app": {
+    "name": "Faslbook",
+    "tagline": "Farm Management Made Simple"
+  },
+  "nav": {
+    "overview": "Overview",
+    "parcels": "Parcels",
+    "crops": "Crops",
+    "inventory": "Inventory",
+    "farmers": "Farmers",
+    "workers": "Workers",
+    "dealers": "Dealers",
+    "expenses": "Expenses",
+    "income": "Income",
+    "loans": "Loans",
+    "ledger": "Khata",
+    "reports": "Reports"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "forgotPassword": "Forgot Password?"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "loading": "Loading...",
+    "noData": "No data found",
+    "error": "Something went wrong"
+  }
+}

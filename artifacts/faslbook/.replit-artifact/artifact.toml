@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "FaslBook"
+version = "1.0.0"
+id = "artifacts/faslbook"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25207
+
+[services.development]
+run = "pnpm --filter @workspace/faslbook run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/faslbook", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/faslbook/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25207"
+BASE_PATH = "/"

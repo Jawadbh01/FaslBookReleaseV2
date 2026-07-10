@@ -1,0 +1,2 @@
+- [FaslBook architecture](faslbook-arch.md) — React+Vite+Firebase PWA, pnpm monorepo, port 25207, no Farmer login (landlord/manager only)
+- [Auth onboarding loop fix](auth-loop-fix.md) — two-part fix for /role-select↔/create-farm redirect loop on new signups

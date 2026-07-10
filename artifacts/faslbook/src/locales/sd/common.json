@@ -1,0 +1,41 @@
+{
+  "app": {
+    "name": "فصل بوڪ",
+    "tagline": "زراعت انتظام آسان"
+  },
+  "nav": {
+    "overview": "جائزو",
+    "parcels": "پلاٽ",
+    "crops": "فصلون",
+    "inventory": "اسٽاڪ",
+    "farmers": "هارين",
+    "workers": "مزدور",
+    "dealers": "ڊيلر",
+    "expenses": "خرچ",
+    "income": "آمدني",
+    "loans": "قرض",
+    "ledger": "کاتو",
+    "reports": "رپورٽون"
+  },
+  "auth": {
+    "login": "لاگ ان",
+    "register": "رجسٽر",
+    "logout": "لاگ آئوٽ",
+    "email": "اي ميل",
+    "password": "پاس ورڊ",
+    "name": "پورو نالو",
+    "forgotPassword": "پاس ورڊ وساري ويو؟"
+  },
+  "common": {
+    "save": "محفوظ ڪريو",
+    "cancel": "رد ڪريو",
+    "delete": "ڊليٽ ڪريو",
+    "edit": "تبديل ڪريو",
+    "add": "شامل ڪريو",
+    "search": "ڳولا ڪريو",
+    "filter": "فلٽر",
+    "loading": "لوڊ ٿي رهيو آهي...",
+    "noData": "ڪو ڊيٽا نه مليو",
+    "error": "ڪجهه غلط ٿيو"
+  }
+}
