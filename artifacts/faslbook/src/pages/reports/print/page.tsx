@@ -6,15 +6,16 @@ import { useAuthStore } from "@/store/authStore";
 import { ArrowLeft, Printer, Loader2, ChevronDown } from "lucide-react";
 
 import { PRINT_CSS } from "@/components/print/PrintLayout";
-import FarmerLedgerTemplate  from "./FarmerLedgerTemplate";
-import ParcelReportTemplate   from "./ParcelReportTemplate";
-import GodownReportTemplate   from "./GodownReportTemplate";
-import CropCycleReportTemplate from "./CropCycleReportTemplate";
-import SalesReportTemplate    from "./SalesReportTemplate";
-import FarmSummaryTemplate    from "./FarmSummaryTemplate";
-import DealerReportTemplate   from "./DealerReportTemplate";
-import WorkersReportTemplate  from "./WorkersReportTemplate";
-import OwnerExpensesTemplate  from "./OwnerExpensesTemplate";
+import FarmerLedgerTemplate       from "./FarmerLedgerTemplate";
+import ParcelReportTemplate        from "./ParcelReportTemplate";
+import GodownReportTemplate        from "./GodownReportTemplate";
+import CropCycleReportTemplate     from "./CropCycleReportTemplate";
+import FarmSummaryTemplate         from "./FarmSummaryTemplate";
+import DealerReportTemplate        from "./DealerReportTemplate";
+import WorkersReportTemplate       from "./WorkersReportTemplate";
+import OwnerExpensesTemplate       from "./OwnerExpensesTemplate";
+import CustomKhataTemplate         from "./CustomKhataTemplate";
+import LabourContractorTemplate    from "./LabourContractorTemplate";
 
 // ── Label maps ────────────────────────────────────────────────
 const INCOME_LABELS: Record<string,string> = {
@@ -63,15 +64,16 @@ function DateInput({ value, onChange, label }: { value: string; onChange: (v: st
 
 // ── Report definitions ────────────────────────────────────────
 const REPORTS = [
-  { key:"ledger",  label:"Farmer Khata",        icon:"📋", desc:"Full account statement for one farmer" },
-  { key:"parcel",  label:"Parcel Report",        icon:"🌾", desc:"Crops, expenses and profit per parcel" },
-  { key:"godown",  label:"Godown Register",      icon:"🏭", desc:"Warehouse inventory and stock movements" },
-  { key:"cropCycle", label:"Crop Cycle Report",  icon:"🌱", desc:"Income, expenses & profit per crop cycle" },
-  { key:"sales",   label:"Sales Report",         icon:"📈", desc:"Sales with payment status" },
-  { key:"dealer",  label:"Dealer Report",        icon:"🤝", desc:"Purchases, payments & outstanding balance" },
-  { key:"workers", label:"Workers Report",       icon:"👷", desc:"Attendance and wages for daily/monthly staff" },
-  { key:"summary", label:"Farm Summary",         icon:"🏡", desc:"One-page executive overview" },
-  { key:"owner",   label:"Farm Expenses",         icon:"🚜", desc:"Owner-paid farm costs by date range" },
+  { key:"ledger",  label:"Farmer Khata",              icon:"📋", desc:"Full account statement for one farmer" },
+  { key:"owner",   label:"Owner Khata",               icon:"🏠", desc:"Owner-paid farm costs by date range" },
+  { key:"labour",  label:"Labour Contractor Khata",   icon:"🌾", desc:"Harvest records and contractor payments" },
+  { key:"dealer",  label:"Dealer Khata",              icon:"🤝", desc:"Purchases, payments & outstanding balance" },
+  { key:"custom",  label:"Custom Khata",              icon:"🏷️", desc:"Account statement for a custom account" },
+  { key:"summary", label:"Farm Summary",              icon:"🏡", desc:"One-page executive overview" },
+  { key:"godown",  label:"Godown Register",           icon:"🏭", desc:"Warehouse inventory and stock movements" },
+  { key:"cropCycle", label:"Crop Cycle Report",       icon:"🌱", desc:"Income, expenses & profit per crop cycle" },
+  { key:"workers", label:"Workers Report",            icon:"👷", desc:"Attendance and wages for daily/monthly staff" },
+  { key:"parcel",  label:"Parcel Report",             icon:"🗺️", desc:"Crops, expenses and profit per parcel" },
 ];
 
 // ── Single-field query helper (avoids composite index requirement) ───
@@ -102,10 +104,14 @@ export default function PrintHubPage() {
   const [parcels, setParcels] = useState<any[]>([]);
   const [dealersList, setDealersList] = useState<any[]>([]);
   const [cropCyclesList, setCropCyclesList] = useState<any[]>([]);
+  const [customProfilesList, setCustomProfilesList] = useState<any[]>([]);
+  const [labourContractorsList, setLabourContractorsList] = useState<any[]>([]);
   const [selectedFarmer, setSelectedFarmer] = useState("");
   const [selectedParcel, setSelectedParcel] = useState("");
   const [selectedDealer, setSelectedDealer] = useState("");
   const [selectedCropCycle, setSelectedCropCycle] = useState("");
+  const [selectedCustomProfile, setSelectedCustomProfile] = useState("");
+  const [selectedContractor, setSelectedContractor] = useState("");
 
   // Date range — default: last 3 months
   const [dateFrom, setDateFrom] = useState(() => {
@@ -123,12 +129,13 @@ export default function PrintHubPage() {
   const [godownTxns,     setGodownTxns]     = useState<any[]>([]);
   const [reportCropCycles, setReportCropCycles] = useState<any[]>([]);
   const [cropCycleTxnsByCycle, setCropCycleTxnsByCycle] = useState<Record<string, any[]>>({});
-  const [allSales,       setAllSales]       = useState<any[]>([]);
   const [dealerTxns,     setDealerTxns]     = useState<any[]>([]);
   const [summaryData,    setSummaryData]    = useState<any>(null);
   const [reportWorkers,  setReportWorkers]  = useState<any[]>([]);
   const [reportAttendance, setReportAttendance] = useState<any[]>([]);
-  const [ownerExpenses, setOwnerExpenses]  = useState<any[]>([]);
+  const [ownerExpenses,  setOwnerExpenses]  = useState<any[]>([]);
+  const [customKhataTxns, setCustomKhataTxns] = useState<any[]>([]);
+  const [labourRecords,  setLabourRecords]  = useState<any[]>([]);
 
   // ── Load farmers & parcels once ───────────────────────────────
   // NOTE: uses single-field query only (no workerType compound) to avoid
@@ -138,11 +145,13 @@ export default function PrintHubPage() {
     (async () => {
       setLoading(true);
       try {
-        const [workers, pls, dls, cycles] = await Promise.all([
+        const [workers, pls, dls, cycles, customs, contractors] = await Promise.all([
           getOrgDocs("workers", orgId),
           getOrgDocs("parcels", orgId),
           getOrgDocs("dealers", orgId),
           getOrgDocs("cropCycles", orgId),
+          getOrgDocs("customProfiles", orgId),
+          getOrgDocs("labourContractors", orgId),
         ]);
         // Filter farmers client-side — no composite index needed
         const fl = workers.filter(w => w.workerType === "farmer");
@@ -152,8 +161,12 @@ export default function PrintHubPage() {
         setParcels(pl);
         setDealersList(dls);
         setCropCyclesList(cl);
+        setCustomProfilesList(customs);
+        setLabourContractorsList(contractors);
         if (fl.length) setSelectedFarmer(fl[0].id);
         if (pl.length) setSelectedParcel(pl[0].id);
+        if (customs.length) setSelectedCustomProfile(customs[0].id);
+        if (contractors.length) setSelectedContractor(contractors[0].id);
       } catch (err) {
         console.error("PrintHub: failed to load farmers/parcels/dealers", err);
       }
@@ -162,7 +175,7 @@ export default function PrintHubPage() {
   }, [orgId]);
 
   // Load data when report/filters change
-  useEffect(() => { if (orgId) loadData(); }, [activeReport, orgId, selectedFarmer, selectedParcel, selectedDealer, selectedCropCycle, dateFrom, dateTo]);
+  useEffect(() => { if (orgId) loadData(); }, [activeReport, orgId, selectedFarmer, selectedParcel, selectedDealer, selectedCropCycle, selectedCustomProfile, selectedContractor, dateFrom, dateTo]);
 
   async function loadData() {
     if (!orgId) return;
@@ -260,27 +273,36 @@ export default function PrintHubPage() {
           break;
         }
 
-        // ── Sales / Income Report — transactions type=="income" ──
-        // Single-field query only, filter type client-side
-        case "sales": {
-          const all = await getOrgDocs("transactions", orgId);
-          const rows = all
-            .filter(r => r.type === "income")
-            .map(r => {
-              const date = r.date ? (typeof r.date==="string" ? r.date : r.date.toDate?.()?.toISOString().split("T")[0]||"") : "";
-              return { id:r.id, date,
-                buyer:      r.dealerName || r.buyer || "",
-                cropName:   r.categoryLabel || r.cropName || r.category || "",
-                parcelName: r.parcelName || "",
-                weightKg:   Number(r.weightKg)||0,
-                ratePerKg:  Number(r.ratePerKg)||0,
-                amount:     Number(r.amount)||0,
-                paymentStatus: r.paymentStatus || "paid",
-                notes:      r.notes||"" };
+        // ── Custom Khata ──────────────────────────────────────────
+        case "custom": {
+          const txns = await getOrgDocs("transactions", orgId);
+          const CREDIT_TYPES = ["income", "loanTaken", "dealerPayment"];
+          const rows = txns
+            .filter((t: any) => !!t.customProfileId && (!selectedCustomProfile || t.customProfileId === selectedCustomProfile))
+            .map((t: any) => {
+              const date = t.date ? (typeof t.date === "string" ? t.date : t.date.toDate?.()?.toISOString().split("T")[0] || "") : "";
+              return {
+                id: t.id, date,
+                type: CREDIT_TYPES.includes(t.type) ? "credit" : "debit" as "credit" | "debit",
+                categoryLabel: t.categoryLabel || t.notes || "Entry",
+                description: t.notes || "",
+                amount: Number(t.amount) || 0,
+              };
             })
-            .filter(e => (!dateFrom||!e.date||e.date>=dateFrom) && (!dateTo||!e.date||e.date<=dateTo))
-            .sort((a,b)=>a.date.localeCompare(b.date));
-          setAllSales(rows);
+            .filter((e: any) => (!dateFrom || !e.date || e.date >= dateFrom) && (!dateTo || !e.date || e.date <= dateTo))
+            .sort((a: any, b: any) => a.date.localeCompare(b.date));
+          setCustomKhataTxns(rows);
+          break;
+        }
+
+        // ── Labour Contractor Khata ───────────────────────────────
+        case "labour": {
+          const recs = await getOrgDocs("harvestLabourRecords", orgId);
+          const rows = recs
+            .filter((r: any) => !selectedContractor || r.contractorId === selectedContractor)
+            .filter((r: any) => (!dateFrom || !r.harvestDate || r.harvestDate >= dateFrom) && (!dateTo || !r.harvestDate || r.harvestDate <= dateTo))
+            .sort((a: any, b: any) => (a.harvestDate || "").localeCompare(b.harvestDate || ""));
+          setLabourRecords(rows);
           break;
         }
 
@@ -400,8 +422,10 @@ export default function PrintHubPage() {
     setGenerating(false);
   }
 
-  const selectedParcelObj = parcels.find(p => p.id === selectedParcel);
-  const selectedFarmerObj = farmers.find(f => f.id === selectedFarmer);
+  const selectedParcelObj      = parcels.find(p => p.id === selectedParcel);
+  const selectedFarmerObj      = farmers.find(f => f.id === selectedFarmer);
+  const selectedCustomObj      = customProfilesList.find(p => p.id === selectedCustomProfile) ?? null;
+  const selectedContractorObj  = labourContractorsList.find(c => c.id === selectedContractor) ?? null;
 
   function renderTemplate(forPrint = false) {
     const style = forPrint ? undefined : { transform:"scale(0.82)", transformOrigin:"top left", width:"122%", pointerEvents:"none" as const };
@@ -431,9 +455,18 @@ export default function PrintHubPage() {
         <CropCycleReportTemplate cropCycles={reportCropCycles} transactionsByCycle={cropCycleTxnsByCycle} farmName={orgName}
           printedBy={printedBy} dateFrom={dateFrom} dateTo={dateTo} />
       );
-      if (activeReport==="sales") return (
-        <SalesReportTemplate sales={allSales} farmName={orgName}
-          printedBy={printedBy} dateFrom={dateFrom} dateTo={dateTo} />
+      if (activeReport==="custom") return (
+        <CustomKhataTemplate
+          profile={selectedCustomObj}
+          entries={customKhataTxns}
+          farmName={orgName} printedBy={printedBy} dateFrom={dateFrom} dateTo={dateTo} />
+      );
+      if (activeReport==="labour") return (
+        <LabourContractorTemplate
+          contractor={selectedContractorObj}
+          contractors={labourContractorsList}
+          records={labourRecords}
+          farmName={orgName} printedBy={printedBy} dateFrom={dateFrom} dateTo={dateTo} />
       );
       if (activeReport==="dealer") return (
         <DealerReportTemplate
@@ -575,7 +608,46 @@ export default function PrintHubPage() {
               </div>
             )}
 
-            {["ledger","cropCycle","sales","godown","dealer","owner"].includes(activeReport) && (
+            {activeReport==="custom" && (
+              <div className="flex flex-col gap-1">
+                <label className="text-[10px] font-semibold text-gray-400 uppercase">Custom Account</label>
+                {loading ? (
+                  <div className="flex items-center gap-2 py-2 px-3 text-sm text-gray-400">
+                    <Loader2 size={14} className="animate-spin" /> Loading…
+                  </div>
+                ) : customProfilesList.length === 0 ? (
+                  <p className="text-xs text-orange-600 px-1 py-2">No custom accounts added yet.</p>
+                ) : (
+                  <Select value={selectedCustomProfile} onChange={setSelectedCustomProfile}>
+                    {customProfilesList.map(p => (
+                      <option key={p.id} value={p.id}>{p.name} — {p.customLabel}</option>
+                    ))}
+                  </Select>
+                )}
+              </div>
+            )}
+
+            {activeReport==="labour" && (
+              <div className="flex flex-col gap-1">
+                <label className="text-[10px] font-semibold text-gray-400 uppercase">Labour Contractor</label>
+                {loading ? (
+                  <div className="flex items-center gap-2 py-2 px-3 text-sm text-gray-400">
+                    <Loader2 size={14} className="animate-spin" /> Loading…
+                  </div>
+                ) : labourContractorsList.length === 0 ? (
+                  <p className="text-xs text-orange-600 px-1 py-2">No labour contractors added yet.</p>
+                ) : (
+                  <Select value={selectedContractor} onChange={setSelectedContractor}>
+                    <option value="">All Contractors</option>
+                    {labourContractorsList.map(c => (
+                      <option key={c.id} value={c.id}>{c.name}{c.teamSize ? ` (${c.teamSize} workers)` : ""}</option>
+                    ))}
+                  </Select>
+                )}
+              </div>
+            )}
+
+            {["ledger","cropCycle","godown","dealer","owner","custom","labour"].includes(activeReport) && (
               <div className="grid grid-cols-2 gap-3">
                 <DateInput label="From" value={dateFrom} onChange={setDateFrom} />
                 <DateInput label="To"   value={dateTo}   onChange={setDateTo} />

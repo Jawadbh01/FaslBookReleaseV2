@@ -763,12 +763,12 @@ export default function LedgerPage() {
           );
         })()}
 
-        {/* Vendor */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Vendor</label>
+        {/* Dealer */}
+        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Dealer (Optional)</label>
         <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
           <select value={expenseForm.dealerId} onChange={(e) => setExpenseForm({ ...expenseForm, dealerId: e.target.value })}
             className="w-full outline-none text-gray-800 text-base bg-transparent">
-            <option value="">— No vendor —</option>
+            <option value="">— No dealer —</option>
             {dealers.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
           </select>
         </div>

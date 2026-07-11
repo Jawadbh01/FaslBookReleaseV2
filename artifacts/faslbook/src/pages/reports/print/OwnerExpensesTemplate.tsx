@@ -52,7 +52,7 @@ export default function OwnerExpensesTemplate({ expenses, farmName, printedBy, d
 
   return (
     <PrintLayout
-      reportName="Farm Expenses Report"
+      reportName="Owner Expenses Report"
       farmName={farmName}
       printedBy={printedBy}
       filters={filters}
