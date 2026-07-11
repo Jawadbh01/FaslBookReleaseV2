@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { House, BookOpen, Warehouse, Handshake, Users } from "lucide-react";
+import { House, BookOpen, Warehouse, Contact, Users } from "lucide-react";
 import { useLangStore } from "@/store/langStore";
 import { useCallback } from "react";
 
@@ -18,7 +18,7 @@ export default function BottomNav() {
     { href: "/overview",             labelKey: "home",   icon: House },
     { href: "/khata",                label: "Khata",     icon: BookOpen },
     { href: "/inventory",            labelKey: "godown", icon: Warehouse },
-    { href: "/dealers",              labelKey: "dealer", icon: Handshake },
+    { href: "/profiles",             label: "Profiles",  icon: Contact },
     { href: "/workers",              label: "Team",      icon: Users },
   ];
 

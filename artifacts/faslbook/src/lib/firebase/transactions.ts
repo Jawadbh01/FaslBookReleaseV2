@@ -46,6 +46,8 @@ export interface Transaction {
   farmerName?: string;
   contractorId?: string;
   contractorName?: string;
+  customProfileId?: string;
+  customProfileName?: string;
   notes?: string;
   receiptUrl?: string;
   proofUrl?: string;

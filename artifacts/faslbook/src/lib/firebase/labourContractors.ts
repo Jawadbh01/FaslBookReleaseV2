@@ -14,8 +14,10 @@ export interface LabourContractor {
   id: string;
   name: string;
   phone?: string;
+  address?: string;
   teamSize: number;
   notes?: string;
+  isActive?: boolean;   // defaults to true when absent — set false to soft-delete
   organizationId: string;
   createdBy: string;
   createdAt: any;

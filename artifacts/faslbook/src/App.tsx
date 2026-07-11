@@ -44,6 +44,8 @@ import OwnerExpensesPage from "@/pages/owner-expenses/page";
 import KhataPage from "@/pages/khata/page";
 import LabourContractorsPage from "@/pages/labour-contractors/page";
 import LabourContractorProfilePage from "@/pages/labour-contractors/[id]/page";
+import ProfilesPage from "@/pages/profiles/page";
+import ProfileDetailPage from "@/pages/profiles/[type]/[id]/page";
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -163,6 +165,12 @@ function AnimatedSwitch() {
         </Route>
         <Route path="/labour-contractors/:id">
           {() => <DashboardLayout><LabourContractorProfilePage /></DashboardLayout>}
+        </Route>
+        <Route path="/profiles">
+          {() => <DashboardLayout><ProfilesPage /></DashboardLayout>}
+        </Route>
+        <Route path="/profiles/:type/:id">
+          {() => <DashboardLayout><ProfileDetailPage /></DashboardLayout>}
         </Route>
         <Route path="/reports/print">
           {() => <DashboardLayout><PrintHubPage /></DashboardLayout>}
