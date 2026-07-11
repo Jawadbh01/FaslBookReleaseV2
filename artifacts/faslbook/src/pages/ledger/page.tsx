@@ -19,7 +19,7 @@ import {
   ChevronLeft, ChevronRight, Loader2, CheckCircle,
   MapPin, Camera, X, Receipt, Printer, Search,
 } from "lucide-react";
-import { useLocation } from "wouter";
+import { useLocation, Link } from "wouter";
 import { createNotification } from "@/lib/notifications/createNotification";
 
 // Maps the unified Transaction.type into the credit/debit convention this
@@ -48,7 +48,7 @@ interface LedgerEntry {
   organizationId: string;
   createdAt: any;
 }
-interface Parcel   { id: string; name: string; }
+interface Parcel   { id: string; name: string; assignedFarmer?: string; }
 interface Dealer   { id: string; name: string; }
 interface FarmerOpt { id: string; name: string; }
 interface Location { lat: number; lng: number; address: string; }
@@ -203,7 +203,7 @@ export default function LedgerPage() {
     ));
     unsubs.push(onSnapshot(
       query(collection(db, "parcels"), where("organizationId", "==", orgId)),
-      (snap) => setParcels(snap.docs.map((d) => ({ id: d.id, name: (d.data() as any).name })))
+      (snap) => setParcels(snap.docs.map((d) => ({ id: d.id, name: (d.data() as any).name, assignedFarmer: (d.data() as any).assignedFarmer || "" })))
     ));
     unsubs.push(onSnapshot(
       query(collection(db, "dealers"), where("organizationId", "==", orgId)),
@@ -544,25 +544,52 @@ export default function LedgerPage() {
           </>
         )}
 
-        {/* Parcel */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Parcel</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
-          <select value={incomeForm.parcelId} onChange={(e) => setIncomeForm({ ...incomeForm, parcelId: e.target.value })}
-            className="w-full outline-none text-gray-800 text-base bg-transparent">
-            <option value="">— Select parcel —</option>
-            {parcels.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-          </select>
-        </div>
-
-        {/* Farmer — links this entry to a farmer's own Khata */}
+        {/* Farmer — picks farmer first; parcel auto-fills from their linked parcel */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Farmer</label>
         <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
-          <select value={incomeForm.farmerId} onChange={(e) => setIncomeForm({ ...incomeForm, farmerId: e.target.value })}
+          <select value={incomeForm.farmerId}
+            onChange={(e) => {
+              const fId = e.target.value;
+              const linked = parcels.find((p) => p.assignedFarmer === fId);
+              setIncomeForm({ ...incomeForm, farmerId: fId, parcelId: linked?.id || "" });
+            }}
             className="w-full outline-none text-gray-800 text-base bg-transparent">
             <option value="">— Select farmer —</option>
             {farmers.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
           </select>
         </div>
+
+        {/* Parcel — read-only, auto-filled from the selected farmer's linked parcel */}
+        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Parcel</label>
+        {!incomeForm.farmerId ? (
+          <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-gray-50 flex items-center gap-2">
+            <MapPin size={16} color="#9CA3AF" />
+            <span className="text-gray-400 text-sm">Select a farmer first</span>
+          </div>
+        ) : (() => {
+          const linked = parcels.find((p) => p.assignedFarmer === incomeForm.farmerId);
+          return linked ? (
+            <div className="border-2 rounded-2xl px-4 py-3.5 mb-4 flex items-center gap-2"
+              style={{ borderColor: "#A5D6A7", backgroundColor: "#F1F8E9" }}>
+              <MapPin size={16} color="#2E7D32" />
+              <span className="text-gray-800 text-base font-medium flex-1">{linked.name}</span>
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: "#C8E6C9", color: "#1B5E20" }}>Auto</span>
+            </div>
+          ) : (
+            <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
+              style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
+              <div className="flex items-center gap-2">
+                <MapPin size={16} color="#E65100" />
+                <span className="text-sm font-medium" style={{ color: "#E65100" }}>No parcel linked to this farmer</span>
+              </div>
+              <Link href={`/workers/farmer/${incomeForm.farmerId}`}
+                className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
+                style={{ backgroundColor: "#E65100" }}>
+                Link Parcel →
+              </Link>
+            </div>
+          );
+        })()}
 
         {/* Upload Proof */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Upload Proof</label>
@@ -689,25 +716,52 @@ export default function LedgerPage() {
           </>
         )}
 
-        {/* Parcel */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Parcel</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
-          <select value={expenseForm.parcelId} onChange={(e) => setExpenseForm({ ...expenseForm, parcelId: e.target.value })}
-            className="w-full outline-none text-gray-800 text-base bg-transparent">
-            <option value="">— Select parcel —</option>
-            {parcels.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-          </select>
-        </div>
-
-        {/* Farmer — links this entry to a farmer's own Khata */}
+        {/* Farmer — picks farmer first; parcel auto-fills from their linked parcel */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Farmer</label>
         <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
-          <select value={expenseForm.farmerId} onChange={(e) => setExpenseForm({ ...expenseForm, farmerId: e.target.value })}
+          <select value={expenseForm.farmerId}
+            onChange={(e) => {
+              const fId = e.target.value;
+              const linked = parcels.find((p) => p.assignedFarmer === fId);
+              setExpenseForm({ ...expenseForm, farmerId: fId, parcelId: linked?.id || "" });
+            }}
             className="w-full outline-none text-gray-800 text-base bg-transparent">
             <option value="">— Select farmer —</option>
             {farmers.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
           </select>
         </div>
+
+        {/* Parcel — read-only, auto-filled from the selected farmer's linked parcel */}
+        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Parcel</label>
+        {!expenseForm.farmerId ? (
+          <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-gray-50 flex items-center gap-2">
+            <MapPin size={16} color="#9CA3AF" />
+            <span className="text-gray-400 text-sm">Select a farmer first</span>
+          </div>
+        ) : (() => {
+          const linked = parcels.find((p) => p.assignedFarmer === expenseForm.farmerId);
+          return linked ? (
+            <div className="border-2 rounded-2xl px-4 py-3.5 mb-4 flex items-center gap-2"
+              style={{ borderColor: "#A5D6A7", backgroundColor: "#F1F8E9" }}>
+              <MapPin size={16} color="#2E7D32" />
+              <span className="text-gray-800 text-base font-medium flex-1">{linked.name}</span>
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: "#C8E6C9", color: "#1B5E20" }}>Auto</span>
+            </div>
+          ) : (
+            <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
+              style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
+              <div className="flex items-center gap-2">
+                <MapPin size={16} color="#E65100" />
+                <span className="text-sm font-medium" style={{ color: "#E65100" }}>No parcel linked to this farmer</span>
+              </div>
+              <Link href={`/workers/farmer/${expenseForm.farmerId}`}
+                className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
+                style={{ backgroundColor: "#E65100" }}>
+                Link Parcel →
+              </Link>
+            </div>
+          );
+        })()}
 
         {/* Vendor */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Vendor</label>

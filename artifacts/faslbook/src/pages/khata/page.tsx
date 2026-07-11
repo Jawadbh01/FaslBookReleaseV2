@@ -56,7 +56,7 @@ const STATUS_CONFIG: Record<HarvestPaymentStatus, { label: string; color: string
 
 const VIEW_CONFIG: Record<KhataView, { label: string; urdu: string; icon: any; color: string; bg: string }> = {
   farmer: { label: "Farmer Khata",             urdu: "کسان خاتہ",       icon: Users,     color: "#1B5E20", bg: "#E8F5E9" },
-  owner:  { label: "Farm Khata",               urdu: "مالک خاتہ",       icon: Scale,     color: "#1565C0", bg: "#E3F2FD" },
+  owner:  { label: "Owner Khata",              urdu: "مالک خاتہ",       icon: Scale,     color: "#1565C0", bg: "#E3F2FD" },
   labour: { label: "Labour Contractor Khata",  urdu: "مزدور خاتہ",      icon: Wheat,     color: "#6A1B9A", bg: "#F3E5F5" },
   dealer: { label: "Dealer Khata",             urdu: "ڈیلر خاتہ",       icon: Handshake, color: "#EF6C00", bg: "#FFF3E0" },
   custom: { label: "Custom Khata",             urdu: "خصوصی خاتہ",      icon: Tag,       color: "#AD1457", bg: "#FCE4EC" },
@@ -538,7 +538,7 @@ export default function KhataPage() {
 
               <Link href="/owner-expenses"
                 className="mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-sm font-semibold border-2 border-gray-200 text-gray-600 active:scale-95 transition-transform block">
-                Open Full Farm Khata <ChevronRight size={14} />
+                Open Full Owner Khata <ChevronRight size={14} />
               </Link>
             </>
           )}
