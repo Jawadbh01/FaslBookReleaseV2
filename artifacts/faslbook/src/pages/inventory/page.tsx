@@ -13,7 +13,7 @@ import { subscribeCropCycles, type CropCycle } from "@/lib/firebase/cropCycles";
 import { categoryConfig } from "./_categoryConfig";
 import {
   ArrowLeft, Plus, X, ArrowDownToLine, ArrowUpFromLine,
-  Users, Loader2, CheckCircle, Package, Layers, Printer,
+  Users, Loader2, CheckCircle, Package, Layers, Printer, Search,
 } from "lucide-react";
 import { useLocation } from "wouter";
 import { createNotification } from "@/lib/notifications/createNotification";
@@ -57,6 +57,7 @@ export default function GodownPage() {
   const [farmers, setFarmers]   = useState<Farmer[]>([]);
   const [txns, setTxns]         = useState<Transaction[]>([]);
   const [filter, setFilter]     = useState("all");
+  const [search, setSearch]     = useState("");
   const [loading, setLoading]   = useState(true);
   const [view, setView]         = useState<View>("list");
   const [selected, setSelected] = useState<InventoryItem | null>(null);
@@ -117,7 +118,10 @@ export default function GodownPage() {
   const monthlyOut = txns.filter((t) => t.type === "out" && (t.createdAt?.toMillis?.() ?? 0) >= monthStart)
                          .reduce((s, t) => s + (t.quantity || 0), 0);
   const totalValue = items.reduce((s, i) => s + i.currentStock * (i.pricePerUnit || 0), 0);
-  const filtered   = filter === "all" ? items : items.filter((i) => i.category === filter);
+  const categoryFiltered = filter === "all" ? items : items.filter((i) => i.category === filter);
+  const filtered = search.trim()
+    ? categoryFiltered.filter((i) => i.name.toLowerCase().includes(search.toLowerCase()))
+    : categoryFiltered;
 
   const fmtPKR = (n: number) =>
     n >= 1000 ? `Rs. ${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k` : `Rs. ${n}`;
@@ -546,55 +550,60 @@ export default function GodownPage() {
     <div className="min-h-screen pb-28" style={{ backgroundColor: "#F5F5F5" }}>
 
       {/* ── Green header ── */}
-      <div className="px-4 pt-12 pb-5" style={{ backgroundColor: "#1B5E20" }}>
-        <div className="flex items-center justify-between mb-5">
-          <h1 className="text-white text-2xl font-bold">Godown</h1>
+      <div className="px-4 pt-10 pb-3" style={{ backgroundColor: "#1B5E20" }}>
+        {/* Title row */}
+        <div className="flex items-center justify-between mb-3">
+          <h1 className="text-white text-xl font-bold">Godown</h1>
           <div className="flex items-center gap-2">
             <button
               onClick={() => window.location.href = "/reports/print?type=godown"}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
-              style={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold"
+              style={{ backgroundColor: "rgba(255,255,255,0.18)", color: "white" }}
             >
-              <Printer size={14} />
-              Print
+              <Printer size={13} />Print
             </button>
             {canEdit && (
               <button onClick={() => setView("addItem")}
-                className="w-10 h-10 rounded-full flex items-center justify-center active:scale-95 transition-transform"
-                style={{ backgroundColor: "rgba(255,255,255,0.2)" }}>
-                <Plus size={22} color="white" />
+                className="w-9 h-9 rounded-full flex items-center justify-center active:scale-95 transition-transform"
+                style={{ backgroundColor: "rgba(255,255,255,0.18)" }}>
+                <Plus size={20} color="white" />
               </button>
             )}
           </div>
         </div>
 
-        {/* Total inventory value card */}
-        <div className="rounded-2xl p-4 mb-4 flex items-center justify-between" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
-          <div>
-            <p className="text-green-200 text-xs font-medium mb-1">Total Inventory Value</p>
-            <p className="text-white text-3xl font-bold">
-              {totalValue >= 1000
-                ? `Rs. ${(totalValue / 1000).toFixed(totalValue % 1000 === 0 ? 0 : 0)}k`
-                : `Rs. ${totalValue.toLocaleString()}`}
+        {/* Stats row */}
+        <div className="grid grid-cols-3 gap-2 mb-3">
+          <div className="col-span-1 rounded-2xl p-3" style={{ backgroundColor: "rgba(255,255,255,0.12)" }}>
+            <p className="text-green-200 text-[10px] font-medium">Total Value</p>
+            <p className="text-white text-sm font-bold mt-0.5">
+              {totalValue >= 1000 ? `Rs.${(totalValue / 1000).toFixed(0)}k` : `Rs.${totalValue}`}
             </p>
           </div>
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: "rgba(255,255,255,0.2)" }}>
-            <Layers size={26} color="white" />
+          <div className="rounded-2xl p-3" style={{ backgroundColor: "rgba(255,255,255,0.12)" }}>
+            <p className="text-[10px] font-medium" style={{ color: "#A5D6A7" }}>Stock In</p>
+            <p className="text-white text-sm font-bold mt-0.5">{monthlyIn.toLocaleString()}</p>
+            <p className="text-[10px]" style={{ color: "#A5D6A7" }}>this month</p>
+          </div>
+          <div className="rounded-2xl p-3" style={{ backgroundColor: "rgba(255,255,255,0.12)" }}>
+            <p className="text-[10px] font-medium" style={{ color: "#EF9A9A" }}>Stock Out</p>
+            <p className="text-white text-sm font-bold mt-0.5">{monthlyOut.toLocaleString()}</p>
+            <p className="text-[10px]" style={{ color: "#EF9A9A" }}>this month</p>
           </div>
         </div>
 
-        {/* Stock In / Stock Out this month */}
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="rounded-2xl p-3" style={{ backgroundColor: "#2E7D32" }}>
-            <p className="text-green-200 text-xs font-medium mb-1">Stock In</p>
-            <p className="text-white text-lg font-bold">{monthlyIn.toLocaleString()} units</p>
-            <p className="text-green-300 text-xs">This Month</p>
-          </div>
-          <div className="rounded-2xl p-3" style={{ backgroundColor: "#B71C1C" }}>
-            <p className="text-red-200 text-xs font-medium mb-1">Stock Out</p>
-            <p className="text-white text-lg font-bold">{monthlyOut.toLocaleString()} units</p>
-            <p className="text-red-300 text-xs">This Month</p>
-          </div>
+        {/* Search bar */}
+        <div className="flex items-center gap-2 px-3 py-2 rounded-xl mb-3" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
+          <Search size={15} color="rgba(255,255,255,0.7)" />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search items…"
+            className="flex-1 bg-transparent outline-none text-white placeholder-green-200 text-sm"
+          />
+          {search && (
+            <button onClick={() => setSearch("")}><X size={14} color="rgba(255,255,255,0.7)" /></button>
+          )}
         </div>
 
         {/* Category filter pills */}
@@ -604,10 +613,10 @@ export default function GodownPage() {
             const isActive = filter === c;
             return (
               <button key={c} onClick={() => setFilter(c)}
-                className="px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all"
+                className="px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all"
                 style={{
-                  backgroundColor: isActive ? "white" : "rgba(255,255,255,0.2)",
-                  color: isActive ? (cc?.color || "#1B5E20") : "white",
+                  backgroundColor: isActive ? "white" : "rgba(255,255,255,0.18)",
+                  color: isActive ? (cc?.color || "#1B5E20") : "rgba(255,255,255,0.9)",
                 }}>
                 {c === "all" ? "All" : cc?.label}
               </button>
@@ -685,21 +694,21 @@ export default function GodownPage() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => { setSelected(item); setView("stockIn"); }}
-                          className="flex-1 py-2.5 rounded-xl text-white text-sm font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-transform"
-                          style={{ backgroundColor: "#1B5E20" }}>
+                          className="flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-transform"
+                          style={{ backgroundColor: "#E8F5E9", color: "#2E7D32" }}>
                           <ArrowDownToLine size={15} />Stock In
                         </button>
                         <button
                           onClick={() => { setSelected(item); setView("stockOut"); }}
-                          className="flex-1 py-2.5 rounded-xl text-white text-sm font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-transform"
-                          style={{ backgroundColor: "#B71C1C" }}>
+                          className="flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-transform"
+                          style={{ backgroundColor: "#FFEBEE", color: "#C62828" }}>
                           <ArrowUpFromLine size={15} />Stock Out
                         </button>
                       </div>
                       <button
                         onClick={() => { setSelected(item); setView("transfer"); }}
-                        className="w-full py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-transform border-2"
-                        style={{ borderColor: "#1B5E20", color: "#1B5E20", backgroundColor: "white" }}>
+                        className="w-full py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-transform"
+                        style={{ backgroundColor: "#F5F5F5", color: "#555", border: "1px solid #E0E0E0" }}>
                         <Users size={15} />Transfer to Farmer
                       </button>
                     </div>

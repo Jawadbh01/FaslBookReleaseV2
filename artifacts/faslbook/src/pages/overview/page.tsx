@@ -83,6 +83,7 @@ export default function OverviewPage() {
   // FilterKey is either a cropCycle.id string, "last30", or "last60".
   const [filter, setFilter] = useState<string>("__init__");
   const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const [showAllActions, setShowAllActions] = useState(false);
   const [cropCycles, setCropCycles] = useState<CropCycle[]>([]);
   const [currentCropCycle, setCurrentCropCycle] = useState<CropCycle | null>(null);
   const [allTxns, setAllTxns] = useState<Transaction[]>([]);
@@ -499,12 +500,11 @@ export default function OverviewPage() {
 
       {/* ── Quick Actions ─────────────────────────────────────── */}
       <div className="px-4 mt-4">
-        <div className="flex items-center justify-between mb-3">
-          <p className="font-bold text-gray-800 text-sm">{t("quick_actions")}</p>
-        </div>
+        <p className="font-bold text-gray-800 text-sm mb-3">{t("quick_actions")}</p>
         <div className="grid grid-cols-2 gap-2.5">
           {actions
             .filter((a) => a.label !== "Add Expense" && a.label !== "Add Income")
+            .slice(0, showAllActions ? undefined : 4)
             .map((action) => {
               const Icon = action.icon;
               return (
@@ -525,6 +525,14 @@ export default function OverviewPage() {
               );
             })}
         </div>
+        <button
+          onClick={() => setShowAllActions((v) => !v)}
+          className="w-full mt-3 py-2.5 rounded-2xl text-sm font-semibold flex items-center justify-center gap-1.5 active:scale-95 transition-transform"
+          style={{ backgroundColor: "#E8F5E9", color: "#2E7D32" }}
+        >
+          {showAllActions ? "Show Less" : "View All Actions"}
+          <ChevronRight size={14} color="#2E7D32" style={{ transform: showAllActions ? "rotate(90deg)" : "rotate(0deg)" }} />
+        </button>
       </div>
 
       {/* ── Recent Transactions ───────────────────────────────── */}
