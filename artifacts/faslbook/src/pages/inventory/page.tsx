@@ -643,31 +643,39 @@ export default function GodownPage() {
           <div className="flex flex-col gap-3">
             {filtered.map((item) => {
               const cc = categoryConfig[item.category] || categoryConfig.other;
-              const emoji = catEmoji[item.category] || "📦";
               const isLow = item.currentStock <= 10;
+              const itemValue = item.currentStock * (item.pricePerUnit || 0);
               return (
                 <div key={item.id} className="bg-white rounded-2xl p-4 shadow-sm">
-                  {/* Top row: icon + info + category badge */}
-                  <div className="flex items-start gap-3 mb-3">
-                    {/* Emoji icon */}
-                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 text-3xl"
+                  {/* Top row */}
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
                       style={{ backgroundColor: cc.bg }}>
-                      {emoji}
+                      <cc.Icon size={22} color={cc.color} />
                     </div>
-                    {/* Name + stock */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <p className="font-bold text-gray-800 text-base leading-tight">{item.name}</p>
-                        <span className="text-xs font-semibold px-2.5 py-1 rounded-full shrink-0"
+                      <div className="flex items-center justify-between gap-2 mb-0.5">
+                        <p className="font-bold text-gray-800 text-base truncate leading-tight">{item.name}</p>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0"
                           style={{ backgroundColor: cc.bg, color: cc.color }}>
                           {cc.label}
                         </span>
                       </div>
-                      <p className="text-gray-400 text-xs mt-0.5">Current Stock</p>
-                      <p className="font-bold text-2xl leading-tight" style={{ color: isLow ? "#B71C1C" : "#1B1B1B" }}>
-                        {item.currentStock} <span className="text-sm font-medium text-gray-400">{item.unit}</span>
-                      </p>
-                      {isLow && <p className="text-red-500 text-xs font-semibold">⚠ Low Stock</p>}
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-xl leading-tight" style={{ color: isLow ? "#B71C1C" : "#111827" }}>
+                          {item.currentStock}
+                        </span>
+                        <span className="text-xs font-medium text-gray-400">{item.unit}</span>
+                        {isLow && (
+                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full"
+                            style={{ backgroundColor: "#FFEBEE", color: "#B71C1C" }}>⚠ Low</span>
+                        )}
+                        {itemValue > 0 && (
+                          <span className="ml-auto text-xs font-semibold" style={{ color: "#1B5E20" }}>
+                            {fmtPKR(itemValue)}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -675,18 +683,18 @@ export default function GodownPage() {
                   {canEdit && (
                     <div className="flex flex-col gap-2">
                       <div className="flex gap-2">
-                      <button
-                        onClick={() => { setSelected(item); setView("stockIn"); }}
-                        className="flex-1 py-2.5 rounded-xl text-white text-sm font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-transform"
-                        style={{ backgroundColor: "#1B5E20" }}>
-                        <ArrowDownToLine size={15} />Stock In
-                      </button>
-                      <button
-                        onClick={() => { setSelected(item); setView("stockOut"); }}
-                        className="flex-1 py-2.5 rounded-xl text-white text-sm font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-transform"
-                        style={{ backgroundColor: "#B71C1C" }}>
-                        <ArrowUpFromLine size={15} />Stock Out
-                      </button>
+                        <button
+                          onClick={() => { setSelected(item); setView("stockIn"); }}
+                          className="flex-1 py-2.5 rounded-xl text-white text-sm font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-transform"
+                          style={{ backgroundColor: "#1B5E20" }}>
+                          <ArrowDownToLine size={15} />Stock In
+                        </button>
+                        <button
+                          onClick={() => { setSelected(item); setView("stockOut"); }}
+                          className="flex-1 py-2.5 rounded-xl text-white text-sm font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-transform"
+                          style={{ backgroundColor: "#B71C1C" }}>
+                          <ArrowUpFromLine size={15} />Stock Out
+                        </button>
                       </div>
                       <button
                         onClick={() => { setSelected(item); setView("transfer"); }}

@@ -501,29 +501,29 @@ export default function OverviewPage() {
       <div className="px-4 mt-4">
         <div className="flex items-center justify-between mb-3">
           <p className="font-bold text-gray-800 text-sm">{t("quick_actions")}</p>
-          <button className="text-xs font-medium flex items-center gap-1" style={{ color: "#1B5E20" }}>
-            {t("view_all")} <ChevronRight size={12} color="#1B5E20" />
-          </button>
         </div>
-        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-          {actions.map((action) => {
-            const Icon = action.icon;
-            return (
-              <Link key={action.label} href={action.href}>
-                <div className="flex flex-col items-center gap-2 min-w-[72px]">
-                  <div
-                    className="w-14 h-14 rounded-full flex items-center justify-center active:scale-95 transition-transform"
-                    style={{ backgroundColor: action.bg }}
-                  >
-                    <Icon size={24} color={action.color} />
+        <div className="grid grid-cols-2 gap-2.5">
+          {actions
+            .filter((a) => a.label !== "Add Expense" && a.label !== "Add Income")
+            .map((action) => {
+              const Icon = action.icon;
+              return (
+                <Link key={action.label} href={action.href}>
+                  <div className="bg-white rounded-2xl px-3.5 py-3 flex items-center gap-3 shadow-sm active:scale-95 transition-transform">
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ backgroundColor: action.bg }}
+                    >
+                      <Icon size={20} color={action.color} />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-gray-800 text-sm font-semibold truncate leading-tight">{action.label}</p>
+                      <p className="text-gray-400 text-[10px] truncate">{action.urdu}</p>
+                    </div>
                   </div>
-                  <p className="text-gray-700 text-xs font-medium text-center whitespace-nowrap">
-                    {action.label}
-                  </p>
-                </div>
-              </Link>
-            );
-          })}
+                </Link>
+              );
+            })}
         </div>
       </div>
 

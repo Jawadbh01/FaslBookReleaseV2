@@ -275,7 +275,14 @@ export default function LedgerPage() {
     setReceiptFile(null); setReceiptPreview(""); expenseLocation.reset();
     setFormError(""); setSuccess(false);
   };
-  const goBack = () => { setView("list"); resetForms(); };
+  const goBack = () => {
+    if (searchParams.get("form")) {
+      window.history.back();
+    } else {
+      setView("list");
+      resetForms();
+    }
+  };
 
   // ── Upload helper (compress → storage, background) ─────────
   async function uploadPhoto(file: File, path: string): Promise<string> {

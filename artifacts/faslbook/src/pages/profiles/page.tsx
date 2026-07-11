@@ -338,7 +338,7 @@ export default function ProfilesPage() {
       </div>
 
       {/* Filter chips */}
-      <div className="px-4 pt-4 flex gap-2 overflow-x-auto no-scrollbar">
+      <div className="px-4 pt-4 flex gap-2 overflow-x-auto" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
         {filterChips.map((c) => (
           <button key={c.key} onClick={() => setFilter(c.key)}
             className="px-3.5 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all"
