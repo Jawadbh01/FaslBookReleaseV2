@@ -41,6 +41,9 @@ import PrintHubPage from "@/pages/reports/print/page";
 import SeasonsPage from "@/pages/seasons/page";
 import CropCycleDetailPage from "@/pages/crop-cycles/[id]/page";
 import OwnerExpensesPage from "@/pages/owner-expenses/page";
+import KhataPage from "@/pages/khata/page";
+import LabourContractorsPage from "@/pages/labour-contractors/page";
+import LabourContractorProfilePage from "@/pages/labour-contractors/[id]/page";
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -151,6 +154,15 @@ function AnimatedSwitch() {
         </Route>
         <Route path="/owner-expenses">
           {() => <DashboardLayout><OwnerExpensesPage /></DashboardLayout>}
+        </Route>
+        <Route path="/khata">
+          {() => <DashboardLayout><KhataPage /></DashboardLayout>}
+        </Route>
+        <Route path="/labour-contractors">
+          {() => <DashboardLayout><LabourContractorsPage /></DashboardLayout>}
+        </Route>
+        <Route path="/labour-contractors/:id">
+          {() => <DashboardLayout><LabourContractorProfilePage /></DashboardLayout>}
         </Route>
         <Route path="/reports/print">
           {() => <DashboardLayout><PrintHubPage /></DashboardLayout>}

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { House, BookOpen, Warehouse, Handshake, Crown } from "lucide-react";
+import { House, BookOpen, Warehouse, Handshake, Users } from "lucide-react";
 import { useLangStore } from "@/store/langStore";
 import { useCallback } from "react";
 
@@ -15,11 +15,11 @@ export default function BottomNav() {
   const { t }      = useLangStore();
 
   const navItems = [
-    { href: "/overview",        labelKey: "home",   icon: House },
-    { href: "/ledger",          labelKey: "khata",  icon: BookOpen },
-    { href: "/inventory",       labelKey: "godown", icon: Warehouse },
-    { href: "/dealers",         labelKey: "dealer", icon: Handshake },
-    { href: "/owner-expenses",  label: "Farm Khata",  icon: Crown },
+    { href: "/overview",             labelKey: "home",   icon: House },
+    { href: "/khata",                label: "Khata",     icon: BookOpen },
+    { href: "/inventory",            labelKey: "godown", icon: Warehouse },
+    { href: "/dealers",              labelKey: "dealer", icon: Handshake },
+    { href: "/workers",              label: "Team",      icon: Users },
   ];
 
   const handleTap = useCallback(() => haptic(), []);

@@ -19,6 +19,7 @@ import {
   Users, LayoutGrid, Bell, MapPin,
   ChevronRight, Copy, Check, HandCoins, Printer,
   BarChart2, User, Handshake, Warehouse, Map,
+  Crown, HardHat,
 } from "lucide-react";
 import { Link } from "wouter";
 import CloudStatusIcon from "@/components/shared/CloudStatusIcon";
@@ -263,6 +264,22 @@ export default function OverviewPage() {
       color: "#E65100",
       bg: "#FFF3E0",
       href: "/loans",
+    },
+    {
+      label: "Farm Khata",
+      urdu: "کھاتہ",
+      icon: Crown,
+      color: "#1B5E20",
+      bg: "#E8F5E9",
+      href: "/owner-expenses",
+    },
+    {
+      label: "Labour Contractors",
+      urdu: "ٹھیکیدار",
+      icon: HardHat,
+      color: "#6A1B9A",
+      bg: "#F3E5F5",
+      href: "/labour-contractors",
     },
   ];
 

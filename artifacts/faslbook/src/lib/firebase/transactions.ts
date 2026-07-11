@@ -8,7 +8,7 @@
  */
 import {
   collection, query, where, onSnapshot,
-  addDoc, serverTimestamp,
+  addDoc, updateDoc, deleteDoc, doc, serverTimestamp,
 } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase/config";
 import { notifyOfflineSave } from "@/lib/offlineSync";
@@ -44,6 +44,8 @@ export interface Transaction {
   loanName?: string;
   farmerId?: string;
   farmerName?: string;
+  contractorId?: string;
+  contractorName?: string;
   notes?: string;
   receiptUrl?: string;
   proofUrl?: string;
@@ -88,6 +90,22 @@ export async function addTransaction(
 
   const docRef = await addDoc(collection(db, "transactions"), payload);
   return docRef.id;
+}
+
+/** Updates an existing transaction — used when the source record it was auto-generated from changes (e.g. a harvest labour record edit). */
+export async function updateTransaction(
+  id: string,
+  data: Partial<Omit<Transaction, "id" | "createdAt" | "createdBy" | "createdByName">>,
+): Promise<void> {
+  await updateDoc(doc(db, "transactions", id), {
+    ...data,
+    editedAt: serverTimestamp(),
+  });
+}
+
+/** Deletes a transaction — used to remove the auto-generated expense when its source record (e.g. a harvest labour record) is deleted. */
+export async function deleteTransaction(id: string): Promise<void> {
+  await deleteDoc(doc(db, "transactions", id));
 }
 
 /** Sum helper shared by every module that derives a running total from transactions. */
