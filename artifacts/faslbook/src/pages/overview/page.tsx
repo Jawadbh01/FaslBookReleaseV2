@@ -1,9 +1,9 @@
 
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   collection, query, where,
-  onSnapshot, limit,
+  onSnapshot, limit, getDocs,
   doc, getDoc,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/config";
@@ -20,10 +20,43 @@ import {
   ChevronRight, Copy, Check, HandCoins, Printer,
   BarChart2, User, Handshake, Warehouse, Map,
   Crown, HardHat, Contact, BookOpen, Tag, Scale,
+  Search, RefreshCw, X, Droplets, ChevronDown,
 } from "lucide-react";
-import { Link } from "wouter";
+import { Link, useRoute } from "wouter";
 import CloudStatusIcon from "@/components/shared/CloudStatusIcon";
 import NotificationBell from "@/components/shared/NotificationBell";
+
+// ── Weather helpers ──────────────────────────────────────────────
+interface WeatherData { temp: number; code: number; rainPct: number; icon: string; label: string; }
+function wmoToIcon(code: number): string {
+  if (code === 0) return "☀️";
+  if (code <= 2) return "🌤️";
+  if (code === 3) return "☁️";
+  if (code <= 48) return "🌫️";
+  if (code <= 55) return "🌦️";
+  if (code <= 65) return "🌧️";
+  if (code <= 77) return "❄️";
+  if (code <= 82) return "🌦️";
+  return "⛈️";
+}
+function wmoToLabel(code: number): string {
+  if (code === 0) return "Clear Sky";
+  if (code === 1) return "Mostly Clear";
+  if (code === 2) return "Partly Cloudy";
+  if (code === 3) return "Overcast";
+  if (code <= 48) return "Foggy";
+  if (code <= 55) return "Drizzle";
+  if (code <= 65) return "Rain";
+  if (code <= 77) return "Snow";
+  if (code <= 82) return "Rain Showers";
+  return "Thunderstorm";
+}
+
+// ── Search helpers ───────────────────────────────────────────────
+type SearchKind = "farmer" | "parcel" | "dealer" | "transaction" | "inventory" | "worker";
+interface SearchResult { id: string; kind: SearchKind; icon: string; title: string; sub: string; href: string; }
+const KIND_ORDER: SearchKind[] = ["farmer","parcel","dealer","transaction","inventory","worker"];
+const KIND_LABEL: Record<SearchKind, string> = { farmer:"Farmer", parcel:"Parcel", dealer:"Dealer", transaction:"Transaction", inventory:"Stock Item", worker:"Worker" };
 
 // ── Helpers ────────────────────────────────────────────────────
 const fmt = (n: number) => "Rs. " + n.toLocaleString("en-PK");
@@ -78,6 +111,7 @@ export default function OverviewPage() {
   const [pendingRequests, setPendingRequests] = useState(0);
   const [loading, setLoading]             = useState(true);
   const [copied, setCopied]               = useState(false);
+  const [syncing, setSyncing]             = useState(false);
 
   // Overview filter — each active crop cycle is its own option, plus date ranges.
   // FilterKey is either a cropCycle.id string, "last30", or "last60".
@@ -87,6 +121,17 @@ export default function OverviewPage() {
   const [cropCycles, setCropCycles] = useState<CropCycle[]>([]);
   const [currentCropCycle, setCurrentCropCycle] = useState<CropCycle | null>(null);
   const [allTxns, setAllTxns] = useState<Transaction[]>([]);
+
+  // ── Weather ──────────────────────────────────────────────────
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+
+  // ── Global Search ────────────────────────────────────────────
+  const [showSearch, setShowSearch]       = useState(false);
+  const [searchQuery, setSearchQuery]     = useState("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const searchDataRef = useRef<{ workers: any[]; parcels: any[]; dealers: any[]; inventory: any[] } | null>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // ── Fetch user name from Firestore ───────────────────────────
   useEffect(() => {
@@ -153,6 +198,90 @@ export default function OverviewPage() {
 
     return () => unsubs.forEach((u) => u());
   }, [orgId, role]);
+
+  // ── Weather ───────────────────────────────────────────────────
+  useEffect(() => {
+    async function fetchWeather(lat: number, lon: number) {
+      try {
+        const res = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,precipitation_probability&timezone=auto`
+        );
+        const d = await res.json();
+        const temp     = Math.round(d.current.temperature_2m ?? 0);
+        const code     = d.current.weather_code ?? 0;
+        const rainPct  = d.current.precipitation_probability ?? 0;
+        setWeather({ temp, code, rainPct, icon: wmoToIcon(code), label: wmoToLabel(code) });
+      } catch { /* silent */ }
+    }
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => fetchWeather(pos.coords.latitude, pos.coords.longitude),
+        ()    => fetchWeather(31.5204, 74.3587) // Lahore fallback
+      );
+    } else {
+      fetchWeather(31.5204, 74.3587);
+    }
+  }, []);
+
+  // ── Sync handler ──────────────────────────────────────────────
+  const handleSync = async () => {
+    setSyncing(true);
+    // Force re-fetch by reloading the Firebase listeners
+    try { await getCurrentCropCycle(orgId!).then(setCurrentCropCycle); } catch { /* silent */ }
+    setTimeout(() => setSyncing(false), 1200);
+  };
+
+  // ── Global search ─────────────────────────────────────────────
+  const loadSearchData = useCallback(async () => {
+    if (!orgId || searchDataRef.current) return;
+    const q = (col: string) => getDocs(query(collection(db, col), where("organizationId", "==", orgId)));
+    const [wSnap, pSnap, dSnap, iSnap] = await Promise.all([q("workers"), q("parcels"), q("dealers"), q("inventoryItems")]);
+    searchDataRef.current = {
+      workers:   wSnap.docs.map(d => ({ id: d.id, ...d.data() })),
+      parcels:   pSnap.docs.map(d => ({ id: d.id, ...d.data() })),
+      dealers:   dSnap.docs.map(d => ({ id: d.id, ...d.data() })),
+      inventory: iSnap.docs.map(d => ({ id: d.id, ...d.data() })),
+    };
+  }, [orgId]);
+
+  const doSearch = useCallback((q: string) => {
+    if (!q.trim()) { setSearchResults([]); return; }
+    const ql = q.toLowerCase();
+    const results: SearchResult[] = [];
+    const sd = searchDataRef.current;
+    if (sd) {
+      sd.workers.filter((w: any) => (w.name||"").toLowerCase().includes(ql)).slice(0,4).forEach((w: any) => {
+        const isFarmer = w.workerType === "farmer";
+        results.push({ id:w.id, kind: isFarmer ? "farmer" : "worker", icon: isFarmer ? "👨‍🌾" : "👷", title:w.name||"Worker", sub: w.workerType ? w.workerType.charAt(0).toUpperCase()+w.workerType.slice(1) : "", href: isFarmer ? `/workers/farmer/${w.id}` : "/workers" });
+      });
+      sd.parcels.filter((p: any) => (p.name||"").toLowerCase().includes(ql)).slice(0,3).forEach((p: any) =>
+        results.push({ id:p.id, kind:"parcel", icon:"🌾", title:p.name||"Parcel", sub:`${p.acres||0} acres`, href:`/parcels/${p.id}` }));
+      sd.dealers.filter((d: any) => (d.name||"").toLowerCase().includes(ql)).slice(0,3).forEach((d: any) =>
+        results.push({ id:d.id, kind:"dealer", icon:"🤝", title:d.name||"Dealer", sub:d.phone||"", href:`/dealers` }));
+      sd.inventory.filter((i: any) => (i.name||"").toLowerCase().includes(ql)).slice(0,3).forEach((i: any) =>
+        results.push({ id:i.id, kind:"inventory", icon:"📦", title:i.name||"Item", sub:`${i.currentStock||0} ${i.unit||"units"}`, href:"/inventory" }));
+    }
+    // Transactions from already-loaded allTxns
+    allTxns.filter(t => (t.notes||"").toLowerCase().includes(ql) || (t.categoryLabel||"").toLowerCase().includes(ql)).slice(0,4).forEach(t =>
+      results.push({ id:t.id, kind:"transaction", icon: t.type==="income"?"💰":"💸", title:t.categoryLabel||t.type||"Transaction", sub:`Rs. ${Number(t.amount).toLocaleString("en-PK")} • ${t.date||""}`, href:"/ledger" }));
+    setSearchResults(results);
+  }, [allTxns]);
+
+  const openSearch = async () => {
+    setShowSearch(true);
+    setSearchQuery("");
+    setSearchResults([]);
+    setSearchLoading(true);
+    await loadSearchData();
+    setSearchLoading(false);
+    setTimeout(() => searchInputRef.current?.focus(), 100);
+  };
+
+  useEffect(() => {
+    if (!showSearch) return;
+    const t = setTimeout(() => doSearch(searchQuery), 250);
+    return () => clearTimeout(t);
+  }, [searchQuery, showSearch, doSearch]);
 
   // ── Filter → filtered transactions ──────────────────────────────
   const todayStr = new Date().toISOString().split("T")[0];
@@ -347,61 +476,133 @@ export default function OverviewPage() {
     <div className="min-h-screen bg-gray-50 pb-20">
 
       {/* ── Header ───────────────────────────────────────────── */}
-      <div className="px-4 pt-10 pb-4" style={{ backgroundColor: "#1B5E20" }}>
-        <div className="flex items-center justify-between mb-3">
-          {/* Profile — clickable → /profile */}
-          <button
-            onClick={() => window.location.href = "/profile"}
-            className="flex items-center gap-3 active:scale-95 transition-transform"
-          >
-            {user?.photoURL ? (
-              <img
-                src={user.photoURL}
-                alt="profile"
-                className="w-12 h-12 rounded-full border-2 border-white/40 object-cover shrink-0"
-              />
-            ) : (
-              <div className="w-12 h-12 rounded-full border-2 border-white/40 flex items-center justify-center bg-white/20 shrink-0">
-                <span className="text-white font-bold text-sm">{initials}</span>
-              </div>
-            )}
-            <div className="text-left">
-              <p className="text-green-200 text-xs">{t(getGreeting())}</p>
-              <p className="text-white font-bold text-lg leading-tight">
-                {displayName}
-              </p>
-              <p className="text-green-300 text-xs leading-tight">
-                {organization?.name ?? ""}
-                {role ? ` • ${role.charAt(0).toUpperCase() + role.slice(1)}` : ""}
-              </p>
-            </div>
-          </button>
+      <div
+        className="px-4 pt-11 pb-4"
+        style={{ background: "linear-gradient(160deg,#1B5E20 0%,#2E7D32 55%,#388E3C 100%)" }}
+      >
+        {/* Row 1 — greeting left · action icons right */}
+        <div className="flex items-start justify-between mb-3">
+          <div>
+            <p className="text-green-200 text-[11px] font-medium">{t(getGreeting())}</p>
+            <p className="text-white font-bold text-[22px] leading-tight tracking-tight">{displayName}</p>
+            <p className="text-green-300 text-[11px] leading-snug mt-0.5">
+              {organization?.name ?? ""}
+              {role ? ` · ${role.charAt(0).toUpperCase() + role.slice(1)}` : ""}
+            </p>
+          </div>
 
-          {/* Right icons */}
-          <div className="flex items-center gap-2">
+          {/* Icon pill row */}
+          <div className="flex items-center gap-1 mt-1">
+            {/* Sync */}
+            <button
+              onClick={handleSync}
+              title="Sync"
+              className="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-all"
+              style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
+            >
+              <RefreshCw size={16} color="white" className={syncing ? "animate-spin" : ""} />
+            </button>
+
+            {/* Print */}
             <button
               onClick={() => { window.location.href = "/reports/print"; }}
-              className="w-9 h-9 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: "rgba(255,255,255,0.2)" }}
+              title="Print Reports"
+              className="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-all"
+              style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
             >
-              <Printer size={18} color="white" />
+              <Printer size={16} color="white" />
             </button>
+
+            {/* Notification bell */}
+            <div style={{ backgroundColor: "rgba(255,255,255,0.15)", borderRadius: "50%" }}>
+              <NotificationBell organizationId={organization?.id ?? null} />
+            </div>
+
+            {/* Pending approvals badge */}
             {pendingRequests > 0 && (
               <Link href="/approvals">
                 <div className="relative">
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(255,255,255,0.2)" }}>
-                    <Users size={18} color="white" />
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
+                    <Users size={16} color="white" />
                   </div>
-                  <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: "#C62828", fontSize: 10 }}>
+                  <div className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center font-bold text-white"
+                    style={{ backgroundColor: "#C62828", fontSize: 9 }}>
                     {pendingRequests}
                   </div>
                 </div>
               </Link>
             )}
-            <CloudStatusIcon color="white" size={18} />
-            <NotificationBell organizationId={organization?.id ?? null} />
+
+            {/* Profile avatar */}
+            <button
+              onClick={() => { window.location.href = "/profile"; }}
+              title="Profile"
+              className="w-9 h-9 rounded-full overflow-hidden border-2 border-white/30 active:scale-90 transition-all shrink-0"
+            >
+              {user?.photoURL ? (
+                <img src={user.photoURL} alt="profile" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-white/25">
+                  <span className="text-white font-bold text-xs">{initials}</span>
+                </div>
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Row 2 — Weather strip */}
+        {weather ? (
+          <div
+            className="flex items-center gap-3 mb-3 rounded-2xl px-3.5 py-2.5"
+            style={{ backgroundColor: "rgba(0,0,0,0.18)", backdropFilter: "blur(8px)" }}
+          >
+            {/* Big weather icon + temp */}
+            <span style={{ fontSize: 32, lineHeight: 1 }}>{weather.icon}</span>
+            <div>
+              <p className="text-white font-bold text-2xl leading-none">{weather.temp}°C</p>
+              <p className="text-green-200 text-[11px] mt-0.5">{weather.label}</p>
+            </div>
+
+            {/* Divider */}
+            <div className="h-8 w-px mx-1" style={{ backgroundColor: "rgba(255,255,255,0.2)" }} />
+
+            {/* Rain + Cloud */}
+            <div className="flex-1 flex items-center gap-4">
+              <div className="flex flex-col items-center">
+                <div className="flex items-center gap-1">
+                  <Droplets size={13} color="#86EFAC" />
+                  <span className="text-white font-bold text-sm">{weather.rainPct}%</span>
+                </div>
+                <span className="text-green-300 text-[10px]">Rain Chance</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <CloudStatusIcon color="white" size={16} />
+                <span className="text-green-300 text-[10px] mt-0.5">Sync</span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* Slim skeleton while weather loads */
+          <div className="mb-3 rounded-2xl px-3.5 py-2.5 flex items-center gap-2"
+            style={{ backgroundColor: "rgba(0,0,0,0.15)" }}>
+            <div className="w-8 h-8 rounded-full bg-white/10 animate-pulse" />
+            <div className="flex-1 space-y-1.5">
+              <div className="h-4 w-20 rounded bg-white/10 animate-pulse" />
+              <div className="h-3 w-28 rounded bg-white/10 animate-pulse" />
+            </div>
+          </div>
+        )}
+
+        {/* Row 3 — Global search bar */}
+        <button
+          onClick={openSearch}
+          className="w-full flex items-center gap-2.5 rounded-2xl px-4 py-3 text-left active:scale-98 transition-transform"
+          style={{ backgroundColor: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.18)" }}
+        >
+          <Search size={16} color="rgba(255,255,255,0.65)" />
+          <span className="text-white/55 text-sm flex-1">Search farmers, parcels, transactions…</span>
+          <kbd className="hidden sm:block text-[10px] font-semibold text-white/30 border border-white/20 px-1.5 py-0.5 rounded">⌘K</kbd>
+        </button>
       </div>
 
       {/* ── Summary Cards ─────────────────────────────────────── */}
@@ -641,6 +842,129 @@ export default function OverviewPage() {
           )}
         </div>
       </div>
+
+      {/* ── Global Search Modal ───────────────────────────────── */}
+      {showSearch && (
+        <div
+          className="fixed inset-0 z-50 flex flex-col"
+          style={{ backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)" }}
+        >
+          {/* Search header */}
+          <div
+            className="px-4 pt-12 pb-3"
+            style={{ background: "linear-gradient(160deg,#1B5E20 0%,#2E7D32 100%)" }}
+          >
+            <div className="flex items-center gap-2">
+              <div
+                className="flex-1 flex items-center gap-2.5 rounded-2xl px-4 py-3"
+                style={{ backgroundColor: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.25)" }}
+              >
+                <Search size={16} color="rgba(255,255,255,0.8)" />
+                <input
+                  ref={searchInputRef}
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  placeholder="Search farmers, parcels, transactions…"
+                  className="flex-1 bg-transparent text-white placeholder-white/50 text-sm outline-none"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                />
+                {searchQuery && (
+                  <button onClick={() => setSearchQuery("")}>
+                    <X size={15} color="rgba(255,255,255,0.6)" />
+                  </button>
+                )}
+              </div>
+              <button
+                onClick={() => setShowSearch(false)}
+                className="text-white/80 text-sm font-medium px-2 py-2 active:scale-95 transition-transform"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          {/* Results */}
+          <div className="flex-1 overflow-y-auto bg-gray-50">
+            {searchLoading && (
+              <div className="flex items-center justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-3 border-gray-200" style={{ borderTopColor: "#1B5E20", borderWidth: 3 }} />
+              </div>
+            )}
+
+            {!searchLoading && !searchQuery && (
+              <div className="px-4 pt-5 pb-4">
+                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-3">Quick Access</p>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { icon:"👨‍🌾", label:"Farmers",      href:"/workers?type=farmer" },
+                    { icon:"🌾", label:"Parcels",       href:"/parcels" },
+                    { icon:"📒", label:"Ledger",        href:"/ledger" },
+                    { icon:"🤝", label:"Dealers",       href:"/dealers" },
+                    { icon:"📦", label:"Godown",        href:"/inventory" },
+                    { icon:"📊", label:"Reports",       href:"/reports" },
+                    { icon:"📋", label:"Khata",         href:"/khata" },
+                    { icon:"👷", label:"Workers",       href:"/workers" },
+                    { icon:"🖨️", label:"Print",         href:"/reports/print" },
+                  ].map(item => (
+                    <Link key={item.href} href={item.href} onClick={() => setShowSearch(false)}>
+                      <div className="flex flex-col items-center justify-center gap-1.5 bg-white rounded-2xl py-3 shadow-sm active:scale-95 transition-transform">
+                        <span style={{ fontSize: 22 }}>{item.icon}</span>
+                        <span className="text-xs font-semibold text-gray-700">{item.label}</span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {!searchLoading && searchQuery && searchResults.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-16 text-center px-6">
+                <span style={{ fontSize: 40 }}>🔍</span>
+                <p className="mt-3 text-gray-600 font-semibold">No results for "{searchQuery}"</p>
+                <p className="text-xs text-gray-400 mt-1">Try a farmer name, parcel, item or amount</p>
+              </div>
+            )}
+
+            {!searchLoading && searchResults.length > 0 && (() => {
+              const grouped: Partial<Record<SearchKind, SearchResult[]>> = {};
+              searchResults.forEach(r => { (grouped[r.kind] ??= []).push(r); });
+              return (
+                <div className="px-4 pt-4 pb-6 flex flex-col gap-4">
+                  {KIND_ORDER.filter(k => grouped[k]?.length).map(kind => (
+                    <div key={kind}>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2">{KIND_LABEL[kind]}</p>
+                      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+                        {grouped[kind]!.map((r, i) => (
+                          <Link key={r.id} href={r.href} onClick={() => setShowSearch(false)}>
+                            <div
+                              className="flex items-center gap-3 px-4 py-3 active:bg-gray-50 transition-colors"
+                              style={{ borderTop: i > 0 ? "1px solid #F3F4F6" : "none" }}
+                            >
+                              <span
+                                className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0"
+                                style={{ backgroundColor: "#F0FDF4" }}
+                              >
+                                {r.icon}
+                              </span>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-semibold text-gray-800 text-sm truncate">{r.title}</p>
+                                {r.sub && <p className="text-xs text-gray-400 truncate">{r.sub}</p>}
+                              </div>
+                              <ChevronRight size={14} color="#9CA3AF" />
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+      )}
 
     </div>
   );
