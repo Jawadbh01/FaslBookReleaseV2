@@ -528,7 +528,7 @@ export default function LedgerPage() {
           <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
             style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
             <span className="text-sm font-medium" style={{ color: "#E65100" }}>No crop cycle found</span>
-            <Link href="/crops"
+            <Link href="/seasons"
               className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
               style={{ backgroundColor: "#E65100" }}>
               Add Crop Cycle →
@@ -760,7 +760,7 @@ export default function LedgerPage() {
           <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
             style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
             <span className="text-sm font-medium" style={{ color: "#E65100" }}>No crop cycle found</span>
-            <Link href="/crops"
+            <Link href="/seasons"
               className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
               style={{ backgroundColor: "#E65100" }}>
               Add Crop Cycle →
