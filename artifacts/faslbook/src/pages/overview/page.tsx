@@ -718,6 +718,7 @@ export default function OverviewPage() {
         <SetupProgressCard
           state={onboarding}
           onContinue={() => setShowSetupFlow(true)}
+          onDismiss={() => updateOnboarding({ completed: true })}
         />
       )}
 

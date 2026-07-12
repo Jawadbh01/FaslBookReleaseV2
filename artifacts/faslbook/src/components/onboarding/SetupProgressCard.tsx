@@ -6,9 +6,10 @@ const GREEN = "#1B5E20";
 interface Props {
   state: OnboardingState;
   onContinue: () => void;
+  onDismiss: () => void;
 }
 
-export default function SetupProgressCard({ state, onContinue }: Props) {
+export default function SetupProgressCard({ state, onContinue, onDismiss }: Props) {
   if (state.completed) return null;
 
   const steps = [
@@ -54,7 +55,7 @@ export default function SetupProgressCard({ state, onContinue }: Props) {
       </div>
 
       {/* Step chips */}
-      <div className="flex gap-2 px-4 pb-3.5 pt-1 flex-wrap">
+      <div className="flex gap-2 px-4 pt-1 flex-wrap">
         {steps.map(({ label, done }) => (
           <div
             key={label}
@@ -72,6 +73,17 @@ export default function SetupProgressCard({ state, onContinue }: Props) {
             {label}
           </div>
         ))}
+      </div>
+
+      {/* Mark Complete */}
+      <div className="px-4 pt-2.5 pb-3.5">
+        <button
+          onClick={onDismiss}
+          className="w-full py-2 rounded-xl text-xs font-semibold border active:scale-95 transition-transform"
+          style={{ borderColor: "#A5D6A7", color: GREEN, backgroundColor: "white" }}
+        >
+          ✓ Mark Complete &amp; Use App
+        </button>
       </div>
     </div>
   );
