@@ -25,6 +25,10 @@ import {
 import { Link, useRoute } from "wouter";
 import CloudStatusIcon from "@/components/shared/CloudStatusIcon";
 import NotificationBell from "@/components/shared/NotificationBell";
+import WelcomeModal from "@/components/onboarding/WelcomeModal";
+import SetupFlow from "@/components/onboarding/SetupFlow";
+import SetupProgressCard from "@/components/onboarding/SetupProgressCard";
+import { useOnboarding } from "@/hooks/useOnboarding";
 
 // ── Weather helpers ──────────────────────────────────────────────
 interface WeatherData { temp: number; code: number; rainPct: number; icon: string; label: string; }
@@ -119,6 +123,8 @@ export default function OverviewPage() {
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [showAllActions, setShowAllActions] = useState(false);
   const [showAllActivity, setShowAllActivity] = useState(false);
+  const [showSetupFlow, setShowSetupFlow] = useState(false);
+  const { state: onboarding, loading: onboardingLoading, update: updateOnboarding } = useOnboarding();
   const [cropCycles, setCropCycles] = useState<CropCycle[]>([]);
   const [currentCropCycle, setCurrentCropCycle] = useState<CropCycle | null>(null);
   const [allTxns, setAllTxns] = useState<Transaction[]>([]);
@@ -480,6 +486,7 @@ export default function OverviewPage() {
   }
 
   return (
+    <>
     <div className="min-h-screen bg-gray-50 pb-20">
 
       {/* ── Header ───────────────────────────────────────────── */}
@@ -705,6 +712,14 @@ export default function OverviewPage() {
           </div>
         </div>
       </div>
+
+      {/* ── Setup Progress Card ───────────────────────────────── */}
+      {onboarding && !onboardingLoading && onboarding.welcomed && !onboarding.completed && (
+        <SetupProgressCard
+          state={onboarding}
+          onContinue={() => setShowSetupFlow(true)}
+        />
+      )}
 
       {/* ── Quick Actions ─────────────────────────────────────── */}
       <div className="px-4 mt-4">
@@ -1002,5 +1017,28 @@ export default function OverviewPage() {
       )}
 
     </div>
+
+    {/* ── First-Time Welcome Modal ──────────────────────────── */}
+    {onboarding && !onboardingLoading && !onboarding.welcomed && (
+      <WelcomeModal
+        onContinue={async () => {
+          await updateOnboarding({ welcomed: true });
+          setShowSetupFlow(true);
+        }}
+        onSkip={async () => {
+          await updateOnboarding({ welcomed: true, skipped: true });
+        }}
+      />
+    )}
+
+    {/* ── Setup Flow (full-screen) ──────────────────────────── */}
+    {showSetupFlow && onboarding && (
+      <SetupFlow
+        onboardingState={onboarding}
+        onUpdate={updateOnboarding}
+        onClose={() => setShowSetupFlow(false)}
+      />
+    )}
+    </>
   );
 }
