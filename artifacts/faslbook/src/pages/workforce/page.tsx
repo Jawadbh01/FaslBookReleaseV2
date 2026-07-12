@@ -303,13 +303,7 @@ export default function WorkforcePage() {
             </div>
           ) : (
             <>
-              {canEdit && (
-                <button onClick={openAdd}
-                  className="flex items-center justify-center gap-2 w-full py-3 rounded-2xl border-2 font-semibold text-sm active:scale-95 transition-transform mb-3"
-                  style={{ borderColor: GREEN, color: GREEN, borderStyle: "dashed" }}>
-                  <Plus size={18} /> Add Employee
-                </button>
-              )}
+    
 
               {displayed.length === 0 ? (
                 <div className="flex flex-col items-center justify-center pt-12 text-center">
@@ -401,6 +395,16 @@ export default function WorkforcePage() {
           )}
         </div>
       </div>
+
+      {/* ── FAB ── */}
+      {canEdit && (
+        <button
+          onClick={openAdd}
+          className="fixed bottom-24 right-5 w-14 h-14 rounded-full shadow-xl flex items-center justify-center active:scale-95 transition-transform z-40"
+          style={{ backgroundColor: GREEN }}>
+          <Plus size={26} color="white" />
+        </button>
+      )}
 
       {/* ── Add / Edit Employee Modal ── */}
       {isModal && (

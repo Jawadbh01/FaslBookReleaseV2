@@ -29,6 +29,7 @@ import WorkforcePage from "@/pages/workforce/page";
 import WorkforceProfilePage from "@/pages/workforce/[id]/page";
 import WorkforceAttendancePage from "@/pages/workforce/attendance/page";
 import WorkforceAttendanceHistoryPage from "@/pages/workforce/attendance/history/page";
+import WorkforceEmployeePrintPage from "@/pages/workforce/[id]/print/page";
 import ParcelsPage from "@/pages/parcels/page";
 import ExpensesPage from "@/pages/expenses/page";
 import IncomePage from "@/pages/income/page";
@@ -124,6 +125,9 @@ function AnimatedSwitch() {
         </Route>
         <Route path="/workforce/attendance">
           {() => <DashboardLayout><WorkforceAttendancePage /></DashboardLayout>}
+        </Route>
+        <Route path="/workforce/:id/print">
+          {() => <DashboardLayout><WorkforceEmployeePrintPage /></DashboardLayout>}
         </Route>
         <Route path="/workforce/:id">
           {() => <DashboardLayout><WorkforceProfilePage /></DashboardLayout>}

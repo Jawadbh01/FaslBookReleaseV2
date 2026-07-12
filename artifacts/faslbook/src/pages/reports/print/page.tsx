@@ -73,7 +73,6 @@ const REPORTS = [
   { key:"summary", label:"Farm Summary",              icon:"🏡", desc:"One-page executive overview" },
   { key:"godown",  label:"Godown Register",           icon:"🏭", desc:"Warehouse inventory and stock movements" },
   { key:"cropCycle", label:"Crop Cycle Report",       icon:"🌱", desc:"Income, expenses & profit per crop cycle" },
-  { key:"workers",   label:"Workers Report",            icon:"👷", desc:"Attendance and wages for daily/monthly staff" },
   { key:"workforce", label:"Workforce Report",          icon:"🏗️", desc:"Internal employees — attendance & earnings" },
   { key:"parcel",  label:"Parcel Report",             icon:"🗺️", desc:"Crops, expenses and profit per parcel" },
 ];

@@ -8,7 +8,7 @@ import { db, auth } from "@/lib/firebase/config";
 import { useAuthStore } from "@/store/authStore";
 import { addTransaction } from "@/lib/firebase/transactions";
 import { subscribeCropCycles, type CropCycle } from "@/lib/firebase/cropCycles";
-import { ChevronLeft, ChevronRight, Loader2, X, Phone, MapPin, Calendar, DollarSign, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, X, Phone, MapPin, Calendar, DollarSign, User, Printer } from "lucide-react";
 import { notifyOfflineSave } from "@/lib/offlineSync";
 
 import type { Employee, EmployeeType, SalaryType } from "@/pages/workforce/page";
@@ -276,6 +276,12 @@ export default function WorkforceProfilePage() {
               </span>
             </div>
           </div>
+          <button
+            onClick={() => window.location.href = `/workforce/${id}/print`}
+            className="w-9 h-9 rounded-full flex items-center justify-center active:scale-95 shrink-0"
+            style={{ backgroundColor: "rgba(255,255,255,0.18)" }}>
+            <Printer size={17} color="white" />
+          </button>
         </div>
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl bg-white/20">
