@@ -825,9 +825,8 @@ export default function OverviewPage() {
               <p className="text-gray-400 text-xs mt-1">{t("no_activity_sub")}</p>
             </div>
           ) : (() => {
-            const cutoff24h = Date.now() - 24 * 60 * 60 * 1000;
             const visibleItems = showAllActivity
-              ? recentActivity.filter((a: any) => (a.createdAt?.toMillis?.() ?? 0) >= cutoff24h)
+              ? recentActivity
               : recentActivity.slice(0, 5);
             const hasMore = !showAllActivity && recentActivity.length > 5;
             return (
@@ -876,7 +875,7 @@ export default function OverviewPage() {
                     style={{ color: "#1B5E20", borderTop: "1px solid #F5F5F5" }}
                   >
                     <ChevronDown size={15} />
-                    Show more · past 24 hours
+                    Show more
                   </button>
                 )}
                 {showAllActivity && (
