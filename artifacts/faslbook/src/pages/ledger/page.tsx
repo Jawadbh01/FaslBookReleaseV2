@@ -617,18 +617,11 @@ export default function LedgerPage() {
 
         {/* Upload Proof */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Upload Proof</label>
-        <input type="file" accept="image/*" id="incomeProofInput" className="hidden" onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) { setIncomeProofFile(file); setIncomeProofPreview(URL.createObjectURL(file)); }
-        }} />
-        <label htmlFor="incomeProofInput"
-          className="w-full h-32 border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform overflow-hidden mb-4 block"
-          style={{ backgroundColor: "#FAFAFA" }}>
-          {incomeProofPreview
-            ? <img src={incomeProofPreview} className="w-full h-full object-cover" alt="proof" />
-            : <><Camera size={28} color="#9E9E9E" /><p className="text-gray-500 text-sm mt-2">Tap to upload proof</p><p className="text-gray-400 text-xs">Auto-compressed on upload</p></>
-          }
-        </label>
+        <div className="w-full h-24 border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center mb-4 gap-1" style={{ backgroundColor: "#F9F9F9" }}>
+          <Camera size={22} color="#C0C0C0" />
+          <p className="text-gray-400 text-sm font-medium">Not available right now</p>
+          <p className="text-gray-300 text-xs">Wait for update</p>
+        </div>
 
         {/* Location */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Location (Optional)</label>
@@ -823,18 +816,11 @@ export default function LedgerPage() {
 
         {/* Upload Receipt */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Receipt Photo</label>
-        <input type="file" accept="image/*" id="receiptInput" className="hidden" onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) { setReceiptFile(file); setReceiptPreview(URL.createObjectURL(file)); }
-        }} />
-        <label htmlFor="receiptInput"
-          className="w-full h-32 border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform overflow-hidden mb-4 block"
-          style={{ backgroundColor: "#FAFAFA" }}>
-          {receiptPreview
-            ? <img src={receiptPreview} className="w-full h-full object-cover" alt="receipt" />
-            : <><Camera size={28} color="#9E9E9E" /><p className="text-gray-500 text-sm mt-2">Tap to upload receipt</p><p className="text-gray-400 text-xs">Auto-compressed on upload</p></>
-          }
-        </label>
+        <div className="w-full h-24 border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center mb-4 gap-1" style={{ backgroundColor: "#F9F9F9" }}>
+          <Camera size={22} color="#C0C0C0" />
+          <p className="text-gray-400 text-sm font-medium">Not available right now</p>
+          <p className="text-gray-300 text-xs">Wait for update</p>
+        </div>
 
         {/* Location */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Location (Optional)</label>

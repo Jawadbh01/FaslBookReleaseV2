@@ -118,6 +118,7 @@ export default function OverviewPage() {
   const [filter, setFilter] = useState<string>("__init__");
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [showAllActions, setShowAllActions] = useState(false);
+  const [showAllActivity, setShowAllActivity] = useState(false);
   const [cropCycles, setCropCycles] = useState<CropCycle[]>([]);
   const [currentCropCycle, setCurrentCropCycle] = useState<CropCycle | null>(null);
   const [allTxns, setAllTxns] = useState<Transaction[]>([]);
@@ -177,7 +178,7 @@ export default function OverviewPage() {
     ));
 
     unsubs.push(onSnapshot(
-      query(collection(db, "activityLogs"), where("organizationId", "==", orgId), limit(8)),
+      query(collection(db, "activityLogs"), where("organizationId", "==", orgId), limit(50)),
       (snap) => {
         const sorted = snap.docs
           .map((d) => ({ id: d.id, ...d.data() }))
@@ -807,45 +808,73 @@ export default function OverviewPage() {
               <p className="text-gray-500 text-sm font-medium">{t("no_activity")}</p>
               <p className="text-gray-400 text-xs mt-1">{t("no_activity_sub")}</p>
             </div>
-          ) : (
-            recentActivity.map((item, i) => {
-              const { icon: AIcon, color, bg, amtColor } = activityMeta(item.action);
-              return (
-                <div
-                  key={item.id}
-                  className="flex items-center gap-3 px-4 py-3"
-                  style={{ borderBottom: i < recentActivity.length - 1 ? "1px solid #F5F5F5" : "none" }}
-                >
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: bg }}>
-                    <AIcon size={16} color={color} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-gray-800 text-sm font-medium truncate">
-                      {(() => {
-                        const a = item.action || "";
-                        if (a.includes("EXPENSE")) return "Expense Added";
-                        if (a.includes("INCOME")) return "Income Added";
-                        if (a.includes("DEALER_PURCHASE")) return "Dealer Purchase";
-                        if (a.includes("DEALER_PAYMENT")) return "Dealer Payment";
-                        if (a.includes("INVENTORY")) return "Inventory Update";
-                        if (a.includes("ATTENDANCE")) return "Attendance Marked";
-                        return item.categoryLabel || item.category || a.replace(/_/g, " ") || "Activity";
-                      })()}
-                    </p>
-                    <p className="text-gray-400 text-xs">{item.userName || "System"}</p>
-                  </div>
-                  <div className="text-right shrink-0">
-                    {item.amount && (
-                      <p className="text-sm font-bold" style={{ color: amtColor }}>
-                        {fmt(item.amount)}
-                      </p>
-                    )}
-                    <p className="text-gray-400 text-xs">{timeAgo(item.createdAt)}</p>
-                  </div>
-                </div>
-              );
-            })
-          )}
+          ) : (() => {
+            const cutoff24h = Date.now() - 24 * 60 * 60 * 1000;
+            const visibleItems = showAllActivity
+              ? recentActivity.filter((a: any) => (a.createdAt?.toMillis?.() ?? 0) >= cutoff24h)
+              : recentActivity.slice(0, 5);
+            const hasMore = !showAllActivity && recentActivity.length > 5;
+            return (
+              <>
+                {visibleItems.map((item, i) => {
+                  const { icon: AIcon, color, bg, amtColor } = activityMeta(item.action);
+                  return (
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-3 px-4 py-3"
+                      style={{ borderBottom: "1px solid #F5F5F5" }}
+                    >
+                      <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: bg }}>
+                        <AIcon size={16} color={color} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-gray-800 text-sm font-medium truncate">
+                          {(() => {
+                            const a = item.action || "";
+                            if (a.includes("EXPENSE")) return "Expense Added";
+                            if (a.includes("INCOME")) return "Income Added";
+                            if (a.includes("DEALER_PURCHASE")) return "Dealer Purchase";
+                            if (a.includes("DEALER_PAYMENT")) return "Dealer Payment";
+                            if (a.includes("INVENTORY")) return "Inventory Update";
+                            if (a.includes("ATTENDANCE")) return "Attendance Marked";
+                            return item.categoryLabel || item.category || a.replace(/_/g, " ") || "Activity";
+                          })()}
+                        </p>
+                        <p className="text-gray-400 text-xs">{item.userName || "System"}</p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        {item.amount && (
+                          <p className="text-sm font-bold" style={{ color: amtColor }}>
+                            {fmt(item.amount)}
+                          </p>
+                        )}
+                        <p className="text-gray-400 text-xs">{timeAgo(item.createdAt)}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+                {hasMore && (
+                  <button
+                    onClick={() => setShowAllActivity(true)}
+                    className="w-full py-3 text-sm font-semibold flex items-center justify-center gap-1.5"
+                    style={{ color: "#1B5E20", borderTop: "1px solid #F5F5F5" }}
+                  >
+                    <ChevronDown size={15} />
+                    Show more · past 24 hours
+                  </button>
+                )}
+                {showAllActivity && (
+                  <button
+                    onClick={() => setShowAllActivity(false)}
+                    className="w-full py-3 text-sm font-semibold flex items-center justify-center gap-1.5"
+                    style={{ color: "#9CA3AF", borderTop: "1px solid #F5F5F5" }}
+                  >
+                    Show less
+                  </button>
+                )}
+              </>
+            );
+          })()}
         </div>
       </div>
 

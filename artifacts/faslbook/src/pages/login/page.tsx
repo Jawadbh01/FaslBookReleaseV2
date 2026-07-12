@@ -199,13 +199,16 @@ export default function LoginPage() {
             <span className="text-gray-800 font-semibold text-[15px]">Continue with Google</span>
           </button>
 
-          <button onClick={() => doAuth(() => signInWithPopup(auth, new FacebookAuthProvider()))}
-            className="flex items-center gap-3 w-full bg-blue-600 rounded-2xl px-4 py-3.5 active:scale-95 transition-transform"
-            style={{ WebkitTapHighlightColor: "transparent" }}>
-            <div className="bg-blue-500 rounded-full p-2 shrink-0">
+          <button disabled
+            className="flex items-center gap-3 w-full rounded-2xl px-4 py-3.5 opacity-40 cursor-not-allowed"
+            style={{ backgroundColor: "#3b5998" }}>
+            <div className="rounded-full p-2 shrink-0" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>
             </div>
-            <span className="text-white font-semibold text-[15px]">Continue with Facebook</span>
+            <div className="flex flex-col items-start">
+              <span className="text-white font-semibold text-[15px]">Continue with Facebook</span>
+              <span className="text-blue-200 text-xs">Not available right now</span>
+            </div>
           </button>
 
           <button disabled
