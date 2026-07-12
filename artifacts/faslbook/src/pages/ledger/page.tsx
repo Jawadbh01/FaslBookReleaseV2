@@ -528,7 +528,7 @@ export default function LedgerPage() {
           <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
             style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
             <span className="text-sm font-medium" style={{ color: "#E65100" }}>No crop cycle found</span>
-            <Link href="/crop-cycles"
+            <Link href="/crops"
               className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
               style={{ backgroundColor: "#E65100" }}>
               Add Crop Cycle →
@@ -570,18 +570,30 @@ export default function LedgerPage() {
 
         {/* Farmer — picks farmer first; parcel auto-fills from their linked parcel */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Farmer</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
-          <select value={incomeForm.farmerId}
-            onChange={(e) => {
-              const fId = e.target.value;
-              const linked = parcels.find((p) => p.assignedFarmer === fId);
-              setIncomeForm({ ...incomeForm, farmerId: fId, parcelId: linked?.id || "" });
-            }}
-            className="w-full outline-none text-gray-800 text-base bg-transparent">
-            <option value="">— Select farmer —</option>
-            {farmers.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
-          </select>
-        </div>
+        {farmers.length === 0 ? (
+          <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
+            style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
+            <span className="text-sm font-medium" style={{ color: "#E65100" }}>No farmers added yet</span>
+            <Link href="/farmers"
+              className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
+              style={{ backgroundColor: "#E65100" }}>
+              Add Farmer →
+            </Link>
+          </div>
+        ) : (
+          <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+            <select value={incomeForm.farmerId}
+              onChange={(e) => {
+                const fId = e.target.value;
+                const linked = parcels.find((p) => p.assignedFarmer === fId);
+                setIncomeForm({ ...incomeForm, farmerId: fId, parcelId: linked?.id || "" });
+              }}
+              className="w-full outline-none text-gray-800 text-base bg-transparent">
+              <option value="">— Select farmer —</option>
+              {farmers.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
+            </select>
+          </div>
+        )}
 
         {/* Parcel — read-only, auto-filled from the selected farmer's linked parcel */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Parcel</label>
@@ -611,6 +623,37 @@ export default function LedgerPage() {
                 style={{ backgroundColor: "#E65100" }}>
                 Link Parcel →
               </Link>
+            </div>
+          );
+        })()}
+
+        {/* Farmer Khata Breakdown — shown when farmer + parcel are fully linked */}
+        {incomeForm.farmerId && (() => {
+          const linkedParcel = parcels.find((p) => p.assignedFarmer === incomeForm.farmerId);
+          if (!linkedParcel) return null;
+          const farmerEntries = entries.filter((e) => e.parcelId === linkedParcel.id);
+          const totalIn  = farmerEntries.filter((e) => e.type === "credit").reduce((s, e) => s + (e.amount || 0), 0);
+          const totalOut = farmerEntries.filter((e) => e.type === "debit").reduce((s, e) => s + (e.amount || 0), 0);
+          const net = totalIn - totalOut;
+          return (
+            <div className="rounded-2xl px-4 py-4 mb-4" style={{ backgroundColor: "#F1F8E9", border: "1.5px solid #A5D6A7" }}>
+              <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: "#2E7D32" }}>📊 Khata Breakdown — {farmers.find(f => f.id === incomeForm.farmerId)?.name}</p>
+              <div className="flex gap-2">
+                <div className="flex-1 bg-white rounded-xl px-2 py-2.5 text-center">
+                  <p className="text-[10px] text-gray-400 mb-1">Total Income</p>
+                  <p className="text-xs font-bold" style={{ color: "#1B5E20" }}>Rs. {totalIn.toLocaleString("en-PK")}</p>
+                </div>
+                <div className="flex-1 bg-white rounded-xl px-2 py-2.5 text-center">
+                  <p className="text-[10px] text-gray-400 mb-1">Total Expense</p>
+                  <p className="text-xs font-bold" style={{ color: "#B71C1C" }}>Rs. {totalOut.toLocaleString("en-PK")}</p>
+                </div>
+                <div className="flex-1 bg-white rounded-xl px-2 py-2.5 text-center">
+                  <p className="text-[10px] text-gray-400 mb-1">Balance</p>
+                  <p className="text-xs font-bold" style={{ color: net >= 0 ? "#1B5E20" : "#B71C1C" }}>
+                    {net >= 0 ? "+" : "−"}Rs. {Math.abs(net).toLocaleString("en-PK")}
+                  </p>
+                </div>
+              </div>
             </div>
           );
         })()}
@@ -717,7 +760,7 @@ export default function LedgerPage() {
           <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
             style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
             <span className="text-sm font-medium" style={{ color: "#E65100" }}>No crop cycle found</span>
-            <Link href="/crop-cycles"
+            <Link href="/crops"
               className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
               style={{ backgroundColor: "#E65100" }}>
               Add Crop Cycle →
@@ -759,18 +802,30 @@ export default function LedgerPage() {
 
         {/* Farmer — picks farmer first; parcel auto-fills from their linked parcel */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Farmer</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
-          <select value={expenseForm.farmerId}
-            onChange={(e) => {
-              const fId = e.target.value;
-              const linked = parcels.find((p) => p.assignedFarmer === fId);
-              setExpenseForm({ ...expenseForm, farmerId: fId, parcelId: linked?.id || "" });
-            }}
-            className="w-full outline-none text-gray-800 text-base bg-transparent">
-            <option value="">— Select farmer —</option>
-            {farmers.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
-          </select>
-        </div>
+        {farmers.length === 0 ? (
+          <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
+            style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
+            <span className="text-sm font-medium" style={{ color: "#E65100" }}>No farmers added yet</span>
+            <Link href="/farmers"
+              className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
+              style={{ backgroundColor: "#E65100" }}>
+              Add Farmer →
+            </Link>
+          </div>
+        ) : (
+          <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+            <select value={expenseForm.farmerId}
+              onChange={(e) => {
+                const fId = e.target.value;
+                const linked = parcels.find((p) => p.assignedFarmer === fId);
+                setExpenseForm({ ...expenseForm, farmerId: fId, parcelId: linked?.id || "" });
+              }}
+              className="w-full outline-none text-gray-800 text-base bg-transparent">
+              <option value="">— Select farmer —</option>
+              {farmers.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
+            </select>
+          </div>
+        )}
 
         {/* Parcel — read-only, auto-filled from the selected farmer's linked parcel */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Parcel</label>
@@ -800,6 +855,37 @@ export default function LedgerPage() {
                 style={{ backgroundColor: "#E65100" }}>
                 Link Parcel →
               </Link>
+            </div>
+          );
+        })()}
+
+        {/* Farmer Khata Breakdown — shown when farmer + parcel are fully linked */}
+        {expenseForm.farmerId && (() => {
+          const linkedParcel = parcels.find((p) => p.assignedFarmer === expenseForm.farmerId);
+          if (!linkedParcel) return null;
+          const farmerEntries = entries.filter((e) => e.parcelId === linkedParcel.id);
+          const totalIn  = farmerEntries.filter((e) => e.type === "credit").reduce((s, e) => s + (e.amount || 0), 0);
+          const totalOut = farmerEntries.filter((e) => e.type === "debit").reduce((s, e) => s + (e.amount || 0), 0);
+          const net = totalIn - totalOut;
+          return (
+            <div className="rounded-2xl px-4 py-4 mb-4" style={{ backgroundColor: "#F1F8E9", border: "1.5px solid #A5D6A7" }}>
+              <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: "#2E7D32" }}>📊 Khata Breakdown — {farmers.find(f => f.id === expenseForm.farmerId)?.name}</p>
+              <div className="flex gap-2">
+                <div className="flex-1 bg-white rounded-xl px-2 py-2.5 text-center">
+                  <p className="text-[10px] text-gray-400 mb-1">Total Income</p>
+                  <p className="text-xs font-bold" style={{ color: "#1B5E20" }}>Rs. {totalIn.toLocaleString("en-PK")}</p>
+                </div>
+                <div className="flex-1 bg-white rounded-xl px-2 py-2.5 text-center">
+                  <p className="text-[10px] text-gray-400 mb-1">Total Expense</p>
+                  <p className="text-xs font-bold" style={{ color: "#B71C1C" }}>Rs. {totalOut.toLocaleString("en-PK")}</p>
+                </div>
+                <div className="flex-1 bg-white rounded-xl px-2 py-2.5 text-center">
+                  <p className="text-[10px] text-gray-400 mb-1">Balance</p>
+                  <p className="text-xs font-bold" style={{ color: net >= 0 ? "#1B5E20" : "#B71C1C" }}>
+                    {net >= 0 ? "+" : "−"}Rs. {Math.abs(net).toLocaleString("en-PK")}
+                  </p>
+                </div>
+              </div>
             </div>
           );
         })()}
