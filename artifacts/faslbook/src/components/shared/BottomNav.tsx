@@ -19,7 +19,7 @@ export default function BottomNav() {
     { href: "/khata",                label: "Khata",     icon: BookOpen },
     { href: "/inventory",            labelKey: "godown", icon: Warehouse },
     { href: "/profiles",             label: "Profiles",  icon: Contact },
-    { href: "/workers",              label: "Team",      icon: Users },
+    { href: "/workforce",            label: "Workforce", icon: Users },
   ];
 
   const handleTap = useCallback(() => haptic(), []);

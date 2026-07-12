@@ -13,6 +13,7 @@ import CropCycleReportTemplate     from "./CropCycleReportTemplate";
 import FarmSummaryTemplate         from "./FarmSummaryTemplate";
 import DealerReportTemplate        from "./DealerReportTemplate";
 import WorkersReportTemplate       from "./WorkersReportTemplate";
+import WorkforceReportTemplate     from "./WorkforceReportTemplate";
 import OwnerExpensesTemplate       from "./OwnerExpensesTemplate";
 import CustomKhataTemplate         from "./CustomKhataTemplate";
 import LabourContractorTemplate    from "./LabourContractorTemplate";
@@ -72,7 +73,8 @@ const REPORTS = [
   { key:"summary", label:"Farm Summary",              icon:"🏡", desc:"One-page executive overview" },
   { key:"godown",  label:"Godown Register",           icon:"🏭", desc:"Warehouse inventory and stock movements" },
   { key:"cropCycle", label:"Crop Cycle Report",       icon:"🌱", desc:"Income, expenses & profit per crop cycle" },
-  { key:"workers", label:"Workers Report",            icon:"👷", desc:"Attendance and wages for daily/monthly staff" },
+  { key:"workers",   label:"Workers Report",            icon:"👷", desc:"Attendance and wages for daily/monthly staff" },
+  { key:"workforce", label:"Workforce Report",          icon:"🏗️", desc:"Internal employees — attendance & earnings" },
   { key:"parcel",  label:"Parcel Report",             icon:"🗺️", desc:"Crops, expenses and profit per parcel" },
 ];
 
@@ -133,6 +135,8 @@ export default function PrintHubPage() {
   const [summaryData,    setSummaryData]    = useState<any>(null);
   const [reportWorkers,  setReportWorkers]  = useState<any[]>([]);
   const [reportAttendance, setReportAttendance] = useState<any[]>([]);
+  const [reportEmployees, setReportEmployees] = useState<any[]>([]);
+  const [reportWorkforceAtt, setReportWorkforceAtt] = useState<any[]>([]);
   const [ownerExpenses,  setOwnerExpenses]  = useState<any[]>([]);
   const [customKhataTxns, setCustomKhataTxns] = useState<any[]>([]);
   const [labourRecords,  setLabourRecords]  = useState<any[]>([]);
@@ -352,6 +356,28 @@ export default function PrintHubPage() {
           break;
         }
 
+        // ── Workforce Report ──────────────────────────────────────
+        case "workforce": {
+          const [allEmployees, allAtt] = await Promise.all([
+            getOrgDocs("employees", orgId),
+            getOrgDocs("attendance", orgId),
+          ]);
+          const empIds = new Set(allEmployees.map((e: any) => e.id));
+          const staff = allEmployees.map((e: any) => ({
+            id: e.id, name: e.name || "Unnamed", phone: e.phone || "",
+            employeeType: e.employeeType || "worker", customTypeName: e.customTypeName || "",
+            joinDate: e.joinDate || "", salaryType: e.salaryType || "daily",
+            salary: Number(e.salary) || 0, status: e.status || "active",
+          }));
+          const attRows = allAtt
+            .filter((a: any) => empIds.has(a.workerId))
+            .map((a: any) => ({ workerId: a.workerId || "", date: a.date || "", status: a.status }))
+            .filter((a: any) => (!dateFrom || !a.date || a.date >= dateFrom) && (!dateTo || !a.date || a.date <= dateTo));
+          setReportEmployees(staff);
+          setReportWorkforceAtt(attRows);
+          break;
+        }
+
         // ── Owner Expenses ────────────────────────────────────────
         case "owner": {
           const all = await getOrgDocs("ownerExpenses", orgId);
@@ -476,6 +502,10 @@ export default function PrintHubPage() {
       );
       if (activeReport==="workers") return (
         <WorkersReportTemplate workers={reportWorkers} attendance={reportAttendance} farmName={orgName}
+          printedBy={printedBy} dateFrom={dateFrom} dateTo={dateTo} />
+      );
+      if (activeReport==="workforce") return (
+        <WorkforceReportTemplate employees={reportEmployees} attendance={reportWorkforceAtt} farmName={orgName}
           printedBy={printedBy} dateFrom={dateFrom} dateTo={dateTo} />
       );
       if (activeReport==="owner") return (
@@ -647,7 +677,7 @@ export default function PrintHubPage() {
               </div>
             )}
 
-            {["ledger","cropCycle","godown","dealer","owner","custom","labour"].includes(activeReport) && (
+            {["ledger","cropCycle","godown","dealer","owner","custom","labour","workers","workforce"].includes(activeReport) && (
               <div className="grid grid-cols-2 gap-3">
                 <DateInput label="From" value={dateFrom} onChange={setDateFrom} />
                 <DateInput label="To"   value={dateTo}   onChange={setDateTo} />
