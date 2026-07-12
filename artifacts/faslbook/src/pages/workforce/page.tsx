@@ -209,7 +209,7 @@ export default function WorkforcePage() {
     <>
       <div className="min-h-screen bg-gray-50 pb-28">
         {/* Header */}
-        <div style={{ backgroundColor: GREEN }} className="px-4 pt-12 pb-0">
+        <div style={{ backgroundColor: GREEN }} className="px-4 pt-4 pb-0">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-white text-xl font-bold">Workforce</h1>

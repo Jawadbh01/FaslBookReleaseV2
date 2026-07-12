@@ -129,11 +129,21 @@ export default function NotificationBell({
         )}
       </button>
 
+      {/* Backdrop */}
+      {open && (
+        <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+      )}
+
       {/* Dropdown */}
       {open && (
         <div
-          className="absolute right-0 top-12 w-80 rounded-2xl shadow-xl border border-gray-100 bg-white z-50 overflow-hidden flex flex-col"
-          style={{ maxHeight: "70vh" }}
+          className="fixed z-50 overflow-hidden flex flex-col rounded-2xl shadow-xl border border-gray-100 bg-white"
+          style={{
+            top: ref.current ? ref.current.getBoundingClientRect().bottom + 6 : 60,
+            right: 12,
+            width: "min(320px, calc(100vw - 24px))",
+            maxHeight: "70vh",
+          }}
         >
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-50 shrink-0">

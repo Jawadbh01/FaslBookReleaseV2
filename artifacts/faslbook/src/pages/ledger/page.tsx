@@ -524,23 +524,47 @@ export default function LedgerPage() {
 
         {/* Crop Cycle — required, drives Season auto-fill */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Crop Cycle</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
-          <select value={incomeForm.cropCycleId} onChange={(e) => onIncomeCropCycleChange(e.target.value)}
-            className="w-full outline-none text-gray-800 text-base bg-transparent">
-            <option value="">— Select crop cycle —</option>
-            {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.crop})</option>)}
-          </select>
-        </div>
+        {cropCycles.length === 0 ? (
+          <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
+            style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
+            <span className="text-sm font-medium" style={{ color: "#E65100" }}>No crop cycle found</span>
+            <Link href="/crop-cycles"
+              className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
+              style={{ backgroundColor: "#E65100" }}>
+              Add Crop Cycle →
+            </Link>
+          </div>
+        ) : (
+          <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+            <select value={incomeForm.cropCycleId} onChange={(e) => onIncomeCropCycleChange(e.target.value)}
+              className="w-full outline-none text-gray-800 text-base bg-transparent">
+              <option value="">— Select crop cycle —</option>
+              {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.crop})</option>)}
+            </select>
+          </div>
+        )}
 
         {/* Season — auto-filled from crop cycle, editable */}
         {cropCycles.length > 0 && (
           <>
             <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Season (auto-filled, editable)</label>
-            <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
-              <input type="text" value={incomeForm.seasonId ? (cropCycles.find(c=>c.id===incomeForm.cropCycleId)?.seasonName || "") : ""}
-                readOnly
-                className="w-full outline-none text-gray-500 text-base bg-transparent" placeholder="No season linked" />
-            </div>
+            {incomeForm.cropCycleId && !incomeForm.seasonId ? (
+              <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
+                style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
+                <span className="text-sm font-medium" style={{ color: "#E65100" }}>No season linked to this crop cycle</span>
+                <Link href="/seasons"
+                  className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
+                  style={{ backgroundColor: "#E65100" }}>
+                  Link Season →
+                </Link>
+              </div>
+            ) : (
+              <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+                <input type="text" value={incomeForm.seasonId ? (cropCycles.find(c=>c.id===incomeForm.cropCycleId)?.seasonName || "") : ""}
+                  readOnly
+                  className="w-full outline-none text-gray-500 text-base bg-transparent" placeholder="No season linked" />
+              </div>
+            )}
           </>
         )}
 
@@ -582,7 +606,7 @@ export default function LedgerPage() {
                 <MapPin size={16} color="#E65100" />
                 <span className="text-sm font-medium" style={{ color: "#E65100" }}>No parcel linked to this farmer</span>
               </div>
-              <Link href={`/workers/farmer/${incomeForm.farmerId}`}
+              <Link href="/parcels"
                 className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
                 style={{ backgroundColor: "#E65100" }}>
                 Link Parcel →
@@ -696,23 +720,47 @@ export default function LedgerPage() {
 
         {/* Crop Cycle — required, drives Season auto-fill */}
         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Crop Cycle</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
-          <select value={expenseForm.cropCycleId} onChange={(e) => onExpenseCropCycleChange(e.target.value)}
-            className="w-full outline-none text-gray-800 text-base bg-transparent">
-            <option value="">— Select crop cycle —</option>
-            {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.crop})</option>)}
-          </select>
-        </div>
+        {cropCycles.length === 0 ? (
+          <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
+            style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
+            <span className="text-sm font-medium" style={{ color: "#E65100" }}>No crop cycle found</span>
+            <Link href="/crop-cycles"
+              className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
+              style={{ backgroundColor: "#E65100" }}>
+              Add Crop Cycle →
+            </Link>
+          </div>
+        ) : (
+          <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+            <select value={expenseForm.cropCycleId} onChange={(e) => onExpenseCropCycleChange(e.target.value)}
+              className="w-full outline-none text-gray-800 text-base bg-transparent">
+              <option value="">— Select crop cycle —</option>
+              {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.crop})</option>)}
+            </select>
+          </div>
+        )}
 
         {/* Season — auto-filled from crop cycle, editable */}
         {cropCycles.length > 0 && (
           <>
             <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Season (auto-filled, editable)</label>
-            <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
-              <input type="text" value={expenseForm.seasonId ? (cropCycles.find(c=>c.id===expenseForm.cropCycleId)?.seasonName || "") : ""}
-                readOnly
-                className="w-full outline-none text-gray-500 text-base bg-transparent" placeholder="No season linked" />
-            </div>
+            {expenseForm.cropCycleId && !expenseForm.seasonId ? (
+              <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
+                style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
+                <span className="text-sm font-medium" style={{ color: "#E65100" }}>No season linked to this crop cycle</span>
+                <Link href="/seasons"
+                  className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
+                  style={{ backgroundColor: "#E65100" }}>
+                  Link Season →
+                </Link>
+              </div>
+            ) : (
+              <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+                <input type="text" value={expenseForm.seasonId ? (cropCycles.find(c=>c.id===expenseForm.cropCycleId)?.seasonName || "") : ""}
+                  readOnly
+                  className="w-full outline-none text-gray-500 text-base bg-transparent" placeholder="No season linked" />
+              </div>
+            )}
           </>
         )}
 
@@ -754,7 +802,7 @@ export default function LedgerPage() {
                 <MapPin size={16} color="#E65100" />
                 <span className="text-sm font-medium" style={{ color: "#E65100" }}>No parcel linked to this farmer</span>
               </div>
-              <Link href={`/workers/farmer/${expenseForm.farmerId}`}
+              <Link href="/parcels"
                 className="text-xs font-bold px-3 py-1.5 rounded-xl text-white shrink-0"
                 style={{ backgroundColor: "#E65100" }}>
                 Link Parcel →
