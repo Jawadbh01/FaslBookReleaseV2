@@ -199,27 +199,36 @@ export default function OverviewPage() {
     return () => unsubs.forEach((u) => u());
   }, [orgId, role]);
 
-  // ── Weather ───────────────────────────────────────────────────
+  // ── Weather + Location ────────────────────────────────────────
+  const [locationName, setLocationName] = useState<string>("");
+
   useEffect(() => {
     async function fetchWeather(lat: number, lon: number) {
       try {
-        const res = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,precipitation_probability&timezone=auto`
-        );
-        const d = await res.json();
-        const temp     = Math.round(d.current.temperature_2m ?? 0);
-        const code     = d.current.weather_code ?? 0;
-        const rainPct  = d.current.precipitation_probability ?? 0;
+        const [wRes, gRes] = await Promise.all([
+          fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,precipitation_probability&timezone=auto`),
+          fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`),
+        ]);
+        const d = await wRes.json();
+        const g = await gRes.json();
+        const temp    = Math.round(d.current.temperature_2m ?? 0);
+        const code    = d.current.weather_code ?? 0;
+        const rainPct = d.current.precipitation_probability ?? 0;
         setWeather({ temp, code, rainPct, icon: wmoToIcon(code), label: wmoToLabel(code) });
+        // Pick most useful locality name
+        const addr = g.address ?? {};
+        const city = addr.city || addr.town || addr.village || addr.county || addr.state || "";
+        setLocationName(city);
       } catch { /* silent */ }
     }
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => fetchWeather(pos.coords.latitude, pos.coords.longitude),
-        ()    => fetchWeather(31.5204, 74.3587) // Lahore fallback
+        ()    => { fetchWeather(31.5204, 74.3587); setLocationName("Lahore"); }
       );
     } else {
       fetchWeather(31.5204, 74.3587);
+      setLocationName("Lahore");
     }
   }, []);
 
@@ -477,44 +486,45 @@ export default function OverviewPage() {
 
       {/* ── Header ───────────────────────────────────────────── */}
       <div
-        className="px-4 pt-11 pb-4"
+        className="px-4 pt-10 pb-3"
         style={{ background: "linear-gradient(160deg,#1B5E20 0%,#2E7D32 55%,#388E3C 100%)" }}
       >
-        {/* Row 1 — greeting left · action icons right */}
-        <div className="flex items-start justify-between mb-3">
+        {/* Row 1 — greeting left · icon buttons right */}
+        <div className="flex items-center justify-between mb-2.5">
           <div>
-            <p className="text-green-200 text-[11px] font-medium">{t(getGreeting())}</p>
-            <p className="text-white font-bold text-[22px] leading-tight tracking-tight">{displayName}</p>
-            <p className="text-green-300 text-[11px] leading-snug mt-0.5">
+            <p className="text-green-200 text-[10px] font-medium">{t(getGreeting())}</p>
+            <p className="text-white font-bold text-[18px] leading-tight tracking-tight">{displayName}</p>
+            <p className="text-green-300 text-[10px] leading-snug">
               {organization?.name ?? ""}
               {role ? ` · ${role.charAt(0).toUpperCase() + role.slice(1)}` : ""}
             </p>
           </div>
 
-          {/* Icon pill row */}
-          <div className="flex items-center gap-1 mt-1">
-            {/* Sync */}
+          {/* Icon pills */}
+          <div className="flex items-center gap-1.5">
+            {/* Sync — CloudStatus doubles as sync button */}
             <button
               onClick={handleSync}
-              title="Sync"
-              className="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-all"
+              title="Sync data"
+              className="w-8 h-8 rounded-full flex items-center justify-center active:scale-90 transition-all"
               style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
             >
-              <RefreshCw size={16} color="white" className={syncing ? "animate-spin" : ""} />
+              <CloudStatusIcon color="white" size={15} />
             </button>
 
             {/* Print */}
             <button
               onClick={() => { window.location.href = "/reports/print"; }}
               title="Print Reports"
-              className="w-9 h-9 rounded-full flex items-center justify-center active:scale-90 transition-all"
+              className="w-8 h-8 rounded-full flex items-center justify-center active:scale-90 transition-all"
               style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
             >
-              <Printer size={16} color="white" />
+              <Printer size={15} color="white" />
             </button>
 
             {/* Notification bell */}
-            <div style={{ backgroundColor: "rgba(255,255,255,0.15)", borderRadius: "50%" }}>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
               <NotificationBell organizationId={organization?.id ?? null} />
             </div>
 
@@ -522,11 +532,11 @@ export default function OverviewPage() {
             {pendingRequests > 0 && (
               <Link href="/approvals">
                 <div className="relative">
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
-                    <Users size={16} color="white" />
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
+                    <Users size={15} color="white" />
                   </div>
-                  <div className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center font-bold text-white"
-                    style={{ backgroundColor: "#C62828", fontSize: 9 }}>
+                  <div className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold text-white"
+                    style={{ backgroundColor: "#C62828", fontSize: 8 }}>
                     {pendingRequests}
                   </div>
                 </div>
@@ -537,71 +547,70 @@ export default function OverviewPage() {
             <button
               onClick={() => { window.location.href = "/profile"; }}
               title="Profile"
-              className="w-9 h-9 rounded-full overflow-hidden border-2 border-white/30 active:scale-90 transition-all shrink-0"
+              className="w-8 h-8 rounded-full overflow-hidden border-2 border-white/30 active:scale-90 transition-all shrink-0"
             >
               {user?.photoURL ? (
                 <img src={user.photoURL} alt="profile" className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-white/25">
-                  <span className="text-white font-bold text-xs">{initials}</span>
+                  <span className="text-white font-bold" style={{ fontSize: 10 }}>{initials}</span>
                 </div>
               )}
             </button>
           </div>
         </div>
 
-        {/* Row 2 — Weather strip */}
+        {/* Row 2 — Weather + Location widget */}
         {weather ? (
           <div
-            className="flex items-center gap-3 mb-3 rounded-2xl px-3.5 py-2.5"
-            style={{ backgroundColor: "rgba(0,0,0,0.18)", backdropFilter: "blur(8px)" }}
+            className="flex items-center gap-2.5 mb-2.5 rounded-xl px-3 py-2"
+            style={{ backgroundColor: "rgba(0,0,0,0.18)" }}
           >
-            {/* Big weather icon + temp */}
-            <span style={{ fontSize: 32, lineHeight: 1 }}>{weather.icon}</span>
-            <div>
-              <p className="text-white font-bold text-2xl leading-none">{weather.temp}°C</p>
-              <p className="text-green-200 text-[11px] mt-0.5">{weather.label}</p>
+            {/* Icon + temp */}
+            <span style={{ fontSize: 26, lineHeight: 1 }}>{weather.icon}</span>
+            <div className="flex flex-col leading-none">
+              <span className="text-white font-bold text-lg">{weather.temp}°C</span>
+              <span className="text-green-200 text-[10px] mt-0.5">{weather.label}</span>
             </div>
 
             {/* Divider */}
-            <div className="h-8 w-px mx-1" style={{ backgroundColor: "rgba(255,255,255,0.2)" }} />
+            <div className="h-7 w-px" style={{ backgroundColor: "rgba(255,255,255,0.18)" }} />
 
-            {/* Rain + Cloud */}
-            <div className="flex-1 flex items-center gap-4">
-              <div className="flex flex-col items-center">
-                <div className="flex items-center gap-1">
-                  <Droplets size={13} color="#86EFAC" />
-                  <span className="text-white font-bold text-sm">{weather.rainPct}%</span>
-                </div>
-                <span className="text-green-300 text-[10px]">Rain Chance</span>
-              </div>
-              <div className="flex flex-col items-center">
-                <CloudStatusIcon color="white" size={16} />
-                <span className="text-green-300 text-[10px] mt-0.5">Sync</span>
-              </div>
+            {/* Location */}
+            <div className="flex items-center gap-1 flex-1 min-w-0">
+              <MapPin size={11} color="#86EFAC" className="shrink-0" />
+              <span className="text-green-100 text-[11px] font-medium truncate">
+                {locationName || "Detecting…"}
+              </span>
+            </div>
+
+            {/* Rain chance */}
+            <div className="flex items-center gap-1 shrink-0">
+              <Droplets size={12} color="#93C5FD" />
+              <span className="text-white font-semibold text-[12px]">{weather.rainPct}%</span>
+              <span className="text-blue-200 text-[10px]">Rain</span>
             </div>
           </div>
         ) : (
-          /* Slim skeleton while weather loads */
-          <div className="mb-3 rounded-2xl px-3.5 py-2.5 flex items-center gap-2"
+          <div className="mb-2.5 rounded-xl px-3 py-2 flex items-center gap-2"
             style={{ backgroundColor: "rgba(0,0,0,0.15)" }}>
-            <div className="w-8 h-8 rounded-full bg-white/10 animate-pulse" />
-            <div className="flex-1 space-y-1.5">
-              <div className="h-4 w-20 rounded bg-white/10 animate-pulse" />
-              <div className="h-3 w-28 rounded bg-white/10 animate-pulse" />
+            <div className="w-7 h-7 rounded-full bg-white/10 animate-pulse" />
+            <div className="flex-1 space-y-1">
+              <div className="h-3.5 w-16 rounded bg-white/10 animate-pulse" />
+              <div className="h-2.5 w-24 rounded bg-white/10 animate-pulse" />
             </div>
+            <div className="h-3 w-16 rounded bg-white/10 animate-pulse" />
           </div>
         )}
 
         {/* Row 3 — Global search bar */}
         <button
           onClick={openSearch}
-          className="w-full flex items-center gap-2.5 rounded-2xl px-4 py-3 text-left active:scale-98 transition-transform"
-          style={{ backgroundColor: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.18)" }}
+          className="w-full flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-left active:scale-[0.98] transition-transform"
+          style={{ backgroundColor: "rgba(255,255,255,0.13)", border: "1px solid rgba(255,255,255,0.15)" }}
         >
-          <Search size={16} color="rgba(255,255,255,0.65)" />
-          <span className="text-white/55 text-sm flex-1">Search farmers, parcels, transactions…</span>
-          <kbd className="hidden sm:block text-[10px] font-semibold text-white/30 border border-white/20 px-1.5 py-0.5 rounded">⌘K</kbd>
+          <Search size={14} color="rgba(255,255,255,0.6)" />
+          <span className="text-white/50 text-[13px] flex-1">Search farmers, parcels, transactions…</span>
         </button>
       </div>
 
