@@ -1,40 +1,44 @@
 /**
- * useDarkMode
- * Persists dark/light preference to localStorage and syncs the `dark`
- * class on <html> so Tailwind `dark:` variants activate app-wide.
+ * useDarkMode — Zustand singleton so ANY component that calls this
+ * hook re-renders reactively when dark mode is toggled from any screen.
+ * Persists to localStorage and syncs the `dark` class on <html>.
  */
-import { useEffect, useState } from "react";
+import { create } from "zustand";
 
 const KEY = "faslbook_dark_mode";
 
-function getInitial(): boolean {
-  const stored = localStorage.getItem(KEY);
-  if (stored !== null) return stored === "1";
-  // Fallback: respect OS preference on first visit
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+function readPref(): boolean {
+  try {
+    const stored = localStorage.getItem(KEY);
+    if (stored !== null) return stored === "1";
+    return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+  } catch { return false; }
 }
 
 function applyClass(dark: boolean) {
-  if (dark) {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
-  }
+  document.documentElement.classList.toggle("dark", dark);
 }
 
+interface DarkStore {
+  dark: boolean;
+  toggle: () => void;
+}
+
+const _store = create<DarkStore>((set) => {
+  const initial = readPref();
+  applyClass(initial);
+  return {
+    dark: initial,
+    toggle: () =>
+      set((s) => {
+        const next = !s.dark;
+        try { localStorage.setItem(KEY, next ? "1" : "0"); } catch {}
+        applyClass(next);
+        return { dark: next };
+      }),
+  };
+});
+
 export function useDarkMode() {
-  const [dark, setDark] = useState<boolean>(() => {
-    const v = getInitial();
-    applyClass(v);
-    return v;
-  });
-
-  useEffect(() => {
-    applyClass(dark);
-    localStorage.setItem(KEY, dark ? "1" : "0");
-  }, [dark]);
-
-  const toggle = () => setDark((d) => !d);
-
-  return { dark, toggle, setDark };
+  return _store();
 }
