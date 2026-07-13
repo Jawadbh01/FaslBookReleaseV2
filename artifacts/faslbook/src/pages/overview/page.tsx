@@ -29,6 +29,8 @@ import WelcomeModal from "@/components/onboarding/WelcomeModal";
 import SetupFlow from "@/components/onboarding/SetupFlow";
 import SetupProgressCard from "@/components/onboarding/SetupProgressCard";
 import { useOnboarding } from "@/hooks/useOnboarding";
+import { usePushNotifications } from "@/hooks/usePushNotifications";
+import PushPermissionBanner from "@/components/shared/PushPermissionBanner";
 
 // ── Weather helpers ──────────────────────────────────────────────
 interface WeatherData {
@@ -128,6 +130,17 @@ export default function OverviewPage() {
   const [showAllActivity, setShowAllActivity] = useState(false);
   const [showSetupFlow, setShowSetupFlow] = useState(false);
   const { state: onboarding, loading: onboardingLoading, update: updateOnboarding } = useOnboarding();
+  const { permState, requestPermission, dismissPrompt, hasPrompted } = usePushNotifications(orgId);
+  const [showPushBanner, setShowPushBanner] = useState(false);
+
+  // Show push banner on mobile after 4s if not yet asked
+  useEffect(() => {
+    if (hasPrompted || permState !== "default") return;
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (!isMobile) return;
+    const t = setTimeout(() => setShowPushBanner(true), 4000);
+    return () => clearTimeout(t);
+  }, [hasPrompted, permState]);
   const [cropCycles, setCropCycles] = useState<CropCycle[]>([]);
   const [currentCropCycle, setCurrentCropCycle] = useState<CropCycle | null>(null);
   const [allTxns, setAllTxns] = useState<Transaction[]>([]);
@@ -1073,6 +1086,20 @@ export default function OverviewPage() {
         onboardingState={onboarding}
         onUpdate={updateOnboarding}
         onClose={() => setShowSetupFlow(false)}
+      />
+    )}
+
+    {/* ── Push Notification Permission Banner ───────────────── */}
+    {showPushBanner && permState === "default" && (
+      <PushPermissionBanner
+        onAllow={async () => {
+          setShowPushBanner(false);
+          await requestPermission();
+        }}
+        onDismiss={() => {
+          setShowPushBanner(false);
+          dismissPrompt();
+        }}
       />
     )}
     </>

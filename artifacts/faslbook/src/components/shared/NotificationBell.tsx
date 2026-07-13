@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Bell, X, CheckCheck,
-  Tractor, Package, Wallet, Users, Info,
+  Tractor, Package, Wallet, Users, Info, ChevronRight,
 } from "lucide-react";
 import {
   collection, query, where, orderBy,
@@ -11,6 +11,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/config";
+import { useLocation } from "wouter";
 
 // ── Types ────────────────────────────────────────────────────
 type NotifType = "farm" | "inventory" | "finance" | "team" | string;
@@ -59,6 +60,7 @@ export default function NotificationBell({
   const [notifs, setNotifs]   = useState<Notif[]>([]);
   const [open, setOpen]       = useState(false);
   const ref                   = useRef<HTMLDivElement>(null);
+  const [, navigate]          = useLocation();
 
   // Real-time listener
   useEffect(() => {
@@ -176,7 +178,7 @@ export default function NotificationBell({
           </div>
 
           {/* List */}
-          <div className="overflow-y-auto flex-1">
+          <div className="overflow-y-auto flex-1" style={{ maxHeight: "55vh" }}>
             {notifs.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 gap-2">
                 <Bell size={36} color="#E0E0E0" />
@@ -188,7 +190,11 @@ export default function NotificationBell({
                 return (
                   <button
                     key={n.id}
-                    onClick={() => !n.read && markRead(n.id)}
+                    onClick={async () => {
+                      if (!n.read) await markRead(n.id);
+                      setOpen(false);
+                      navigate("/notifications");
+                    }}
                     className="w-full text-left flex items-start gap-3 px-4 py-3 border-b border-gray-50 transition-colors hover:bg-gray-50 last:border-0"
                     style={{ backgroundColor: n.read ? "white" : "#F1F8E9" }}
                   >
@@ -216,6 +222,15 @@ export default function NotificationBell({
               })
             )}
           </div>
+
+          {/* Footer — View all */}
+          <button
+            onClick={() => { setOpen(false); navigate("/notifications"); }}
+            className="w-full flex items-center justify-center gap-1.5 py-3 text-xs font-semibold border-t border-gray-100 hover:bg-gray-50 transition-colors shrink-0"
+            style={{ color: "#1B5E20" }}
+          >
+            View all notifications <ChevronRight size={13} />
+          </button>
         </div>
       )}
     </div>
