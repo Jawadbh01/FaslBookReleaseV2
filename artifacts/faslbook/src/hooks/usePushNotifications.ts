@@ -18,7 +18,8 @@ import { db } from "@/lib/firebase/config";
 
 type PermState = "default" | "granted" | "denied" | "unsupported";
 
-const PROMPTED_KEY = "faslbook_push_prompted";
+const PROMPTED_KEY  = "faslbook_push_prompted";
+export const NOTIF_PREF_KEY = "faslbook_notif_pref"; // "on" | "off"
 
 export function usePushNotifications(organizationId: string | null | undefined) {
   const [permState, setPermState] = useState<PermState>(() => {
@@ -78,6 +79,7 @@ export function usePushNotifications(organizationId: string | null | undefined) 
     if (!organizationId) return;
     if (typeof Notification === "undefined") return;
     if (Notification.permission !== "granted") return;
+    if (localStorage.getItem(NOTIF_PREF_KEY) === "off") return;
 
     const mountTime = mountTimeRef.current;
 
