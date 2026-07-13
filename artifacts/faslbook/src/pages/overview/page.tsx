@@ -20,7 +20,7 @@ import {
   ChevronRight, Copy, Check, HandCoins, Printer,
   BarChart2, User, Handshake, Warehouse, Map,
   Crown, HardHat, Contact, BookOpen, Tag, Scale,
-  Search, RefreshCw, X, Droplets, ChevronDown,
+  Search, RefreshCw, X, Droplets, ChevronDown, Wind,
 } from "lucide-react";
 import { Link, useRoute } from "wouter";
 import CloudStatusIcon from "@/components/shared/CloudStatusIcon";
@@ -31,7 +31,10 @@ import SetupProgressCard from "@/components/onboarding/SetupProgressCard";
 import { useOnboarding } from "@/hooks/useOnboarding";
 
 // ── Weather helpers ──────────────────────────────────────────────
-interface WeatherData { temp: number; code: number; rainPct: number; icon: string; label: string; }
+interface WeatherData {
+  temp: number; code: number; rainPct: number; icon: string; label: string;
+  humidity: number; windKph: number; feelsLike: number;
+}
 function wmoToIcon(code: number): string {
   if (code === 0) return "☀️";
   if (code <= 2) return "🌤️";
@@ -210,15 +213,20 @@ export default function OverviewPage() {
     async function fetchWeather(lat: number, lon: number) {
       try {
         const [wRes, gRes] = await Promise.all([
-          fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,precipitation_probability&timezone=auto`),
+          fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,relative_humidity_2m,wind_speed_10m,apparent_temperature&hourly=precipitation_probability&timezone=auto&forecast_days=1`),
           fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`),
         ]);
         const d = await wRes.json();
         const g = await gRes.json();
-        const temp    = Math.round(d.current.temperature_2m ?? 0);
-        const code    = d.current.weather_code ?? 0;
-        const rainPct = d.current.precipitation_probability ?? 0;
-        setWeather({ temp, code, rainPct, icon: wmoToIcon(code), label: wmoToLabel(code) });
+        const temp      = Math.round(d.current.temperature_2m ?? 0);
+        const code      = d.current.weather_code ?? 0;
+        const humidity  = Math.round(d.current.relative_humidity_2m ?? 0);
+        const windKph   = Math.round((d.current.wind_speed_10m ?? 0));
+        const feelsLike = Math.round(d.current.apparent_temperature ?? temp);
+        // precipitation_probability is only reliable in hourly; use current hour
+        const currentHour = new Date().getHours();
+        const rainPct = d.hourly?.precipitation_probability?.[currentHour] ?? 0;
+        setWeather({ temp, code, rainPct, icon: wmoToIcon(code), label: wmoToLabel(code), humidity, windKph, feelsLike });
         // Pick most useful locality name
         const addr = g.address ?? {};
         const city = addr.city || addr.town || addr.village || addr.county || addr.state || "";
@@ -565,46 +573,74 @@ export default function OverviewPage() {
           </div>
         </div>
 
-        {/* Row 2 — Weather + Location widget */}
+        {/* Row 2 — Weather widget */}
         {weather ? (
           <div
-            className="flex items-center gap-2.5 mb-2.5 rounded-xl px-3 py-2"
+            className="mb-2.5 rounded-xl px-3 py-2.5"
             style={{ backgroundColor: "rgba(0,0,0,0.18)" }}
           >
-            {/* Icon + temp */}
-            <span style={{ fontSize: 26, lineHeight: 1 }}>{weather.icon}</span>
-            <div className="flex flex-col leading-none">
-              <span className="text-white font-bold text-lg">{weather.temp}°C</span>
-              <span className="text-green-200 text-[10px] mt-0.5">{weather.label}</span>
+            {/* Top row: icon + temp + condition | date */}
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <span style={{ fontSize: 24, lineHeight: 1 }}>{weather.icon}</span>
+                <div className="leading-none">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-white font-bold text-lg">{weather.temp}°C</span>
+                    <span className="text-green-200 text-[10px]">Feels {weather.feelsLike}°</span>
+                  </div>
+                  <span className="text-green-100 text-[11px]">{weather.label}</span>
+                </div>
+              </div>
+              {/* Date + location */}
+              <div className="text-right leading-none">
+                <p className="text-white text-[11px] font-semibold">
+                  {new Date().toLocaleDateString("en-PK", { weekday: "short", day: "numeric", month: "short" })}
+                </p>
+                <div className="flex items-center justify-end gap-0.5 mt-0.5">
+                  <MapPin size={9} color="#86EFAC" />
+                  <span className="text-green-200 text-[10px] truncate max-w-[90px]">
+                    {locationName || "Detecting…"}
+                  </span>
+                </div>
+              </div>
             </div>
-
-            {/* Divider */}
-            <div className="h-7 w-px" style={{ backgroundColor: "rgba(255,255,255,0.18)" }} />
-
-            {/* Location */}
-            <div className="flex items-center gap-1 flex-1 min-w-0">
-              <MapPin size={11} color="#86EFAC" className="shrink-0" />
-              <span className="text-green-100 text-[11px] font-medium truncate">
-                {locationName || "Detecting…"}
-              </span>
-            </div>
-
-            {/* Rain chance */}
-            <div className="flex items-center gap-1 shrink-0">
-              <Droplets size={12} color="#93C5FD" />
-              <span className="text-white font-semibold text-[12px]">{weather.rainPct}%</span>
-              <span className="text-blue-200 text-[10px]">Rain</span>
+            {/* Bottom row: rain / humidity / wind */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                <Droplets size={11} color="#93C5FD" />
+                <span className="text-blue-100 text-[11px] font-semibold">{weather.rainPct}%</span>
+                <span className="text-blue-200 text-[10px]">Rain</span>
+              </div>
+              <div className="w-px h-3" style={{ backgroundColor: "rgba(255,255,255,0.2)" }} />
+              <div className="flex items-center gap-1">
+                <Droplets size={11} color="#6EE7B7" />
+                <span className="text-emerald-100 text-[11px] font-semibold">{weather.humidity}%</span>
+                <span className="text-emerald-200 text-[10px]">Humidity</span>
+              </div>
+              <div className="w-px h-3" style={{ backgroundColor: "rgba(255,255,255,0.2)" }} />
+              <div className="flex items-center gap-1">
+                <Wind size={11} color="#FCD34D" />
+                <span className="text-yellow-100 text-[11px] font-semibold">{weather.windKph}</span>
+                <span className="text-yellow-200 text-[10px]">km/h</span>
+              </div>
             </div>
           </div>
         ) : (
-          <div className="mb-2.5 rounded-xl px-3 py-2 flex items-center gap-2"
+          <div className="mb-2.5 rounded-xl px-3 py-2.5 space-y-2"
             style={{ backgroundColor: "rgba(0,0,0,0.15)" }}>
-            <div className="w-7 h-7 rounded-full bg-white/10 animate-pulse" />
-            <div className="flex-1 space-y-1">
-              <div className="h-3.5 w-16 rounded bg-white/10 animate-pulse" />
-              <div className="h-2.5 w-24 rounded bg-white/10 animate-pulse" />
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-white/10 animate-pulse" />
+              <div className="flex-1 space-y-1">
+                <div className="h-3.5 w-16 rounded bg-white/10 animate-pulse" />
+                <div className="h-2.5 w-24 rounded bg-white/10 animate-pulse" />
+              </div>
+              <div className="h-3 w-20 rounded bg-white/10 animate-pulse" />
             </div>
-            <div className="h-3 w-16 rounded bg-white/10 animate-pulse" />
+            <div className="flex gap-3">
+              <div className="h-2.5 w-12 rounded bg-white/10 animate-pulse" />
+              <div className="h-2.5 w-16 rounded bg-white/10 animate-pulse" />
+              <div className="h-2.5 w-12 rounded bg-white/10 animate-pulse" />
+            </div>
           </div>
         )}
 
