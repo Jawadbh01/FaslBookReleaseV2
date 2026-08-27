@@ -1,2 +1,3 @@
 - [FaslBook architecture](faslbook-arch.md) — React+Vite+Firebase PWA, pnpm monorepo, port 25207, no Farmer login; auto-posted transactions must store/sync a transactionId
 - [Auth onboarding loop fix](auth-loop-fix.md) — two-part fix for /role-select↔/create-farm redirect loop on new signups
+- [Android release build](android-release-build.md) — Capacitor Android wrapper uses Vite’s dist/public output and requires Android SDK 36 plus JDK 21
