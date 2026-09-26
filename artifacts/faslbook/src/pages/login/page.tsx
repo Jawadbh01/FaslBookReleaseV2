@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import {
   signInWithPopup,
+  signInWithCredential,
   GoogleAuthProvider,
   FacebookAuthProvider,
 } from "firebase/auth";
+import { Capacitor } from "@capacitor/core";
+import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import {
   doc, getDoc, setDoc, serverTimestamp,
 } from "firebase/firestore";
@@ -80,6 +83,15 @@ function describeAuthError(err: any): string {
   const domain = typeof window !== "undefined" ? window.location.hostname : "";
   console.error("[FaslBook auth error]", code, err?.message, err);
 
+  if (
+    Capacitor.isNativePlatform() &&
+    (err?.message?.toLowerCase?.().includes("google-services") ||
+      err?.message?.toLowerCase?.().includes("firebaseapp") ||
+      err?.message?.toLowerCase?.().includes("developer_error"))
+  ) {
+    return "Google sign-in needs the FaslBook Android app to be added in Firebase, with its google-services.json and SHA-1 configured. Complete that setup, then rebuild the app.";
+  }
+
   switch (code) {
     case "auth/unauthorized-domain":
       return `This domain (${domain}) isn't authorized for sign-in yet. In the Firebase Console, go to Authentication → Settings → Authorized domains and add "${domain}".`;
@@ -104,6 +116,30 @@ function describeAuthError(err: any): string {
     default:
       return `Login failed (${code}). Please try again.`;
   }
+}
+
+async function signInWithGoogle() {
+  if (!Capacitor.isNativePlatform()) {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+    return signInWithPopup(auth, provider);
+  }
+
+  // The Firebase JS popup opens Chrome from an Android WebView. Use the
+  // native Google flow instead, then exchange its ID token for a JS SDK
+  // credential so Firestore calls continue to use the normal web auth state.
+  const nativeResult = await FirebaseAuthentication.signInWithGoogle();
+  const idToken = nativeResult.credential?.idToken;
+  if (!idToken) {
+    throw new Error(
+      "Native Google sign-in returned no ID token. Confirm the Android app is registered in Firebase and google-services.json is installed."
+    );
+  }
+
+  return signInWithCredential(
+    auth,
+    GoogleAuthProvider.credential(idToken, nativeResult.credential?.accessToken),
+  );
 }
 
 export default function LoginPage() {
@@ -192,7 +228,7 @@ export default function LoginPage() {
         </p>
 
         <div className="flex flex-col gap-3">
-          <button onClick={() => doAuth(() => { const p = new GoogleAuthProvider(); p.setCustomParameters({ prompt: "select_account" }); return signInWithPopup(auth, p); })}
+          <button onClick={() => doAuth(signInWithGoogle)}
             className="flex items-center gap-3 w-full bg-white border border-gray-200 rounded-2xl px-4 py-3.5 shadow-sm active:scale-95 transition-transform"
             style={{ WebkitTapHighlightColor: "transparent" }}>
             <div className="bg-red-50 rounded-full p-2 shrink-0"><Chrome size={20} color="#EA4335" /></div>

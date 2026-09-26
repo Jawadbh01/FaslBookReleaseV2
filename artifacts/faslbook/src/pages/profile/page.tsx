@@ -143,7 +143,7 @@ export default function ProfilePage() {
         notifSnap.docs.forEach((d) => batch.delete(d.ref));
 
         // 3. If owner/landlord — delete the org doc
-        if (role === "landlord" || role === "owner") {
+        if (role === "landlord" || (role as string) === "owner") {
           batch.delete(doc(db, "organizations", orgId));
         }
       }
@@ -492,7 +492,7 @@ export default function ProfilePage() {
                   </h2>
                   <p className="text-sm leading-relaxed" style={{ color: dark ? "#94A3B8" : "#6B7280" }}>
                     This will permanently delete your account, profile, and all notifications.
-                    {(role === "landlord" || role === "owner") && " Your farm organisation record will also be removed."}
+                    {(role === "landlord" || (role as string) === "owner") && " Your farm organisation record will also be removed."}
                     {" "}This cannot be undone.
                   </p>
                 </div>

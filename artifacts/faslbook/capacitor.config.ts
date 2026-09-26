@@ -17,6 +17,12 @@ const config: CapacitorConfig = {
     // build depend on a development server.
     cleartext: false,
   },
+  plugins: {
+    FirebaseAuthentication: {
+      providers: ["google.com"],
+      skipNativeAuth: false,
+    },
+  },
 };
 
 export default config;
