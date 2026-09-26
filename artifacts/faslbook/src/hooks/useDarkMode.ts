@@ -11,7 +11,9 @@ function readPref(): boolean {
   try {
     const stored = localStorage.getItem(KEY);
     if (stored !== null) return stored === "1";
-    return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+    // Light mode is the product default. Dark mode is an explicit preference
+    // controlled from Profile & Settings, never inferred from the device theme.
+    return false;
   } catch { return false; }
 }
 
