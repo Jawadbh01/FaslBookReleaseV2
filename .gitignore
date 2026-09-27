@@ -1,2 +1,28 @@
-# TypeScript build artifacts
+# Build artifacts and compiled outputs
+dist/
+build/
 *.tsbuildinfo
+
+# Dependency directories
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Editor/IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Compressed archives (specifically for project backups/artifacts)
+*.zip

@@ -1,0 +1,93 @@
+import { useLocation } from "wouter";
+import { ChevronLeft } from "lucide-react";
+import { useLangStore } from "@/store/langStore";
+import { useAuthStore } from "@/store/authStore";
+import { useDarkMode } from "@/hooks/useDarkMode";
+import NotificationBell from "@/components/shared/NotificationBell";
+import CloudStatusIcon from "@/components/shared/CloudStatusIcon";
+
+const MAIN_NAV = ["/ledger", "/inventory", "/dealers", "/workers"];
+
+const PAGE_TITLE_KEYS: Record<string, string> = {
+  "/ledger":        "khata",
+  "/inventory":     "godown",
+  "/dealers":       "dealer",
+  "/workers":       "team",
+  "/expenses":      "expense",
+  "/income":        "income",
+  "/loans":         "pending_loans",
+  "/parcels":       "my_land",
+  "/crops":         "crop",
+  "/farmers":       "farmer",
+  "/reports":       "reports",
+  "/approvals":     "approvals",
+  "/notifications": "notifications",
+};
+
+const HIDE_TOPBAR = new Set([
+  "/overview", "/",
+  "/reports/farm", "/reports/farmer", "/reports/worker",
+  "/reports/dealer", "/reports/godown", "/reports/parcel",
+  "/reports/ledger", "/reports/crops",
+]);
+
+export default function TopBar() {
+  const [pathname]   = useLocation();
+  const { t }        = useLangStore();
+  const organization = useAuthStore((s) => s.organization);
+  const orgId        = organization?.id ?? null;
+  const { dark }     = useDarkMode();
+
+  if (
+    HIDE_TOPBAR.has(pathname ?? "") ||
+    (pathname ?? "").startsWith("/overview") ||
+    (pathname ?? "").startsWith("/reports/")
+  ) return null;
+
+  const isMainNav = MAIN_NAV.includes(pathname);
+  const titleKey  = PAGE_TITLE_KEYS[pathname] ?? "";
+  const title     = titleKey ? t(titleKey) : "FaslBook";
+
+  /* ── Main nav pages (Khata, Godown, etc.) — white/dark card header ── */
+  if (isMainNav) {
+    return (
+      <header
+        className="sticky top-0 z-40"
+        style={{
+          backgroundColor: dark ? "#1E293B" : "white",
+          borderBottom: `1px solid ${dark ? "#334155" : "#F3F4F6"}`,
+          boxShadow: dark ? "0 1px 0 #334155" : "0 1px 3px rgba(0,0,0,0.06)",
+        }}
+      >
+        <div className="flex items-center justify-between h-14 px-4">
+          <span className="font-bold text-lg" style={{ color: dark ? "#F1F5F9" : "#1F2937" }}>
+            {title}
+          </span>
+          <div className="flex items-center gap-1">
+            <CloudStatusIcon color={dark ? "#94A3B8" : "#1B5E20"} size={18} />
+            <NotificationBell organizationId={orgId} iconColor={dark ? "#94A3B8" : "#1B5E20"} />
+          </div>
+        </div>
+      </header>
+    );
+  }
+
+  /* ── Sub-pages — always green header (looks great in dark too) ── */
+  return (
+    <header className="sticky top-0 z-40 text-white" style={{ backgroundColor: "#1B5E20" }}>
+      <div className="flex items-center h-14 px-2 gap-1">
+        <button
+          onClick={() => window.history.back()}
+          className="p-2 rounded-full hover:bg-white dark:bg-slate-800/10 active:bg-white dark:bg-slate-800/20 transition-colors"
+          aria-label="Go back"
+          style={{ WebkitTapHighlightColor: "transparent" }}
+        >
+          <ChevronLeft size={24} color="white" />
+        </button>
+        <span className="font-bold text-lg text-white flex-1">{title}</span>
+        <CloudStatusIcon color="white" size={18} />
+        <NotificationBell organizationId={orgId} iconColor="white" />
+      </div>
+    </header>
+  );
+}

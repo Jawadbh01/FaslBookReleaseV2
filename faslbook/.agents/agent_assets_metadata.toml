@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "XJNFlwtWXr1Y5n85Wt-yl"
+uri = "file://artifacts/faslbook/android/app/build/outputs/apk/debug/app-debug.apk"
+type = "unspecified"
+title = "Download FaslBook APK"
+description = "Install this APK directly on an Android phone for testing."
+
+[[outputs]]
+id = "GaEaAFFrmM7YziPfNf9Da"
+uri = "file://artifacts/faslbook/android/app/build/outputs/bundle/release/app-release.aab"
+type = "unspecified"
+title = "Download FaslBook AAB"
+description = "Google Play App Bundle. It must be signed before uploading to Play Console."
