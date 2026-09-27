@@ -275,12 +275,12 @@ export default function GodownPage() {
   // ── SUCCESS SCREEN ─────────────────────────────────────────
   // ══════════════════════════════════════════════════════════
   if (success) return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 text-center">
+    <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col items-center justify-center px-6 text-center">
       <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-lg" style={{ backgroundColor: "#E8F5E9" }}>
         <CheckCircle size={52} color="#1B5E20" />
       </div>
-      <h1 className="text-2xl font-bold text-gray-800 mb-2">{successMsg.title}</h1>
-      <p className="text-gray-500 text-sm mb-10">{successMsg.sub}</p>
+      <h1 className="text-2xl font-bold text-gray-800 dark:text-slate-100 mb-2">{successMsg.title}</h1>
+      <p className="text-gray-500 dark:text-slate-400 text-sm mb-10">{successMsg.sub}</p>
       <button onClick={goBack}
         className="w-full py-4 rounded-2xl text-white font-bold text-base active:scale-95 transition-transform"
         style={{ backgroundColor: "#1B5E20" }}>
@@ -293,7 +293,7 @@ export default function GodownPage() {
   // ── ADD ITEM FORM ──────────────────────────────────════════
   // ══════════════════════════════════════════════════════════
   if (view === "addItem") return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
       <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
         <button onClick={goBack} className="text-white mr-3"><X size={24} /></button>
         <div>
@@ -302,17 +302,17 @@ export default function GodownPage() {
         </div>
       </div>
       <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
-        {formError && <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>}
+        {formError && <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>}
 
-        <label className="text-gray-600 text-sm font-medium mb-2 block">Item Name *</label>
-        <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 focus-within:border-green-700">
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Item Name *</label>
+        <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 focus-within:border-green-700">
           <Package size={20} color="#9E9E9E" className="mr-3 shrink-0" />
           <input type="text" placeholder="e.g. DAP Fertilizer" value={itemForm.name}
             onChange={(e) => setItemForm({ ...itemForm, name: e.target.value })}
-            className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+            className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
         </div>
 
-        <label className="text-gray-600 text-sm font-medium mb-2 block">Category</label>
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Category</label>
         <div className="grid grid-cols-2 gap-2 mb-4">
           {Object.entries(categoryConfig).map(([key, cfg]) => (
             <button key={key} onClick={() => setItemForm({ ...itemForm, category: key })}
@@ -327,29 +327,29 @@ export default function GodownPage() {
           ))}
         </div>
 
-        <label className="text-gray-600 text-sm font-medium mb-2 block">Unit</label>
-        <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 focus-within:border-green-700">
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Unit</label>
+        <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 focus-within:border-green-700">
           <select value={itemForm.unit} onChange={(e) => setItemForm({ ...itemForm, unit: e.target.value })}
-            className="flex-1 outline-none text-gray-800 text-base bg-transparent">
+            className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
             {units.map((u) => <option key={u} value={u}>{u}</option>)}
           </select>
         </div>
 
         <div className="grid grid-cols-2 gap-3 mb-8">
           <div>
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Opening Stock</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Opening Stock</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <input type="number" placeholder="0" value={itemForm.initialStock}
                 onChange={(e) => setItemForm({ ...itemForm, initialStock: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
             </div>
           </div>
           <div>
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Price / Unit (Rs)</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Price / Unit (Rs)</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <input type="number" placeholder="0" value={itemForm.pricePerUnit}
                 onChange={(e) => setItemForm({ ...itemForm, pricePerUnit: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
             </div>
           </div>
         </div>
@@ -367,7 +367,7 @@ export default function GodownPage() {
   // ── STOCK IN FORM ──────────────────────────────════════════
   // ══════════════════════════════════════════════════════════
   if (view === "stockIn" && selected) return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
       <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
         <button onClick={goBack} className="text-white mr-3"><ArrowLeft size={24} /></button>
         <div className="flex-1">
@@ -379,9 +379,9 @@ export default function GodownPage() {
         </div>
       </div>
       <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
-        {formError && <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>}
+        {formError && <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>}
 
-        <label className="text-gray-600 text-sm font-medium mb-3 block">Source</label>
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-3 block">Source</label>
         <div className="flex gap-2 mb-5">
           {stockInSources.map((s) => (
             <button key={s} onClick={() => setInForm({ ...inForm, source: s })}
@@ -394,20 +394,20 @@ export default function GodownPage() {
           ))}
         </div>
 
-        <label className="text-gray-600 text-sm font-medium mb-2 block">Quantity ({selected.unit}) *</label>
-        <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 mb-5 focus-within:border-green-700">
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Quantity ({selected.unit}) *</label>
+        <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-5 focus-within:border-green-700">
           <ArrowDownToLine size={20} color="#9E9E9E" className="mr-3 shrink-0" />
           <input type="number" placeholder="e.g. 100" value={inForm.quantity}
             onChange={(e) => setInForm({ ...inForm, quantity: e.target.value })}
-            className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
-          <span className="text-gray-400 text-sm">{selected.unit}</span>
+            className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
+          <span className="text-gray-400 dark:text-slate-500 text-sm">{selected.unit}</span>
         </div>
 
-        <label className="text-gray-600 text-sm font-medium mb-2 block">Notes (Optional)</label>
-        <div className="border-2 border-gray-200 rounded-2xl px-4 py-3 mb-8 focus-within:border-green-700">
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes (Optional)</label>
+        <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-8 focus-within:border-green-700">
           <textarea placeholder="Supplier name, bill number etc..." value={inForm.notes}
             onChange={(e) => setInForm({ ...inForm, notes: e.target.value })}
-            rows={3} className="w-full outline-none text-gray-800 text-base bg-transparent resize-none" />
+            rows={3} className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none" />
         </div>
 
         <button onClick={handleStockIn} disabled={saving}
@@ -423,7 +423,7 @@ export default function GodownPage() {
   // ── STOCK OUT FORM ─────────────────────────────════════════
   // ══════════════════════════════════════════════════════════
   if (view === "stockOut" && selected) return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
       <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#B71C1C" }}>
         <button onClick={goBack} className="text-white mr-3"><ArrowLeft size={24} /></button>
         <div className="flex-1">
@@ -435,9 +435,9 @@ export default function GodownPage() {
         </div>
       </div>
       <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
-        {formError && <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>}
+        {formError && <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>}
 
-        <label className="text-gray-600 text-sm font-medium mb-3 block">Reason</label>
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-3 block">Reason</label>
         <div className="grid grid-cols-2 gap-2 mb-5">
           {stockOutReasons.map((r) => (
             <button key={r} onClick={() => setOutForm({ ...outForm, reason: r })}
@@ -450,20 +450,20 @@ export default function GodownPage() {
           ))}
         </div>
 
-        <label className="text-gray-600 text-sm font-medium mb-2 block">Quantity ({selected.unit}) *</label>
-        <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 mb-5 focus-within:border-red-700">
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Quantity ({selected.unit}) *</label>
+        <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-5 focus-within:border-red-700">
           <ArrowUpFromLine size={20} color="#9E9E9E" className="mr-3 shrink-0" />
           <input type="number" placeholder={`Max: ${selected.currentStock}`} value={outForm.quantity}
             onChange={(e) => setOutForm({ ...outForm, quantity: e.target.value })}
-            className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
-          <span className="text-gray-400 text-sm">{selected.unit}</span>
+            className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
+          <span className="text-gray-400 dark:text-slate-500 text-sm">{selected.unit}</span>
         </div>
 
-        <label className="text-gray-600 text-sm font-medium mb-2 block">Notes (Optional)</label>
-        <div className="border-2 border-gray-200 rounded-2xl px-4 py-3 mb-8 focus-within:border-red-700">
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes (Optional)</label>
+        <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-8 focus-within:border-red-700">
           <textarea placeholder="Buyer name, bill number etc..." value={outForm.notes}
             onChange={(e) => setOutForm({ ...outForm, notes: e.target.value })}
-            rows={3} className="w-full outline-none text-gray-800 text-base bg-transparent resize-none" />
+            rows={3} className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none" />
         </div>
 
         <button onClick={handleStockOut} disabled={saving}
@@ -479,7 +479,7 @@ export default function GodownPage() {
   // ── FARMER TRANSFER FORM ───────────────────════════════════
   // ══════════════════════════════════════════════════════════
   if (view === "transfer" && selected) return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
       <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
         <button onClick={goBack} className="text-white mr-3"><ArrowLeft size={24} /></button>
         <div>
@@ -488,50 +488,50 @@ export default function GodownPage() {
         </div>
       </div>
       <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
-        {formError && <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>}
+        {formError && <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>}
 
         <div className="rounded-2xl p-4 mb-5 flex items-center gap-3" style={{ backgroundColor: "#E8F5E9" }}>
           <Package size={22} color="#1B5E20" />
           <div>
             <p className="text-green-800 font-semibold text-sm">Godown → Farmer Stock</p>
-            <p className="text-green-700 text-xs">Stock moves automatically with full history</p>
+            <p className="text-green-700 dark:text-green-400 text-xs">Stock moves automatically with full history</p>
           </div>
         </div>
 
-        <label className="text-gray-600 text-sm font-medium mb-2 block">Select Farmer *</label>
-        <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 focus-within:border-green-700">
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Select Farmer *</label>
+        <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 focus-within:border-green-700">
           <Users size={20} color="#9E9E9E" className="mr-3 shrink-0" />
           <select value={txForm.farmerId} onChange={(e) => setTxForm({ ...txForm, farmerId: e.target.value })}
-            className="flex-1 outline-none text-gray-800 text-base bg-transparent">
+            className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
             <option value="">Select farmer</option>
             {farmers.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
           </select>
         </div>
-        {farmers.length === 0 && <p className="text-gray-400 text-xs mb-4 ml-2">No farmers in your organization yet.</p>}
+        {farmers.length === 0 && <p className="text-gray-400 dark:text-slate-500 text-xs mb-4 ml-2">No farmers in your organization yet.</p>}
 
-        <label className="text-gray-600 text-sm font-medium mb-2 block">Quantity ({selected.unit}) *</label>
-        <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 focus-within:border-green-700">
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Quantity ({selected.unit}) *</label>
+        <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 focus-within:border-green-700">
           <ArrowUpFromLine size={20} color="#9E9E9E" className="mr-3 shrink-0" />
           <input type="number" placeholder={`Max: ${selected.currentStock}`} value={txForm.quantity}
             onChange={(e) => setTxForm({ ...txForm, quantity: e.target.value })}
-            className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
-          <span className="text-gray-400 text-sm">{selected.unit}</span>
+            className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
+          <span className="text-gray-400 dark:text-slate-500 text-sm">{selected.unit}</span>
         </div>
 
-        <label className="text-gray-600 text-sm font-medium mb-2 block">Crop Cycle *</label>
-        <div className="border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 focus-within:border-green-700 bg-white">
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Crop Cycle *</label>
+        <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 focus-within:border-green-700 bg-white dark:bg-slate-800">
           <select value={txForm.cropCycleId} onChange={(e) => setTxForm({ ...txForm, cropCycleId: e.target.value })}
-            className="w-full outline-none text-gray-800 text-base bg-transparent">
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
             <option value="">— Select crop cycle —</option>
             {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.crop})</option>)}
           </select>
         </div>
 
-        <label className="text-gray-600 text-sm font-medium mb-2 block">Notes (Optional)</label>
-        <div className="border-2 border-gray-200 rounded-2xl px-4 py-3 mb-8 focus-within:border-green-700">
+        <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes (Optional)</label>
+        <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-8 focus-within:border-green-700">
           <textarea placeholder="Reason, crop name, parcel etc..." value={txForm.notes}
             onChange={(e) => setTxForm({ ...txForm, notes: e.target.value })}
-            rows={3} className="w-full outline-none text-gray-800 text-base bg-transparent resize-none" />
+            rows={3} className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none" />
         </div>
 
         <button onClick={handleTransfer} disabled={saving}
@@ -629,15 +629,15 @@ export default function GodownPage() {
       <div className="px-4 pt-4">
         {loading ? (
           <div className="flex justify-center pt-20">
-            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: "#1B5E20" }} />
+            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: "#1B5E20" }} />
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center pt-20 text-center">
             <div className="text-6xl mb-4">📦</div>
-            <p className="text-gray-600 font-semibold mb-2">
+            <p className="text-gray-600 dark:text-slate-300 font-semibold mb-2">
               {filter === "all" ? "Godown is empty" : `No ${categoryConfig[filter]?.label} items`}
             </p>
-            <p className="text-gray-400 text-sm mb-6">
+            <p className="text-gray-400 dark:text-slate-500 text-sm mb-6">
               {filter === "all" ? "Add your first item to get started" : "Try a different category"}
             </p>
             {canEdit && filter === "all" && (
@@ -655,7 +655,7 @@ export default function GodownPage() {
               const isLow = item.currentStock <= 10;
               const itemValue = item.currentStock * (item.pricePerUnit || 0);
               return (
-                <div key={item.id} className="bg-white rounded-2xl p-4 shadow-sm">
+                <div key={item.id} className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
                   {/* Top row */}
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
@@ -664,7 +664,7 @@ export default function GodownPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2 mb-0.5">
-                        <p className="font-bold text-gray-800 text-base truncate leading-tight">{item.name}</p>
+                        <p className="font-bold text-gray-800 dark:text-slate-100 text-base truncate leading-tight">{item.name}</p>
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0"
                           style={{ backgroundColor: cc.bg, color: cc.color }}>
                           {cc.label}
@@ -674,7 +674,7 @@ export default function GodownPage() {
                         <span className="font-bold text-xl leading-tight" style={{ color: isLow ? "#B71C1C" : "#111827" }}>
                           {item.currentStock}
                         </span>
-                        <span className="text-xs font-medium text-gray-400">{item.unit}</span>
+                        <span className="text-xs font-medium text-gray-400 dark:text-slate-500">{item.unit}</span>
                         {isLow && (
                           <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full"
                             style={{ backgroundColor: "#FFEBEE", color: "#B71C1C" }}>⚠ Low</span>

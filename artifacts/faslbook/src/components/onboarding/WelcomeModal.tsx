@@ -11,7 +11,7 @@ export default function WelcomeModal({ onContinue, onSkip }: Props) {
       className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center"
       style={{ backgroundColor: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)" }}
     >
-      <div className="bg-white rounded-t-3xl sm:rounded-3xl w-full sm:max-w-sm overflow-hidden shadow-2xl">
+      <div className="bg-white dark:bg-slate-800 rounded-t-3xl sm:rounded-3xl w-full sm:max-w-sm overflow-hidden shadow-2xl">
         {/* Green header */}
         <div
           className="px-6 pt-8 pb-6 text-center"
@@ -31,7 +31,7 @@ export default function WelcomeModal({ onContinue, onSkip }: Props) {
         </div>
 
         <div className="px-6 pt-5 pb-8">
-          <p className="text-gray-500 text-sm text-center leading-relaxed mb-5">
+          <p className="text-gray-500 dark:text-slate-400 text-sm text-center leading-relaxed mb-5">
             Let's set up your farm so you can start managing everything easily.
             This only takes a few minutes.
           </p>
@@ -52,8 +52,8 @@ export default function WelcomeModal({ onContinue, onSkip }: Props) {
                   {i + 1}
                 </div>
                 <div>
-                  <p className="text-gray-800 text-sm font-semibold leading-tight">{title}</p>
-                  <p className="text-gray-400 text-xs">{sub}</p>
+                  <p className="text-gray-800 dark:text-slate-100 text-sm font-semibold leading-tight">{title}</p>
+                  <p className="text-gray-400 dark:text-slate-500 text-xs">{sub}</p>
                 </div>
               </div>
             ))}
@@ -68,7 +68,7 @@ export default function WelcomeModal({ onContinue, onSkip }: Props) {
           </button>
           <button
             onClick={onSkip}
-            className="w-full py-3 rounded-2xl text-gray-400 font-medium text-sm active:scale-95 transition-transform"
+            className="w-full py-3 rounded-2xl text-gray-400 dark:text-slate-500 font-medium text-sm active:scale-95 transition-transform"
           >
             Skip for Now
           </button>

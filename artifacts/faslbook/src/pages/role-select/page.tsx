@@ -71,13 +71,13 @@ export default function RoleSelectPage() {
   };
 
   return (
-    <div className="h-full bg-white flex flex-col">
+    <div className="h-full bg-white dark:bg-slate-800 flex flex-col">
       <div className="px-4 pt-12 pb-8" style={{ backgroundColor: "#1B5E20" }}>
         <button onClick={() => window.history.back()} className="text-white mb-4 block">
           <ArrowLeft size={24} />
         </button>
         <div className="flex items-center gap-3">
-          <div className="bg-white rounded-full p-2 shadow">
+          <div className="bg-white dark:bg-slate-800 rounded-full p-2 shadow">
             <Wheat size={28} color="#1B5E20" />
           </div>
           <div>
@@ -92,7 +92,7 @@ export default function RoleSelectPage() {
       </div>
 
       <div className="flex-1 px-6 pt-8 pb-10 overflow-y-auto">
-        <p className="text-gray-500 text-sm text-center mb-8">
+        <p className="text-gray-500 dark:text-slate-400 text-sm text-center mb-8">
           {isGoogleUser
             ? "Choose your role on this farm."
             : "Choose your role to get started with FaslBook"}
@@ -107,7 +107,7 @@ export default function RoleSelectPage() {
                 key={role.id}
                 onClick={() => handleSelect(role.id)}
                 disabled={selecting !== null}
-                className="flex items-center gap-4 w-full rounded-2xl p-5 border-2 border-gray-100 active:scale-95 transition-transform text-left disabled:opacity-60"
+                className="flex items-center gap-4 w-full rounded-2xl p-5 border-2 border-gray-100 dark:border-slate-700/60 active:scale-95 transition-transform text-left disabled:opacity-60"
                 style={{ backgroundColor: "#FAFAFA" }}
               >
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0" style={{ backgroundColor: role.bg }}>
@@ -117,10 +117,10 @@ export default function RoleSelectPage() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-bold text-gray-800 text-lg">{role.title}</span>
+                    <span className="font-bold text-gray-800 dark:text-slate-100 text-lg">{role.title}</span>
                     <span className="text-sm font-medium" style={{ color: role.color }}>{role.urdu}</span>
                   </div>
-                  <p className="text-gray-500 text-sm">{role.description}</p>
+                  <p className="text-gray-500 dark:text-slate-400 text-sm">{role.description}</p>
                 </div>
                 <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: role.bg }}>
                   <span style={{ color: role.color }} className="font-bold">→</span>
@@ -131,7 +131,7 @@ export default function RoleSelectPage() {
         </div>
 
         <div className="mt-8 px-4 py-4 rounded-2xl" style={{ backgroundColor: "#FFF8E1" }}>
-          <p className="text-amber-700 text-xs text-center">
+          <p className="text-amber-700 dark:text-amber-400 text-xs text-center">
             🌾 <strong>Farmers</strong> are added and managed by the Landlord or Manager.
             Farmers do not need to create an account.
           </p>

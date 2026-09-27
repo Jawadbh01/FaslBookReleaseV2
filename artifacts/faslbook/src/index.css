@@ -23,15 +23,12 @@ html, body {
 }
 
 /* ══════════════════════════════════════════════════════════
-   GLOBAL DARK MODE  —  every page, every component
-   Palette:
-     Surface 0 (page bg)  : #0F172A  (slate-950)
-     Surface 1 (card)     : #1E293B  (slate-800)
-     Surface 2 (raised)   : #263548
-     Border               : #334155  (slate-700)
-     Text primary         : #F1F5F9  (slate-100)
-     Text secondary       : #94A3B8  (slate-400)
-     Text muted           : #475569  (slate-600)
+   GLOBAL DARK MODE SAFETY NET
+   Pages use per-element `dark:*` Tailwind classes as the primary
+   mechanism. These rules are a backstop for any element that was
+   written without a dark: variant, and they normalize shadows,
+   inputs, scrollbars and skeletons across every screen.
+   Palette: slate-900 page / slate-800 card / slate-700 border.
    ══════════════════════════════════════════════════════════ */
 
 /* ── Base shell ──────────────────────────────────────────── */
@@ -42,37 +39,34 @@ html.dark #root {
   color: #F1F5F9;
 }
 
-/* ── Backgrounds ─────────────────────────────────────────── */
-html.dark .bg-white         { background-color: #1E293B !important; }
-html.dark .bg-gray-50       { background-color: #0F172A !important; }
-html.dark .bg-gray-100      { background-color: #1A2536 !important; }
-html.dark .bg-gray-200      { background-color: #1E293B !important; }
-html.dark .min-h-screen     { background-color: #0F172A !important; }
-
 /* Scrollable containers used as page wrapper */
 html.dark .scroll-container { background-color: #0F172A; }
 
-/* ── Text ────────────────────────────────────────────────── */
-html.dark .text-gray-900    { color: #F8FAFC !important; }
-html.dark .text-gray-800    { color: #F1F5F9 !important; }
-html.dark .text-gray-700    { color: #CBD5E1 !important; }
-html.dark .text-gray-600    { color: #94A3B8 !important; }
-html.dark .text-gray-500    { color: #64748B !important; }
-html.dark .text-gray-400    { color: #475569 !important; }
-html.dark .text-gray-300    { color: #334155 !important; }
+/* ── Surfaces & text safety net ──────────────────────────── */
+/* Only target elements that do NOT already carry a dark: override,
+   so intentional surfaces (colored chips, icon bubbles, overlays) win. */
+html.dark [class*="bg-white"]:not([class*="dark:bg"])          { background-color: #1E293B !important; }
+html.dark [class*="bg-gray-50"]:not([class*="dark:bg"])        { background-color: #0F172A !important; }
+html.dark [class*="bg-gray-100"]:not([class*="dark:bg"])       { background-color: #1A2536 !important; }
+html.dark [class*="bg-gray-200"]:not([class*="dark:bg"])       { background-color: #1E293B !important; }
+html.dark [class*="min-h-screen"]:not([class*="dark:bg"])      { background-color: #0F172A !important; }
 
-/* ── Borders & dividers ──────────────────────────────────── */
-html.dark .border-gray-50   { border-color: #1E293B !important; }
-html.dark .border-gray-100  { border-color: #334155 !important; }
-html.dark .border-gray-200  { border-color: #334155 !important; }
-html.dark .border-gray-300  { border-color: #475569 !important; }
-html.dark .border-t         { border-color: #334155 !important; }
-html.dark .border-b         { border-color: #334155 !important; }
-html.dark .divide-y > * + *,
-html.dark .divide-gray-100 > * + *,
-html.dark .divide-gray-200 > * + * { border-color: #334155 !important; }
+html.dark [class*="text-gray-9"]:not([class*="dark:text"])     { color: #F8FAFC !important; }
+html.dark [class*="text-gray-8"]:not([class*="dark:text"])     { color: #F1F5F9 !important; }
+html.dark [class*="text-gray-7"]:not([class*="dark:text"])     { color: #CBD5E1 !important; }
+html.dark [class*="text-gray-6"]:not([class*="dark:text"])     { color: #94A3B8 !important; }
+html.dark [class*="text-gray-5"]:not([class*="dark:text"])     { color: #94A3B8 !important; }
+html.dark [class*="text-gray-4"]:not([class*="dark:text"])     { color: #64748B !important; }
+html.dark [class*="text-gray-3"]:not([class*="dark:text"])     { color: #475569 !important; }
 
-/* ── Shadows ─────────────────────────────────────────────── */
+html.dark [class*="border-gray-1"]:not([class*="dark:border"]),
+html.dark [class*="border-gray-2"]:not([class*="dark:border"]),
+html.dark [class*="border-gray-3"]:not([class*="dark:border"]) { border-color: #334155 !important; }
+html.dark .border-t:not([class*="dark:border"]),
+html.dark .border-b:not([class*="dark:border"])                { border-color: #334155 !important; }
+html.dark .divide-y > * + *                                    { border-color: #334155 !important; }
+
+/* ── Shadows (light-mode shadows look muddy on dark) ─────── */
 html.dark .shadow-sm  { box-shadow: 0 1px 2px rgba(0,0,0,0.5) !important; }
 html.dark .shadow     { box-shadow: 0 2px 6px rgba(0,0,0,0.5) !important; }
 html.dark .shadow-md  { box-shadow: 0 4px 12px rgba(0,0,0,0.6) !important; }
@@ -99,16 +93,18 @@ html.dark textarea::placeholder { color: #475569 !important; }
 html.dark input:focus,
 html.dark textarea:focus,
 html.dark select:focus { outline-color: #1B5E20 !important; }
+/* Autofill on mobile webviews paints an ugly white block */
+html.dark input:-webkit-autofill,
+html.dark input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #0F172A inset;
+  -webkit-text-fill-color: #F1F5F9;
+}
 
 /* ── Notification bell dropdown ──────────────────────────── */
 html.dark [data-notif-dropdown] { background-color: #1E293B !important; border-color: #334155 !important; }
 
 /* ── Unread notification item (green tint → dark tint) ───── */
 html.dark .notif-unread { background-color: #172230 !important; }
-
-/* ── Cards (rounded white boxes) ─────────────────────────── */
-html.dark .rounded-2xl.bg-white,
-html.dark .rounded-xl.bg-white   { background-color: #1E293B !important; }
 
 /* ── Sticky / top bars that are white ────────────────────── */
 html.dark header.bg-white,
@@ -119,7 +115,11 @@ html.dark .bg-gray-50.rounded-full,
 html.dark .bg-gray-100.rounded-full { background-color: #263548 !important; }
 
 /* ── Skeleton / loading shimmers ────────────────────────── */
-html.dark .animate-pulse { background-color: #263548 !important; }
+html.dark .skeleton {
+  background: linear-gradient(90deg, #1E293B 25%, #263548 50%, #1E293B 75%);
+  background-size: 200% auto;
+}
+html.dark .animate-pulse { color: #263548; }
 
 /* ── Scrollbar ───────────────────────────────────────────── */
 html.dark ::-webkit-scrollbar       { width: 4px; }

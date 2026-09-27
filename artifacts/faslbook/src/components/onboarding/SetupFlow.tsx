@@ -33,10 +33,10 @@ interface Props {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="mb-4">
-      <label className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
+      <label className="text-gray-400 dark:text-slate-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
         {label}
       </label>
-      <div className="border border-gray-200 rounded-2xl px-4 py-3.5 bg-white">
+      <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 bg-white dark:bg-slate-800">
         {children}
       </div>
     </div>
@@ -233,7 +233,7 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
             value={farmName}
             onChange={(e) => setFarmName(e.target.value)}
             placeholder="e.g. Ali Farm"
-            className="w-full outline-none text-gray-800 text-base bg-transparent"
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
           />
         </Field>
         <Field label="Location (Optional)">
@@ -241,10 +241,10 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
             value={farmLocation}
             onChange={(e) => setFarmLocation(e.target.value)}
             placeholder="Village or city"
-            className="w-full outline-none text-gray-800 text-base bg-transparent"
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
           />
         </Field>
-        <p className="text-gray-400 text-xs -mt-1 mb-4">You can update this anytime in Farm Settings.</p>
+        <p className="text-gray-400 dark:text-slate-500 text-xs -mt-1 mb-4">You can update this anytime in Farm Settings.</p>
         <PrimaryBtn onClick={handleFarmNext} loading={saving}>Next →</PrimaryBtn>
       </>
     );
@@ -256,7 +256,7 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
             value={ccName}
             onChange={(e) => setCcName(e.target.value)}
             placeholder="e.g. Wheat 2026"
-            className="w-full outline-none text-gray-800 text-base bg-transparent"
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
           />
         </Field>
         <Field label="Crop *">
@@ -264,33 +264,33 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
             value={ccCrop}
             onChange={(e) => setCcCrop(e.target.value)}
             placeholder="e.g. Wheat, Cotton, Rice"
-            className="w-full outline-none text-gray-800 text-base bg-transparent"
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
           />
         </Field>
         <div className="grid grid-cols-2 gap-3 mb-4">
           <div>
-            <label className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
+            <label className="text-gray-400 dark:text-slate-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
               Start Date
             </label>
-            <div className="border border-gray-200 rounded-2xl px-4 py-3.5 bg-white">
+            <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 bg-white dark:bg-slate-800">
               <input
                 type="date"
                 value={ccStart}
                 onChange={(e) => setCcStart(e.target.value)}
-                className="w-full outline-none text-gray-800 text-sm bg-transparent"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-sm bg-transparent"
               />
             </div>
           </div>
           <div>
-            <label className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
+            <label className="text-gray-400 dark:text-slate-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
               End Date
             </label>
-            <div className="border border-gray-200 rounded-2xl px-4 py-3.5 bg-white">
+            <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 bg-white dark:bg-slate-800">
               <input
                 type="date"
                 value={ccEnd}
                 onChange={(e) => setCcEnd(e.target.value)}
-                className="w-full outline-none text-gray-800 text-sm bg-transparent"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-sm bg-transparent"
               />
             </div>
           </div>
@@ -306,15 +306,15 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
             value={parcelName}
             onChange={(e) => setParcelName(e.target.value)}
             placeholder="e.g. North Field, Block A"
-            className="w-full outline-none text-gray-800 text-base bg-transparent"
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
           />
         </Field>
         <div className="grid grid-cols-2 gap-3 mb-4">
           <div>
-            <label className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
+            <label className="text-gray-400 dark:text-slate-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
               Area
             </label>
-            <div className="border border-gray-200 rounded-2xl px-4 py-3.5 bg-white">
+            <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 bg-white dark:bg-slate-800">
               <input
                 type="number"
                 min="0"
@@ -322,19 +322,19 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
                 value={parcelArea}
                 onChange={(e) => setParcelArea(e.target.value)}
                 placeholder="0"
-                className="w-full outline-none text-gray-800 text-base bg-transparent"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               />
             </div>
           </div>
           <div>
-            <label className="text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
+            <label className="text-gray-400 dark:text-slate-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
               Unit
             </label>
-            <div className="border border-gray-200 rounded-2xl px-4 py-3.5 bg-white">
+            <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 bg-white dark:bg-slate-800">
               <select
                 value={parcelUnit}
                 onChange={(e) => setParcelUnit(e.target.value)}
-                className="w-full outline-none text-gray-800 text-sm bg-transparent"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-sm bg-transparent"
               >
                 <option value="acres">Acres</option>
                 <option value="kanals">Kanals</option>
@@ -349,7 +349,7 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
 
     if (step === 4) return (
       <>
-        <p className="text-gray-500 text-sm mb-4">
+        <p className="text-gray-500 dark:text-slate-400 text-sm mb-4">
           Add one person to get started — you can add more later.
         </p>
         {/* Type selector */}
@@ -374,7 +374,7 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
             value={profileName}
             onChange={(e) => setProfileName(e.target.value)}
             placeholder="Full name"
-            className="w-full outline-none text-gray-800 text-base bg-transparent"
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
           />
         </Field>
         <Field label="Phone (Optional)">
@@ -383,7 +383,7 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
             value={profilePhone}
             onChange={(e) => setProfilePhone(e.target.value)}
             placeholder="+92..."
-            className="w-full outline-none text-gray-800 text-base bg-transparent"
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
           />
         </Field>
         {profileType === "dealer" && (
@@ -392,14 +392,14 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
               value={profileAddress}
               onChange={(e) => setProfileAddress(e.target.value)}
               placeholder="City or market"
-              className="w-full outline-none text-gray-800 text-base bg-transparent"
+              className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
             />
           </Field>
         )}
         <PrimaryBtn onClick={handleProfileSave} loading={saving}>Save &amp; Finish</PrimaryBtn>
         <button
           onClick={handleSkipProfile}
-          className="w-full py-3 text-gray-400 font-medium text-sm mt-2 active:scale-95 transition-transform"
+          className="w-full py-3 text-gray-400 dark:text-slate-500 font-medium text-sm mt-2 active:scale-95 transition-transform"
         >
           Skip this step
         </button>
@@ -421,12 +421,12 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
           >
             <CheckCircle2 size={40} color={GREEN} />
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-1">Setup Complete!</h3>
-          <p className="text-gray-400 text-sm mb-8">Your farm is ready. You can add more details anytime.</p>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-slate-50 mb-1">Setup Complete!</h3>
+          <p className="text-gray-400 dark:text-slate-500 text-sm mb-8">Your farm is ready. You can add more details anytime.</p>
 
           <div className="w-full flex flex-col gap-2.5 mb-8">
             {items.map(({ label, done }) => (
-              <div key={label} className="flex items-center gap-3 bg-white rounded-2xl px-4 py-3 shadow-sm">
+              <div key={label} className="flex items-center gap-3 bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 shadow-sm">
                 <div
                   className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
                   style={{ backgroundColor: done ? "#E8F5E9" : "#F5F5F5" }}
@@ -436,7 +436,7 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
                     : <Circle size={16} color="#D1D5DB" />
                   }
                 </div>
-                <span className="text-sm font-medium text-gray-700 text-left flex-1">{label}</span>
+                <span className="text-sm font-medium text-gray-700 dark:text-slate-200 text-left flex-1">{label}</span>
                 <span
                   className="text-xs font-semibold px-2 py-0.5 rounded-full"
                   style={{
@@ -466,9 +466,9 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
   // ── Render ─────────────────────────────────────────────────
 
   return (
-    <div className="fixed inset-0 z-[55] bg-gray-50 flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-[55] bg-gray-50 dark:bg-slate-900 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="flex items-center gap-3 px-4 pt-12 pb-4 bg-white border-b border-gray-100">
+      <div className="flex items-center gap-3 px-4 pt-12 pb-4 bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-slate-700/60">
         {step < 5 ? (
           <button
             onClick={step === 1 ? onClose : () => { setStep((s) => s - 1); setError(""); }}
@@ -481,17 +481,17 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
           <div className="w-9 h-9" />
         )}
         <div className="flex-1">
-          <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wide">
+          <p className="text-[10px] text-gray-400 dark:text-slate-500 font-medium uppercase tracking-wide">
             {step < 5 ? `Step ${step} of ${TOTAL_STEPS}` : "All done"}
           </p>
-          <p className="text-gray-900 font-bold text-base leading-tight">
+          <p className="text-gray-900 dark:text-slate-50 font-bold text-base leading-tight">
             {STEP_TITLES[step - 1]}
           </p>
         </div>
         {step < 5 && (
           <button
             onClick={onClose}
-            className="text-gray-400 text-sm font-medium px-2 py-1 active:opacity-60"
+            className="text-gray-400 dark:text-slate-500 text-sm font-medium px-2 py-1 active:opacity-60"
           >
             Exit
           </button>
@@ -500,7 +500,7 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
 
       {/* Progress bar */}
       {step < 5 && (
-        <div className="h-1 bg-gray-100">
+        <div className="h-1 bg-gray-100 dark:bg-slate-800/70">
           <div
             className="h-full transition-all duration-500 ease-out"
             style={{ width: `${progress * 100}%`, backgroundColor: GREEN }}
@@ -516,7 +516,7 @@ export default function SetupFlow({ onboardingState, onUpdate, onClose }: Props)
               className="rounded-2xl px-4 py-3 mb-4 border"
               style={{ backgroundColor: "#FFF3F3", borderColor: "#FFCDD2" }}
             >
-              <p className="text-red-600 text-sm">{error}</p>
+              <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
             </div>
           )}
           {renderStep()}

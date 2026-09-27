@@ -353,20 +353,20 @@ export default function KhataPage() {
           {showViewMenu && (
             <>
               <div className="fixed inset-0 z-10" onClick={() => setShowViewMenu(false)} />
-              <div className="absolute left-0 right-0 top-full mt-2 z-20 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+              <div className="absolute left-0 right-0 top-full mt-2 z-20 bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700/60 overflow-hidden">
                 {(Object.entries(VIEW_CONFIG) as [KhataView, typeof VIEW_CONFIG[KhataView]][]).map(([key, cfg]) => {
                   const Icon = cfg.icon;
                   return (
                     <button key={key}
                       onClick={() => switchView(key)}
-                      className="w-full flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 last:border-0 active:scale-[0.98] transition-transform"
+                      className="w-full flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 dark:border-slate-800 last:border-0 active:scale-[0.98] transition-transform"
                       style={{ backgroundColor: view === key ? cfg.bg : "white" }}>
                       <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ backgroundColor: cfg.bg }}>
                         <Icon size={17} color={cfg.color} />
                       </div>
                       <div className="flex-1 text-left">
-                        <p className="text-gray-800 font-bold text-sm leading-tight">{cfg.label}</p>
-                        <p className="text-gray-400 text-xs">{cfg.urdu}</p>
+                        <p className="text-gray-800 dark:text-slate-100 font-bold text-sm leading-tight">{cfg.label}</p>
+                        <p className="text-gray-400 dark:text-slate-500 text-xs">{cfg.urdu}</p>
                       </div>
                       {view === key && (
                         <div className="w-2 h-2 rounded-full" style={{ backgroundColor: cfg.color }} />
@@ -389,14 +389,14 @@ export default function KhataPage() {
           {view === "farmer" && (
             <>
               {/* Month picker */}
-              <div className="bg-white rounded-2xl px-4 py-3 shadow-md mb-4">
+              <div className="bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 shadow-md mb-4">
                 <div className="flex items-center justify-between mb-3">
                   <button onClick={prevMonth} className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ backgroundColor: "#F5F5F5" }}>
                     <ChevronLeft size={18} color="#374151" />
                   </button>
                   <div className="text-center">
-                    <p className="font-bold text-gray-800 text-base">{MONTHS_LONG[viewMonth.month]} {viewMonth.year}</p>
-                    <p className="text-gray-400 text-xs">{monthTxns.length} transactions{focusId ? " · filtered" : ""}</p>
+                    <p className="font-bold text-gray-800 dark:text-slate-100 text-base">{MONTHS_LONG[viewMonth.month]} {viewMonth.year}</p>
+                    <p className="text-gray-400 dark:text-slate-500 text-xs">{monthTxns.length} transactions{focusId ? " · filtered" : ""}</p>
                   </div>
                   <button onClick={nextMonth} className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ backgroundColor: "#F5F5F5" }}>
                     <ChevronRight size={18} color="#374151" />
@@ -438,9 +438,9 @@ export default function KhataPage() {
 
               {/* Transactions list */}
               {monthTxns.length === 0 ? (
-                <div className="text-center py-14 bg-white rounded-2xl shadow-sm">
+                <div className="text-center py-14 bg-white dark:bg-slate-800 rounded-2xl shadow-sm">
                   <p className="text-4xl mb-3">📋</p>
-                  <p className="text-gray-500 text-sm">No transactions this month</p>
+                  <p className="text-gray-500 dark:text-slate-400 text-sm">No transactions this month</p>
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -448,16 +448,16 @@ export default function KhataPage() {
                     const credit = isCredit(t.type);
                     return (
                       <button key={t.id} onClick={() => canEdit && openEditEntry("transaction", t)}
-                        className="w-full bg-white rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm text-left active:scale-[0.99] transition-transform">
+                        className="w-full bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm text-left active:scale-[0.99] transition-transform">
                         <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0"
                           style={{ backgroundColor: credit ? "#E8F5E9" : "#FFEBEE" }}>
                           {txnEmoji(t.type, t.category)}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-gray-800 font-semibold text-sm leading-tight truncate">
+                          <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm leading-tight truncate">
                             {t.categoryLabel || t.description || t.type}
                           </p>
-                          <p className="text-gray-400 text-xs mt-0.5 truncate">
+                          <p className="text-gray-400 dark:text-slate-500 text-xs mt-0.5 truncate">
                             {[t.farmerName, t.parcelName, t.contractorName, fmtDate(t.date)].filter(Boolean).join(" · ")}
                           </p>
                         </div>
@@ -472,7 +472,7 @@ export default function KhataPage() {
               )}
 
               <Link href="/ledger"
-                className="mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-sm font-semibold border-2 border-gray-200 text-gray-600 active:scale-95 transition-transform block">
+                className="mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-sm font-semibold border-2 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 active:scale-95 transition-transform block">
                 Open Full Ledger <ChevronRight size={14} />
               </Link>
             </>
@@ -482,8 +482,8 @@ export default function KhataPage() {
           {view === "owner" && (
             <>
               {/* Summary */}
-              <div className="bg-white rounded-2xl p-4 shadow-md mb-4">
-                <p className="font-bold text-gray-700 text-sm mb-3">Last 30 Days</p>
+              <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-md mb-4">
+                <p className="font-bold text-gray-700 dark:text-slate-200 text-sm mb-3">Last 30 Days</p>
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     { label: "Total Income",   value: ownerTotalIncome,   icon: TrendingUp,   color: "#1B5E20", bg: "#E8F5E9" },
@@ -508,26 +508,26 @@ export default function KhataPage() {
 
               {/* Recent expenses */}
               <div className="flex items-center justify-between mb-2">
-                <p className="font-bold text-gray-700 text-sm">Recent Expenses</p>
+                <p className="font-bold text-gray-700 dark:text-slate-200 text-sm">Recent Expenses</p>
                 <Link href="/owner-expenses" className="text-xs font-semibold" style={{ color: "#1B5E20" }}>View All</Link>
               </div>
 
               {ownerExpFiltered.length === 0 ? (
-                <div className="text-center py-10 bg-white rounded-2xl shadow-sm">
+                <div className="text-center py-10 bg-white dark:bg-slate-800 rounded-2xl shadow-sm">
                   <p className="text-3xl mb-2">🚜</p>
-                  <p className="text-gray-400 text-sm">No expenses in last 30 days</p>
+                  <p className="text-gray-400 dark:text-slate-500 text-sm">No expenses in last 30 days</p>
                 </div>
               ) : (
                 <div className="space-y-2">
                   {ownerExpFiltered.slice(0, 8).map((e) => (
                     <button key={e.id} onClick={() => canEdit && openEditEntry("ownerExpense", e)}
-                      className="w-full bg-white rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm text-left active:scale-[0.99] transition-transform">
+                      className="w-full bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm text-left active:scale-[0.99] transition-transform">
                       <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: "#FFEBEE" }}>
                         {EXPENSE_EMOJI[e.category] || "💰"}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-gray-800 font-semibold text-sm leading-tight">{e.categoryLabel}</p>
-                        <p className="text-gray-400 text-xs mt-0.5">{e.vendor ? `${e.vendor} · ` : ""}{fmtDate(e.date)}</p>
+                        <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm leading-tight">{e.categoryLabel}</p>
+                        <p className="text-gray-400 dark:text-slate-500 text-xs mt-0.5">{e.vendor ? `${e.vendor} · ` : ""}{fmtDate(e.date)}</p>
                       </div>
                       <p className="font-bold text-sm shrink-0" style={{ color: "#C62828" }}>−{fmt(e.amount)}</p>
                       {canEdit && <Pencil size={13} color="#D1D5DB" className="shrink-0" />}
@@ -537,7 +537,7 @@ export default function KhataPage() {
               )}
 
               <Link href="/owner-expenses"
-                className="mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-sm font-semibold border-2 border-gray-200 text-gray-600 active:scale-95 transition-transform block">
+                className="mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-sm font-semibold border-2 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 active:scale-95 transition-transform block">
                 Open Full Owner Khata <ChevronRight size={14} />
               </Link>
             </>
@@ -547,8 +547,8 @@ export default function KhataPage() {
           {view === "labour" && (
             <>
               {/* Summary */}
-              <div className="bg-white rounded-2xl p-4 shadow-md mb-4">
-                <p className="font-bold text-gray-700 text-sm mb-3">All Time Summary</p>
+              <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-md mb-4">
+                <p className="font-bold text-gray-700 dark:text-slate-200 text-sm mb-3">All Time Summary</p>
                 <div className="grid grid-cols-3 gap-2">
                   {[
                     { label: "Total Cost",   value: totalLabourExpense, color: "#6A1B9A", bg: "#F3E5F5" },
@@ -566,22 +566,22 @@ export default function KhataPage() {
               {/* Contractor balances */}
               {contractorStats.length > 0 && (
                 <>
-                  <p className="font-bold text-gray-700 text-sm mb-2">Contractor Balances</p>
+                  <p className="font-bold text-gray-700 dark:text-slate-200 text-sm mb-2">Contractor Balances</p>
                   <div className="space-y-2 mb-4">
                     {contractorStats.map((c) => (
                       <button key={c.id} onClick={() => navigate(`/labour-contractors/${c.id}`)}
-                        className="w-full bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform text-left">
+                        className="w-full bg-white dark:bg-slate-800 rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform text-left">
                         <div className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0" style={{ backgroundColor: "#F3E5F5" }}>
                           <Users size={20} color="#6A1B9A" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-gray-800 font-bold text-sm leading-tight">{c.name}</p>
-                          <p className="text-gray-400 text-xs">{c.teamSize} workers · {c.totalJobs} jobs</p>
+                          <p className="text-gray-800 dark:text-slate-100 font-bold text-sm leading-tight">{c.name}</p>
+                          <p className="text-gray-400 dark:text-slate-500 text-xs">{c.teamSize} workers · {c.totalJobs} jobs</p>
                         </div>
                         <div className="text-right shrink-0">
                           {c.totalPending > 0 ? (
                             <>
-                              <p className="text-xs text-gray-400">Due</p>
+                              <p className="text-xs text-gray-400 dark:text-slate-500">Due</p>
                               <p className="font-bold text-sm" style={{ color: "#E65100" }}>{fmt(c.totalPending)}</p>
                             </>
                           ) : (
@@ -596,14 +596,14 @@ export default function KhataPage() {
 
               {/* Recent harvest records */}
               <div className="flex items-center justify-between mb-2">
-                <p className="font-bold text-gray-700 text-sm">Recent Records</p>
+                <p className="font-bold text-gray-700 dark:text-slate-200 text-sm">Recent Records</p>
                 <Link href="/labour-contractors" className="text-xs font-semibold" style={{ color: "#6A1B9A" }}>View All</Link>
               </div>
 
               {recentHarvestRecs.length === 0 ? (
-                <div className="text-center py-10 bg-white rounded-2xl shadow-sm">
+                <div className="text-center py-10 bg-white dark:bg-slate-800 rounded-2xl shadow-sm">
                   <p className="text-3xl mb-2">🌾</p>
-                  <p className="text-gray-400 text-sm">No harvest records yet</p>
+                  <p className="text-gray-400 dark:text-slate-500 text-sm">No harvest records yet</p>
                   <Link href="/labour-contractors"
                     className="mt-4 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-white text-sm font-semibold"
                     style={{ backgroundColor: "#6A1B9A" }}>
@@ -616,13 +616,13 @@ export default function KhataPage() {
                     const sc = STATUS_CONFIG[r.paymentStatus];
                     return (
                       <button key={r.id} onClick={() => navigate("/labour-contractors")}
-                        className="w-full bg-white rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm text-left">
+                        className="w-full bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm text-left">
                         <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: "#FFF8E1" }}>
                           🌾
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-gray-800 font-semibold text-sm leading-tight truncate">{r.contractorName}</p>
-                          <p className="text-gray-400 text-xs mt-0.5 truncate">{r.parcelName} · {fmtDate(r.harvestDate)}</p>
+                          <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm leading-tight truncate">{r.contractorName}</p>
+                          <p className="text-gray-400 dark:text-slate-500 text-xs mt-0.5 truncate">{r.parcelName} · {fmtDate(r.harvestDate)}</p>
                         </div>
                         <div className="text-right shrink-0">
                           <p className="font-bold text-sm" style={{ color: "#C62828" }}>{fmt(r.totalAmount)}</p>
@@ -636,7 +636,7 @@ export default function KhataPage() {
               )}
 
               <Link href="/labour-contractors"
-                className="mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-sm font-semibold border-2 border-gray-200 text-gray-600 active:scale-95 transition-transform block">
+                className="mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-sm font-semibold border-2 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 active:scale-95 transition-transform block">
                 Open Full View <ChevronRight size={14} />
               </Link>
             </>
@@ -648,38 +648,38 @@ export default function KhataPage() {
               {focusedDealer ? (
                 <>
                   <div className="flex items-center gap-2 mb-3">
-                    <button onClick={() => navigate("/khata?view=dealer")} className="w-8 h-8 rounded-xl flex items-center justify-center bg-white shadow-sm">
+                    <button onClick={() => navigate("/khata?view=dealer")} className="w-8 h-8 rounded-xl flex items-center justify-center bg-white dark:bg-slate-800 shadow-sm">
                       <ChevronLeft size={16} color="#374151" />
                     </button>
-                    <p className="font-bold text-gray-800">{focusedDealer.businessName || focusedDealer.name}</p>
+                    <p className="font-bold text-gray-800 dark:text-slate-100">{focusedDealer.businessName || focusedDealer.name}</p>
                   </div>
                   <div className="grid grid-cols-3 gap-2 mb-4">
-                    <div className="rounded-xl p-2.5 text-center bg-white shadow-sm">
-                      <p className="text-[10px] font-semibold mb-0.5 text-gray-400">Purchased</p>
+                    <div className="rounded-xl p-2.5 text-center bg-white dark:bg-slate-800 shadow-sm">
+                      <p className="text-[10px] font-semibold mb-0.5 text-gray-400 dark:text-slate-500">Purchased</p>
                       <p className="text-xs font-bold" style={{ color: "#EF6C00" }}>{fmt(focusedDealer.purchased)}</p>
                     </div>
-                    <div className="rounded-xl p-2.5 text-center bg-white shadow-sm">
-                      <p className="text-[10px] font-semibold mb-0.5 text-gray-400">Paid</p>
+                    <div className="rounded-xl p-2.5 text-center bg-white dark:bg-slate-800 shadow-sm">
+                      <p className="text-[10px] font-semibold mb-0.5 text-gray-400 dark:text-slate-500">Paid</p>
                       <p className="text-xs font-bold" style={{ color: "#1B5E20" }}>{fmt(focusedDealer.paid)}</p>
                     </div>
-                    <div className="rounded-xl p-2.5 text-center bg-white shadow-sm">
-                      <p className="text-[10px] font-semibold mb-0.5 text-gray-400">Due</p>
+                    <div className="rounded-xl p-2.5 text-center bg-white dark:bg-slate-800 shadow-sm">
+                      <p className="text-[10px] font-semibold mb-0.5 text-gray-400 dark:text-slate-500">Due</p>
                       <p className="text-xs font-bold" style={{ color: focusedDealer.outstanding > 0 ? "#C62828" : "#1B5E20" }}>{fmt(focusedDealer.outstanding)}</p>
                     </div>
                   </div>
-                  <p className="font-bold text-gray-700 text-sm mb-2">Recent Entries</p>
+                  <p className="font-bold text-gray-700 dark:text-slate-200 text-sm mb-2">Recent Entries</p>
                   {focusedDealerTxns.length === 0 ? (
-                    <div className="text-center py-10 bg-white rounded-2xl shadow-sm"><p className="text-gray-400 text-sm">No entries yet</p></div>
+                    <div className="text-center py-10 bg-white dark:bg-slate-800 rounded-2xl shadow-sm"><p className="text-gray-400 dark:text-slate-500 text-sm">No entries yet</p></div>
                   ) : (
                     <div className="space-y-2 mb-4">
                       {focusedDealerTxns.slice(0, 15).map((t) => (
-                        <div key={t.id} className="bg-white rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm">
+                        <div key={t.id} className="bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm">
                           <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: t.type === "dealerPayment" ? "#E8F5E9" : "#FFF3E0" }}>
                             {t.type === "dealerPayment" ? "💳" : "🏪"}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-gray-800 font-semibold text-sm truncate">{t.categoryLabel || t.description || t.type}</p>
-                            <p className="text-gray-400 text-xs">{fmtDate(t.date)}</p>
+                            <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm truncate">{t.categoryLabel || t.description || t.type}</p>
+                            <p className="text-gray-400 dark:text-slate-500 text-xs">{fmtDate(t.date)}</p>
                           </div>
                           <p className="font-bold text-sm shrink-0" style={{ color: t.type === "dealerPayment" ? "#1B5E20" : "#C62828" }}>
                             {t.type === "dealerPayment" ? "+" : "−"}{fmt(t.amount)}
@@ -691,8 +691,8 @@ export default function KhataPage() {
                 </>
               ) : (
                 <>
-                  <div className="bg-white rounded-2xl p-4 shadow-md mb-4">
-                    <p className="font-bold text-gray-700 text-sm mb-3">All Time Summary</p>
+                  <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-md mb-4">
+                    <p className="font-bold text-gray-700 dark:text-slate-200 text-sm mb-3">All Time Summary</p>
                     <div className="grid grid-cols-3 gap-2">
                       {[
                         { label: "Purchased", value: totalDealerPurchased, color: "#EF6C00", bg: "#FFF3E0" },
@@ -707,24 +707,24 @@ export default function KhataPage() {
                     </div>
                   </div>
 
-                  <p className="font-bold text-gray-700 text-sm mb-2">Dealer Balances</p>
+                  <p className="font-bold text-gray-700 dark:text-slate-200 text-sm mb-2">Dealer Balances</p>
                   {dealerStats.length === 0 ? (
-                    <div className="text-center py-10 bg-white rounded-2xl shadow-sm"><p className="text-3xl mb-2">🏪</p><p className="text-gray-400 text-sm">No dealers yet</p></div>
+                    <div className="text-center py-10 bg-white dark:bg-slate-800 rounded-2xl shadow-sm"><p className="text-3xl mb-2">🏪</p><p className="text-gray-400 dark:text-slate-500 text-sm">No dealers yet</p></div>
                   ) : (
                     <div className="space-y-2">
                       {dealerStats.map((d) => (
                         <button key={d.id} onClick={() => navigate(`/khata?view=dealer&id=${d.id}`)}
-                          className="w-full bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform text-left">
+                          className="w-full bg-white dark:bg-slate-800 rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform text-left">
                           <div className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0" style={{ backgroundColor: "#FFF3E0" }}>
                             <Handshake size={20} color="#EF6C00" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-gray-800 font-bold text-sm leading-tight">{d.businessName || d.name}</p>
-                            <p className="text-gray-400 text-xs">{d.name}</p>
+                            <p className="text-gray-800 dark:text-slate-100 font-bold text-sm leading-tight">{d.businessName || d.name}</p>
+                            <p className="text-gray-400 dark:text-slate-500 text-xs">{d.name}</p>
                           </div>
                           <div className="text-right shrink-0">
                             {d.outstanding > 0 ? (
-                              <><p className="text-xs text-gray-400">Due</p><p className="font-bold text-sm" style={{ color: "#C62828" }}>{fmt(d.outstanding)}</p></>
+                              <><p className="text-xs text-gray-400 dark:text-slate-500">Due</p><p className="font-bold text-sm" style={{ color: "#C62828" }}>{fmt(d.outstanding)}</p></>
                             ) : (
                               <p className="text-xs font-bold" style={{ color: "#1B5E20" }}>Settled ✓</p>
                             )}
@@ -737,7 +737,7 @@ export default function KhataPage() {
               )}
 
               <Link href="/dealers"
-                className="mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-sm font-semibold border-2 border-gray-200 text-gray-600 active:scale-95 transition-transform block">
+                className="mt-4 w-full flex items-center justify-center gap-1.5 py-3 rounded-2xl text-sm font-semibold border-2 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 active:scale-95 transition-transform block">
                 Open Full View (Add/Edit Entries) <ChevronRight size={14} />
               </Link>
             </>
@@ -749,25 +749,25 @@ export default function KhataPage() {
               {focusedCustom ? (
                 <>
                   <div className="flex items-center gap-2 mb-3">
-                    <button onClick={() => navigate("/khata?view=custom")} className="w-8 h-8 rounded-xl flex items-center justify-center bg-white shadow-sm">
+                    <button onClick={() => navigate("/khata?view=custom")} className="w-8 h-8 rounded-xl flex items-center justify-center bg-white dark:bg-slate-800 shadow-sm">
                       <ChevronLeft size={16} color="#374151" />
                     </button>
                     <div>
-                      <p className="font-bold text-gray-800">{focusedCustom.name}</p>
-                      <p className="text-gray-400 text-xs">{focusedCustom.customLabel}</p>
+                      <p className="font-bold text-gray-800 dark:text-slate-100">{focusedCustom.name}</p>
+                      <p className="text-gray-400 dark:text-slate-500 text-xs">{focusedCustom.customLabel}</p>
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-2 mb-4">
-                    <div className="rounded-xl p-2.5 text-center bg-white shadow-sm">
-                      <p className="text-[10px] font-semibold mb-0.5 text-gray-400">Credit</p>
+                    <div className="rounded-xl p-2.5 text-center bg-white dark:bg-slate-800 shadow-sm">
+                      <p className="text-[10px] font-semibold mb-0.5 text-gray-400 dark:text-slate-500">Credit</p>
                       <p className="text-xs font-bold" style={{ color: "#1B5E20" }}>{fmt(focusedCustom.credit)}</p>
                     </div>
-                    <div className="rounded-xl p-2.5 text-center bg-white shadow-sm">
-                      <p className="text-[10px] font-semibold mb-0.5 text-gray-400">Debit</p>
+                    <div className="rounded-xl p-2.5 text-center bg-white dark:bg-slate-800 shadow-sm">
+                      <p className="text-[10px] font-semibold mb-0.5 text-gray-400 dark:text-slate-500">Debit</p>
                       <p className="text-xs font-bold" style={{ color: "#C62828" }}>{fmt(focusedCustom.debit)}</p>
                     </div>
-                    <div className="rounded-xl p-2.5 text-center bg-white shadow-sm">
-                      <p className="text-[10px] font-semibold mb-0.5 text-gray-400">Balance</p>
+                    <div className="rounded-xl p-2.5 text-center bg-white dark:bg-slate-800 shadow-sm">
+                      <p className="text-[10px] font-semibold mb-0.5 text-gray-400 dark:text-slate-500">Balance</p>
                       <p className="text-xs font-bold" style={{ color: focusedCustom.balance >= 0 ? "#1565C0" : "#C62828" }}>
                         {focusedCustom.balance < 0 ? "−" : ""}{fmt(Math.abs(focusedCustom.balance))}
                       </p>
@@ -782,22 +782,22 @@ export default function KhataPage() {
                     </button>
                   )}
 
-                  <p className="font-bold text-gray-700 text-sm mb-2">Recent Entries</p>
+                  <p className="font-bold text-gray-700 dark:text-slate-200 text-sm mb-2">Recent Entries</p>
                   {focusedCustomTxns.length === 0 ? (
-                    <div className="text-center py-10 bg-white rounded-2xl shadow-sm"><p className="text-gray-400 text-sm">No entries yet</p></div>
+                    <div className="text-center py-10 bg-white dark:bg-slate-800 rounded-2xl shadow-sm"><p className="text-gray-400 dark:text-slate-500 text-sm">No entries yet</p></div>
                   ) : (
                     <div className="space-y-2">
                       {focusedCustomTxns.slice(0, 20).map((t) => {
                         const credit = isCredit(t.type);
                         return (
                           <button key={t.id} onClick={() => canEdit && openEditEntry("transaction", t)}
-                            className="w-full bg-white rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm text-left active:scale-[0.99] transition-transform">
+                            className="w-full bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm text-left active:scale-[0.99] transition-transform">
                             <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: credit ? "#E8F5E9" : "#FFEBEE" }}>
                               {credit ? "💰" : "📋"}
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-gray-800 font-semibold text-sm truncate">{t.notes || t.categoryLabel || "Entry"}</p>
-                              <p className="text-gray-400 text-xs">{fmtDate(t.date)}</p>
+                              <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm truncate">{t.notes || t.categoryLabel || "Entry"}</p>
+                              <p className="text-gray-400 dark:text-slate-500 text-xs">{fmtDate(t.date)}</p>
                             </div>
                             <p className="font-bold text-sm shrink-0" style={{ color: credit ? "#1B5E20" : "#C62828" }}>
                               {credit ? "+" : "−"}{fmt(t.amount)}
@@ -818,24 +818,24 @@ export default function KhataPage() {
                       <Plus size={16} /> New Custom Khata
                     </button>
                   )}
-                  <p className="font-bold text-gray-700 text-sm mb-2">Custom Khatas</p>
+                  <p className="font-bold text-gray-700 dark:text-slate-200 text-sm mb-2">Custom Khatas</p>
                   {customStats.length === 0 ? (
-                    <div className="text-center py-14 bg-white rounded-2xl shadow-sm">
+                    <div className="text-center py-14 bg-white dark:bg-slate-800 rounded-2xl shadow-sm">
                       <p className="text-4xl mb-3">🏷️</p>
-                      <p className="text-gray-500 text-sm">No custom khatas yet</p>
-                      <p className="text-gray-400 text-xs mt-1">e.g. Landlord, Investor, Transporter</p>
+                      <p className="text-gray-500 dark:text-slate-400 text-sm">No custom khatas yet</p>
+                      <p className="text-gray-400 dark:text-slate-500 text-xs mt-1">e.g. Landlord, Investor, Transporter</p>
                     </div>
                   ) : (
                     <div className="space-y-2">
                       {customStats.map((c) => (
                         <button key={c.id} onClick={() => navigate(`/khata?view=custom&id=${c.id}`)}
-                          className="w-full bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform text-left">
+                          className="w-full bg-white dark:bg-slate-800 rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform text-left">
                           <div className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0" style={{ backgroundColor: "#FCE4EC" }}>
                             <Tag size={20} color="#AD1457" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-gray-800 font-bold text-sm leading-tight">{c.name}</p>
-                            <p className="text-gray-400 text-xs">{c.customLabel}</p>
+                            <p className="text-gray-800 dark:text-slate-100 font-bold text-sm leading-tight">{c.name}</p>
+                            <p className="text-gray-400 dark:text-slate-500 text-xs">{c.customLabel}</p>
                           </div>
                           <p className="font-bold text-sm shrink-0" style={{ color: c.balance >= 0 ? "#1565C0" : "#C62828" }}>
                             {c.balance < 0 ? "−" : ""}{fmt(Math.abs(c.balance))}
@@ -865,19 +865,19 @@ export default function KhataPage() {
       {/* ── Inline Entry Edit Modal ── */}
       {editEntry && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40" onClick={closeEditEntry}>
-          <div className="bg-white w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-gray-800">Edit Entry</h2>
+              <h2 className="text-lg font-bold text-gray-800 dark:text-slate-100">Edit Entry</h2>
               <button onClick={closeEditEntry}><X size={22} color="#9CA3AF" /></button>
             </div>
 
             {editDelConfirm ? (
               <div className="flex flex-col items-center text-center py-2">
                 <AlertTriangle size={28} color="#C62828" className="mb-2" />
-                <p className="text-gray-700 font-semibold mb-1">Delete this entry?</p>
-                <p className="text-gray-400 text-sm mb-5">This can't be undone.</p>
+                <p className="text-gray-700 dark:text-slate-200 font-semibold mb-1">Delete this entry?</p>
+                <p className="text-gray-400 dark:text-slate-500 text-sm mb-5">This can't be undone.</p>
                 <div className="flex gap-3 w-full">
-                  <button onClick={() => setEditDelConfirm(false)} className="flex-1 py-3 rounded-2xl border-2 border-gray-200 font-semibold text-sm text-gray-700">Cancel</button>
+                  <button onClick={() => setEditDelConfirm(false)} className="flex-1 py-3 rounded-2xl border-2 border-gray-200 dark:border-slate-700 font-semibold text-sm text-gray-700 dark:text-slate-200">Cancel</button>
                   <button onClick={deleteEditEntry} disabled={editSaving} className="flex-1 py-3 rounded-2xl text-white font-bold text-sm" style={{ backgroundColor: "#C62828" }}>
                     {editSaving ? <Loader2 size={16} className="animate-spin mx-auto" /> : "Delete"}
                   </button>
@@ -885,18 +885,18 @@ export default function KhataPage() {
               </div>
             ) : (
               <>
-                <label className="text-gray-600 text-sm font-medium mb-2 block">Amount</label>
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Amount</label>
                 <input type="number" value={editForm.amount} onChange={(e) => setEditForm({ ...editForm, amount: e.target.value })}
-                  className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-green-700" />
-                <label className="text-gray-600 text-sm font-medium mb-2 block">Date</label>
+                  className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Date</label>
                 <input type="date" value={editForm.date} onChange={(e) => setEditForm({ ...editForm, date: e.target.value })}
-                  className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-green-700" />
-                <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
+                  className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
                 <textarea value={editForm.notes} onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })} rows={2}
-                  className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base resize-none focus:border-green-700" />
+                  className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base resize-none focus:border-green-700" />
                 <div className="flex gap-2">
                   <button onClick={() => setEditDelConfirm(true)}
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center border-2 border-red-100 shrink-0">
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center border-2 border-red-100 dark:border-red-900/50 shrink-0">
                     <Trash2 size={16} color="#C62828" />
                   </button>
                   <button onClick={saveEditEntry} disabled={editSaving}
@@ -915,20 +915,20 @@ export default function KhataPage() {
       {/* ── New Custom Khata Modal ── */}
       {newKhataModal && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40" onClick={() => setNewKhataModal(false)}>
-          <div className="bg-white w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-gray-800">New Custom Khata</h2>
+              <h2 className="text-lg font-bold text-gray-800 dark:text-slate-100">New Custom Khata</h2>
               <button onClick={() => setNewKhataModal(false)}><X size={22} color="#9CA3AF" /></button>
             </div>
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Name *</label>
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Name *</label>
             <input value={newKhataForm.name} onChange={(e) => setNewKhataForm({ ...newKhataForm, name: e.target.value })}
-              placeholder="e.g. Ahmad Khan" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-pink-700" />
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Custom Label *</label>
+              placeholder="e.g. Ahmad Khan" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-pink-700" />
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Custom Label *</label>
             <input value={newKhataForm.customLabel} onChange={(e) => setNewKhataForm({ ...newKhataForm, customLabel: e.target.value })}
-              placeholder="e.g. Landlord, Investor, Transporter" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-pink-700" />
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Phone</label>
+              placeholder="e.g. Landlord, Investor, Transporter" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-pink-700" />
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Phone</label>
             <input value={newKhataForm.phone} onChange={(e) => setNewKhataForm({ ...newKhataForm, phone: e.target.value })}
-              placeholder="03XX-XXXXXXX" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-pink-700" />
+              placeholder="03XX-XXXXXXX" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-pink-700" />
             <button onClick={createCustomKhata} disabled={newKhataSaving}
               className="w-full py-4 rounded-2xl text-white font-bold text-base flex items-center justify-center gap-2 disabled:opacity-60"
               style={{ backgroundColor: "#AD1457" }}>
@@ -942,9 +942,9 @@ export default function KhataPage() {
       {/* ── Add Custom Entry Modal ── */}
       {addEntryModal && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40" onClick={() => setAddEntryModal(false)}>
-          <div className="bg-white w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-gray-800">Add Entry</h2>
+              <h2 className="text-lg font-bold text-gray-800 dark:text-slate-100">Add Entry</h2>
               <button onClick={() => setAddEntryModal(false)}><X size={22} color="#9CA3AF" /></button>
             </div>
             <div className="flex gap-2 mb-4">
@@ -959,15 +959,15 @@ export default function KhataPage() {
                 Debit (Given)
               </button>
             </div>
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Amount *</label>
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Amount *</label>
             <input type="number" value={addEntryForm.amount} onChange={(e) => setAddEntryForm({ ...addEntryForm, amount: e.target.value })}
-              placeholder="0" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-pink-700" />
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Date</label>
+              placeholder="0" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-pink-700" />
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Date</label>
             <input type="date" value={addEntryForm.date} onChange={(e) => setAddEntryForm({ ...addEntryForm, date: e.target.value })}
-              className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-pink-700" />
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
+              className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-pink-700" />
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
             <textarea value={addEntryForm.notes} onChange={(e) => setAddEntryForm({ ...addEntryForm, notes: e.target.value })} rows={2}
-              placeholder="What is this for?" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base resize-none focus:border-pink-700" />
+              placeholder="What is this for?" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base resize-none focus:border-pink-700" />
             <button onClick={submitCustomEntry} disabled={addEntrySaving}
               className="w-full py-4 rounded-2xl text-white font-bold text-base flex items-center justify-center gap-2 disabled:opacity-60"
               style={{ backgroundColor: "#AD1457" }}>

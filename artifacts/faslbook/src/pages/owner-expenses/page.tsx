@@ -318,12 +318,12 @@ export default function FarmKhataPage() {
 
   // ═══ SUCCESS SCREEN ═══
   if (success) return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 text-center">
+    <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col items-center justify-center px-6 text-center">
       <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-lg" style={{ backgroundColor: "#E8F5E9" }}>
         <CheckCircle size={52} color="#1B5E20" />
       </div>
-      <h1 className="text-2xl font-bold text-gray-800 mb-2">Expense Saved! ✅</h1>
-      <p className="text-gray-500 text-sm mb-2">
+      <h1 className="text-2xl font-bold text-gray-800 dark:text-slate-100 mb-2">Expense Saved! ✅</h1>
+      <p className="text-gray-500 dark:text-slate-400 text-sm mb-2">
         {CATEGORIES[form.category]?.emoji} {CATEGORIES[form.category]?.label}
       </p>
       <p className="text-2xl font-bold mb-10" style={{ color: "#C62828" }}>−{fmt(Number(form.amount))}</p>
@@ -337,7 +337,7 @@ export default function FarmKhataPage() {
 
   // ═══ ADD EXPENSE FORM ═══
   if (view === "add") return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
       <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
         <button onClick={() => { resetForm(); setView("list"); }} className="text-white mr-3">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -350,10 +350,10 @@ export default function FarmKhataPage() {
 
       <div className="flex-1 px-5 pt-6 pb-10 overflow-y-auto">
         {formError && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>
+          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>
         )}
 
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-3 block">Expense Type</label>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-3 block">Expense Type</label>
         <div className="grid grid-cols-3 gap-2 mb-6">
           {Object.entries(CATEGORIES).map(([key, cfg]) => (
             <button key={key} onClick={() => setForm({ ...form, category: key })}
@@ -371,59 +371,59 @@ export default function FarmKhataPage() {
           ))}
         </div>
 
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Amount (Rs.)</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 focus-within:border-green-700 bg-white">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Amount (Rs.)</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 focus-within:border-green-700 bg-white dark:bg-slate-800">
           <input type="number" inputMode="numeric" placeholder="e.g. 15,000" value={form.amount}
             onChange={(e) => setForm({ ...form, amount: e.target.value })}
-            className="w-full outline-none text-gray-800 text-xl font-semibold bg-transparent" />
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-xl font-semibold bg-transparent" />
         </div>
 
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Date</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white flex items-center">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Date</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-white dark:bg-slate-800 flex items-center">
           <input type="date" value={form.date}
             onChange={(e) => setForm({ ...form, date: e.target.value })}
-            className="flex-1 outline-none text-gray-800 text-base bg-transparent [&::-webkit-calendar-picker-indicator]:hidden" />
-          <span className="text-gray-400 text-sm">
+            className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent [&::-webkit-calendar-picker-indicator]:hidden" />
+          <span className="text-gray-400 dark:text-slate-500 text-sm">
             {form.date ? new Date(form.date + "T00:00:00").toLocaleDateString("en-PK", { day: "numeric", month: "short", year: "numeric" }) : ""}
           </span>
         </div>
 
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Vendor / Dealer (Optional)</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Vendor / Dealer (Optional)</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-white dark:bg-slate-800">
           <select value={form.vendor} onChange={(e) => setForm({ ...form, vendor: e.target.value })}
-            className="w-full outline-none text-gray-800 text-base bg-transparent">
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
             <option value="">— No vendor —</option>
             {dealers.map((d) => <option key={d.id} value={d.name}>{d.name}</option>)}
           </select>
         </div>
 
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Payment Method</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Payment Method</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-white dark:bg-slate-800">
           <select value={form.paymentMethod} onChange={(e) => setForm({ ...form, paymentMethod: e.target.value })}
-            className="w-full outline-none text-gray-800 text-base bg-transparent">
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
             {Object.entries(PAYMENT_METHODS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
           </select>
         </div>
 
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Notes (Optional)</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3 mb-5 bg-white">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Notes (Optional)</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-5 bg-white dark:bg-slate-800">
           <textarea placeholder="e.g. Engine oil change, 50L diesel for pump…"
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
-            rows={3} className="w-full outline-none text-gray-800 text-base bg-transparent resize-none" />
+            rows={3} className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none" />
         </div>
 
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Receipt / Bill Photo (Optional)</label>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Receipt / Bill Photo (Optional)</label>
         <input type="file" accept="image/*" id="farmReceiptInput" className="hidden" onChange={(e) => {
           const file = e.target.files?.[0];
           if (file) { setReceiptFile(file); setReceiptPreview(URL.createObjectURL(file)); }
         }} />
         <label htmlFor="farmReceiptInput"
-          className="w-full h-32 border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform overflow-hidden mb-8 block"
+          className="w-full h-32 border-2 border-dashed border-gray-300 dark:border-slate-600 rounded-2xl flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform overflow-hidden mb-8 block"
           style={{ backgroundColor: "#FAFAFA" }}>
           {receiptPreview
             ? <img src={receiptPreview} className="w-full h-full object-cover" alt="receipt" />
-            : <><Camera size={28} color="#9E9E9E" /><p className="text-gray-500 text-sm mt-2">Tap to upload bill/receipt</p><p className="text-gray-400 text-xs">Auto-compressed</p></>
+            : <><Camera size={28} color="#9E9E9E" /><p className="text-gray-500 dark:text-slate-400 text-sm mt-2">Tap to upload bill/receipt</p><p className="text-gray-400 dark:text-slate-500 text-xs">Auto-compressed</p></>
           }
         </label>
 
@@ -445,7 +445,7 @@ export default function FarmKhataPage() {
       {/* ── Expense Detail / Edit Modal ── */}
       {selected && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40" onClick={closeModal}>
-          <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="px-6 pt-6 pb-6 overflow-y-auto flex-1 min-h-0">
 
               <div className="flex items-center justify-between mb-5">
@@ -455,10 +455,10 @@ export default function FarmKhataPage() {
                     {CATEGORIES[selected.category]?.emoji || "💰"}
                   </div>
                   <div>
-                    <h2 className="text-base font-bold text-gray-800">
+                    <h2 className="text-base font-bold text-gray-800 dark:text-slate-100">
                       {editMode ? "Edit Expense" : selected.categoryLabel}
                     </h2>
-                    {selected.edited && !editMode && <p className="text-gray-400 text-xs italic">Edited</p>}
+                    {selected.edited && !editMode && <p className="text-gray-400 dark:text-slate-500 text-xs italic">Edited</p>}
                   </div>
                 </div>
                 <button onClick={closeModal}><X size={22} color="#9CA3AF" /></button>
@@ -469,11 +469,11 @@ export default function FarmKhataPage() {
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: "#FFEBEE" }}>
                     <Trash2 size={28} color="#C62828" />
                   </div>
-                  <p className="text-gray-800 font-bold text-base mb-1">Delete this expense?</p>
-                  <p className="text-gray-500 text-sm mb-6">This cannot be undone.</p>
+                  <p className="text-gray-800 dark:text-slate-100 font-bold text-base mb-1">Delete this expense?</p>
+                  <p className="text-gray-500 dark:text-slate-400 text-sm mb-6">This cannot be undone.</p>
                   <div className="flex gap-3">
                     <button onClick={() => setDelConfirm(false)}
-                      className="flex-1 py-3 rounded-2xl border-2 border-gray-200 text-gray-700 font-bold text-sm">Cancel</button>
+                      className="flex-1 py-3 rounded-2xl border-2 border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-200 font-bold text-sm">Cancel</button>
                     <button onClick={handleDelete} disabled={deleting}
                       className="flex-1 py-3 rounded-2xl text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60"
                       style={{ backgroundColor: "#C62828" }}>
@@ -487,40 +487,40 @@ export default function FarmKhataPage() {
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E8F5E9" }}>
                     <CheckCircle size={36} color="#1B5E20" />
                   </div>
-                  <p className="text-gray-800 font-bold text-base">Changes saved</p>
+                  <p className="text-gray-800 dark:text-slate-100 font-bold text-base">Changes saved</p>
                 </div>
 
               ) : !editMode ? (
                 <>
                   <div className="space-y-0 mb-6">
-                    <div className="flex justify-between items-center py-2.5 border-b border-gray-50">
-                      <span className="text-gray-500 text-sm">Amount</span>
+                    <div className="flex justify-between items-center py-2.5 border-b border-gray-50 dark:border-slate-800">
+                      <span className="text-gray-500 dark:text-slate-400 text-sm">Amount</span>
                       <span className="font-bold text-lg" style={{ color: "#C62828" }}>−{fmt(selected.amount)}</span>
                     </div>
-                    <div className="flex justify-between items-center py-2.5 border-b border-gray-50">
-                      <span className="text-gray-500 text-sm">Date</span>
-                      <span className="text-gray-800 text-sm font-medium">{fmtDate(selected.date)}</span>
+                    <div className="flex justify-between items-center py-2.5 border-b border-gray-50 dark:border-slate-800">
+                      <span className="text-gray-500 dark:text-slate-400 text-sm">Date</span>
+                      <span className="text-gray-800 dark:text-slate-100 text-sm font-medium">{fmtDate(selected.date)}</span>
                     </div>
-                    <div className="flex justify-between items-center py-2.5 border-b border-gray-50">
-                      <span className="text-gray-500 text-sm">Payment</span>
-                      <span className="text-gray-800 text-sm font-medium">{PAYMENT_METHODS[selected.paymentMethod] || selected.paymentMethod}</span>
+                    <div className="flex justify-between items-center py-2.5 border-b border-gray-50 dark:border-slate-800">
+                      <span className="text-gray-500 dark:text-slate-400 text-sm">Payment</span>
+                      <span className="text-gray-800 dark:text-slate-100 text-sm font-medium">{PAYMENT_METHODS[selected.paymentMethod] || selected.paymentMethod}</span>
                     </div>
                     {selected.vendor && (
-                      <div className="flex justify-between items-center py-2.5 border-b border-gray-50">
-                        <span className="text-gray-500 text-sm">Vendor</span>
-                        <span className="text-gray-800 text-sm font-medium">{selected.vendor}</span>
+                      <div className="flex justify-between items-center py-2.5 border-b border-gray-50 dark:border-slate-800">
+                        <span className="text-gray-500 dark:text-slate-400 text-sm">Vendor</span>
+                        <span className="text-gray-800 dark:text-slate-100 text-sm font-medium">{selected.vendor}</span>
                       </div>
                     )}
                     {selected.description && (
                       <div className="py-2.5">
-                        <span className="text-gray-500 text-sm block mb-1">Notes</span>
-                        <span className="text-gray-700 text-sm leading-relaxed">{selected.description}</span>
+                        <span className="text-gray-500 dark:text-slate-400 text-sm block mb-1">Notes</span>
+                        <span className="text-gray-700 dark:text-slate-200 text-sm leading-relaxed">{selected.description}</span>
                       </div>
                     )}
                   </div>
                   {selected.receiptUrl && (
                     <button onClick={() => setReceiptViewUrl(selected.receiptUrl!)}
-                      className="w-full mb-3 py-3 rounded-2xl border-2 border-gray-200 text-gray-700 font-semibold text-sm flex items-center justify-center gap-2">
+                      className="w-full mb-3 py-3 rounded-2xl border-2 border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-200 font-semibold text-sm flex items-center justify-center gap-2">
                       <Receipt size={16} /> View Receipt
                     </button>
                   )}
@@ -529,43 +529,43 @@ export default function FarmKhataPage() {
               ) : (
                 <>
                   <div className="mb-4">
-                    <label className="text-gray-600 text-sm font-medium mb-2 block">Amount (Rs.)</label>
+                    <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Amount (Rs.)</label>
                     <input type="number" inputMode="numeric" value={editForm.amount}
                       onChange={(e) => setEditForm({ ...editForm, amount: e.target.value })}
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700" />
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                   </div>
                   <div className="mb-4">
-                    <label className="text-gray-600 text-sm font-medium mb-2 block">Date</label>
+                    <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Date</label>
                     <input type="date" value={editForm.date}
                       onChange={(e) => setEditForm({ ...editForm, date: e.target.value })}
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700" />
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                   </div>
                   <div className="mb-4">
-                    <label className="text-gray-600 text-sm font-medium mb-2 block">Vendor / Dealer</label>
+                    <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Vendor / Dealer</label>
                     <select value={editForm.vendor} onChange={(e) => setEditForm({ ...editForm, vendor: e.target.value })}
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700 bg-white">
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700 bg-white dark:bg-slate-800">
                       <option value="">— No vendor —</option>
                       {dealers.map((d) => <option key={d.id} value={d.name}>{d.name}</option>)}
                     </select>
                   </div>
                   <div className="mb-4">
-                    <label className="text-gray-600 text-sm font-medium mb-2 block">Payment Method</label>
+                    <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Payment Method</label>
                     <select value={editForm.paymentMethod} onChange={(e) => setEditForm({ ...editForm, paymentMethod: e.target.value })}
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700 bg-white">
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700 bg-white dark:bg-slate-800">
                       {Object.entries(PAYMENT_METHODS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                     </select>
                   </div>
                   <div className="mb-2">
-                    <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
+                    <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
                     <textarea value={editForm.description}
                       onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                       rows={2}
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base resize-none focus:border-green-700" />
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base resize-none focus:border-green-700" />
                   </div>
                 </>
               )}
 
-              <div className="pt-4 mt-2 border-t border-gray-100 flex gap-3">
+              <div className="pt-4 mt-2 border-t border-gray-100 dark:border-slate-700/60 flex gap-3">
                 {editSaved || delConfirm ? (
                   <button onClick={closeModal}
                     className="flex-1 py-4 rounded-2xl text-white font-bold text-base active:scale-95 transition-transform"
@@ -573,7 +573,7 @@ export default function FarmKhataPage() {
                 ) : !editMode && canEdit ? (
                   <>
                     <button onClick={() => setDelConfirm(true)}
-                      className="py-4 px-5 rounded-2xl border-2 border-red-200 text-red-600 font-bold text-base active:scale-95 transition-transform flex items-center justify-center">
+                      className="py-4 px-5 rounded-2xl border-2 border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 font-bold text-base active:scale-95 transition-transform flex items-center justify-center">
                       <Trash2 size={18} />
                     </button>
                     <button onClick={() => {
@@ -641,10 +641,10 @@ export default function FarmKhataPage() {
       <div className="px-4 pt-4">
 
         {/* ── Dashboard Cards + Filter ── */}
-        <div className="bg-white rounded-2xl p-4 shadow-md mb-4">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-md mb-4">
           {/* Filter row */}
           <div className="flex items-center justify-between mb-3 relative">
-            <p className="font-bold text-gray-800 text-sm">Summary</p>
+            <p className="font-bold text-gray-800 dark:text-slate-100 text-sm">Summary</p>
             <button
               onClick={() => setShowFilterMenu((v) => !v)}
               className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium max-w-[160px]"
@@ -657,7 +657,7 @@ export default function FarmKhataPage() {
             {showFilterMenu && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setShowFilterMenu(false)} />
-                <div className="absolute right-0 top-9 z-20 bg-white rounded-2xl shadow-lg border border-gray-100 py-2 min-w-[180px]">
+                <div className="absolute right-0 top-9 z-20 bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-gray-100 dark:border-slate-700/60 py-2 min-w-[180px]">
                   {DATE_FILTER_OPTIONS.map(({ key, label }) => (
                     <button
                       key={key}
@@ -681,16 +681,16 @@ export default function FarmKhataPage() {
           {dateFilter === "custom" && (
             <div className="flex gap-2 mb-3">
               <div className="flex-1">
-                <p className="text-gray-400 text-xs mb-1">From</p>
+                <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">From</p>
                 <input type="date" value={customFrom}
                   onChange={(e) => setCustomFrom(e.target.value)}
-                  className="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-700" />
+                  className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-700" />
               </div>
               <div className="flex-1">
-                <p className="text-gray-400 text-xs mb-1">To</p>
+                <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">To</p>
                 <input type="date" value={customTo}
                   onChange={(e) => setCustomTo(e.target.value)}
-                  className="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-700" />
+                  className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-700" />
               </div>
             </div>
           )}
@@ -744,7 +744,7 @@ export default function FarmKhataPage() {
         {tab === "income" && (
           <>
             <div className="flex items-center justify-between mb-3">
-              <p className="text-gray-500 text-xs">
+              <p className="text-gray-500 dark:text-slate-400 text-xs">
                 {filteredIncome.length} record{filteredIncome.length !== 1 ? "s" : ""}
               </p>
               {canEdit && (
@@ -762,27 +762,27 @@ export default function FarmKhataPage() {
             ) : filteredIncome.length === 0 ? (
               <div className="text-center py-16">
                 <p className="text-4xl mb-3">💰</p>
-                <p className="text-gray-500 text-sm">No income in this period</p>
-                <p className="text-gray-400 text-xs mt-1">Tap "Add Income" to record farm income</p>
+                <p className="text-gray-500 dark:text-slate-400 text-sm">No income in this period</p>
+                <p className="text-gray-400 dark:text-slate-500 text-xs mt-1">Tap "Add Income" to record farm income</p>
               </div>
             ) : (
               <div className="space-y-2">
                 {[...filteredIncome].sort((a, b) => (b.date > a.date ? 1 : -1)).map((t) => (
-                  <div key={t.id} className="w-full bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm">
+                  <div key={t.id} className="w-full bg-white dark:bg-slate-800 rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm">
                     <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "#E8F5E9" }}>
                       <ArrowUpRight size={20} color="#1B5E20" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-gray-800 font-semibold text-sm leading-tight">
+                      <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm leading-tight">
                         {t.categoryLabel || t.category || t.description || "Income"}
                       </p>
-                      <p className="text-gray-400 text-xs mt-0.5 truncate">
+                      <p className="text-gray-400 dark:text-slate-500 text-xs mt-0.5 truncate">
                         {t.farmerName ? `${t.farmerName} · ` : ""}
                         {t.parcelName ? `${t.parcelName} · ` : ""}
                         {fmtDate(t.date)}
                       </p>
                       {t.cropCycleName && (
-                        <p className="text-gray-400 text-xs truncate">{t.cropCycleName}</p>
+                        <p className="text-gray-400 dark:text-slate-500 text-xs truncate">{t.cropCycleName}</p>
                       )}
                     </div>
                     <div className="text-right shrink-0">
@@ -799,7 +799,7 @@ export default function FarmKhataPage() {
         {tab === "expenses" && (
           <>
             <div className="flex items-center justify-between mb-3">
-              <p className="text-gray-500 text-xs">
+              <p className="text-gray-500 dark:text-slate-400 text-xs">
                 {filteredExpenses.length} record{filteredExpenses.length !== 1 ? "s" : ""}
               </p>
             </div>
@@ -809,8 +809,8 @@ export default function FarmKhataPage() {
             ) : filteredExpenses.length === 0 ? (
               <div className="text-center py-16">
                 <p className="text-4xl mb-3">🚜</p>
-                <p className="text-gray-500 text-sm">No expenses in this period</p>
-                <p className="text-gray-400 text-xs mt-1">Tap + to record fuel, repairs, and other farm costs</p>
+                <p className="text-gray-500 dark:text-slate-400 text-sm">No expenses in this period</p>
+                <p className="text-gray-400 dark:text-slate-500 text-xs mt-1">Tap + to record fuel, repairs, and other farm costs</p>
               </div>
             ) : (
               <div className="space-y-2">
@@ -818,21 +818,21 @@ export default function FarmKhataPage() {
                   const cfg = CATEGORIES[e.category];
                   return (
                     <button key={e.id} onClick={() => setSelected(e)}
-                      className="w-full bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform text-left">
+                      className="w-full bg-white dark:bg-slate-800 rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform text-left">
                       <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
                         style={{ backgroundColor: cfg?.bg || "#F5F5F5" }}>
                         {cfg?.emoji || "💰"}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-gray-800 font-semibold text-sm leading-tight">{e.categoryLabel}</p>
-                        <p className="text-gray-400 text-xs mt-0.5 truncate">
+                        <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm leading-tight">{e.categoryLabel}</p>
+                        <p className="text-gray-400 dark:text-slate-500 text-xs mt-0.5 truncate">
                           {e.vendor ? `${e.vendor} · ` : ""}{fmtDate(e.date)}
                         </p>
-                        {e.description && <p className="text-gray-400 text-xs truncate">{e.description}</p>}
+                        {e.description && <p className="text-gray-400 dark:text-slate-500 text-xs truncate">{e.description}</p>}
                       </div>
                       <div className="text-right flex-shrink-0">
                         <p className="font-bold text-sm" style={{ color: "#C62828" }}>−{fmt(e.amount)}</p>
-                        <p className="text-gray-400 text-[10px] mt-0.5">{PAYMENT_METHODS[e.paymentMethod] || e.paymentMethod}</p>
+                        <p className="text-gray-400 dark:text-slate-500 text-[10px] mt-0.5">{PAYMENT_METHODS[e.paymentMethod] || e.paymentMethod}</p>
                       </div>
                     </button>
                   );

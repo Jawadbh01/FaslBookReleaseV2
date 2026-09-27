@@ -355,15 +355,15 @@ export default function ProfilesPage() {
       <div className="px-4 pt-4">
         {loading ? (
           <div className="flex justify-center pt-20">
-            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: "#1B5E20" }} />
+            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: "#1B5E20" }} />
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center pt-20 text-center">
             <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E8F5E9" }}>
               <User size={36} color="#1B5E20" />
             </div>
-            <p className="text-gray-600 font-semibold mb-2">No profiles found</p>
-            <p className="text-gray-400 text-sm mb-6">Add a Farmer, Dealer, Labour Contractor, or Custom profile</p>
+            <p className="text-gray-600 dark:text-slate-300 font-semibold mb-2">No profiles found</p>
+            <p className="text-gray-400 dark:text-slate-500 text-sm mb-6">Add a Farmer, Dealer, Labour Contractor, or Custom profile</p>
             {canEdit && (
               <button onClick={openAdd}
                 className="flex items-center gap-2 px-6 py-3 rounded-2xl text-white font-bold active:scale-95 transition-transform"
@@ -382,7 +382,7 @@ export default function ProfilesPage() {
                 : p.type === "labourContractor" ? `${p.teamSize ?? 0} workers`
                 : p.customLabel;
               return (
-                <div key={`${p.type}-${p.id}`} className="bg-white rounded-2xl p-4 shadow-sm"
+                <div key={`${p.type}-${p.id}`} className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm"
                   style={{ opacity: p.isActive ? 1 : 0.55 }}>
                   <div className="flex items-start justify-between mb-3">
                     <button onClick={() => openDetail(p)} className="flex items-center gap-3 text-left flex-1 min-w-0">
@@ -391,7 +391,7 @@ export default function ProfilesPage() {
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <p className="font-bold text-gray-800 text-base truncate">{p.name}</p>
+                          <p className="font-bold text-gray-800 dark:text-slate-100 text-base truncate">{p.name}</p>
                           {!p.isActive && (
                             <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0" style={{ backgroundColor: "#F5F5F5", color: "#9CA3AF" }}>
                               <EyeOff size={9} /> Inactive
@@ -402,7 +402,7 @@ export default function ProfilesPage() {
                           <span className="px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ backgroundColor: cfg.bg, color: cfg.color }}>
                             {cfg.label}
                           </span>
-                          {subtitle && <span className="text-gray-400 text-xs truncate">{subtitle}</span>}
+                          {subtitle && <span className="text-gray-400 dark:text-slate-500 text-xs truncate">{subtitle}</span>}
                         </div>
                       </div>
                     </button>
@@ -410,8 +410,8 @@ export default function ProfilesPage() {
 
                   {(p.phone || p.address) && (
                     <div className="flex flex-col gap-0.5 mb-3 pl-1">
-                      {p.phone && <p className="text-gray-500 text-xs flex items-center gap-1.5"><Phone size={11} /> {p.phone}</p>}
-                      {p.address && <p className="text-gray-500 text-xs flex items-center gap-1.5"><MapPin size={11} /> {p.address}</p>}
+                      {p.phone && <p className="text-gray-500 dark:text-slate-400 text-xs flex items-center gap-1.5"><Phone size={11} /> {p.phone}</p>}
+                      {p.address && <p className="text-gray-500 dark:text-slate-400 text-xs flex items-center gap-1.5"><MapPin size={11} /> {p.address}</p>}
                     </div>
                   )}
 
@@ -422,17 +422,17 @@ export default function ProfilesPage() {
                       <BookOpen size={13} /> Open Khata
                     </button>
                     <button onClick={() => openDetail(p)}
-                      className="flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border-2 border-gray-200 text-gray-600 active:scale-95 transition-transform">
+                      className="flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 border-2 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 active:scale-95 transition-transform">
                       View <ChevronRight size={13} />
                     </button>
                     {canEdit && (
                       <>
                         <button onClick={() => openEdit(p)}
-                          className="w-10 h-10 rounded-xl flex items-center justify-center border-2 border-gray-200 active:scale-95 transition-transform shrink-0">
+                          className="w-10 h-10 rounded-xl flex items-center justify-center border-2 border-gray-200 dark:border-slate-700 active:scale-95 transition-transform shrink-0">
                           <Pencil size={14} color="#6B7280" />
                         </button>
                         <button onClick={() => openDelete(p)}
-                          className="w-10 h-10 rounded-xl flex items-center justify-center border-2 border-red-100 active:scale-95 transition-transform shrink-0">
+                          className="w-10 h-10 rounded-xl flex items-center justify-center border-2 border-red-100 dark:border-red-900/50 active:scale-95 transition-transform shrink-0">
                           <Trash2 size={14} color="#C62828" />
                         </button>
                       </>
@@ -448,18 +448,18 @@ export default function ProfilesPage() {
       {/* ── Type Picker Modal ── */}
       {modal === "typePicker" && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40" onClick={closeModal}>
-          <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-bold text-gray-800">Add Profile</h2>
+              <h2 className="text-lg font-bold text-gray-800 dark:text-slate-100">Add Profile</h2>
               <button onClick={closeModal}><X size={22} color="#9CA3AF" /></button>
             </div>
-            <p className="text-gray-500 text-sm mb-4">Choose a profile type</p>
+            <p className="text-gray-500 dark:text-slate-400 text-sm mb-4">Choose a profile type</p>
             <div className="grid grid-cols-2 gap-3">
               {(Object.entries(TYPE_CONFIG) as [ProfileType, typeof TYPE_CONFIG[ProfileType]][]).map(([key, cfg]) => {
                 const Icon = cfg.icon;
                 return (
                   <button key={key} onClick={() => pickType(key)}
-                    className="flex flex-col items-center gap-2 py-5 rounded-2xl border-2 border-gray-100 active:scale-95 transition-transform"
+                    className="flex flex-col items-center gap-2 py-5 rounded-2xl border-2 border-gray-100 dark:border-slate-700/60 active:scale-95 transition-transform"
                     style={{ backgroundColor: cfg.bg }}>
                     <Icon size={26} color={cfg.color} />
                     <span className="font-bold text-sm" style={{ color: cfg.color }}>{cfg.label}</span>
@@ -475,12 +475,12 @@ export default function ProfilesPage() {
       {/* ── Add / Edit Form Modal ── */}
       {modal === "form" && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40" onClick={closeModal}>
-          <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="px-6 pt-6 pb-6 overflow-y-auto flex-1 min-h-0">
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2">
                   {(() => { const Icon = TYPE_CONFIG[formType].icon; return <Icon size={18} color={TYPE_CONFIG[formType].color} />; })()}
-                  <h2 className="text-lg font-bold text-gray-800">
+                  <h2 className="text-lg font-bold text-gray-800 dark:text-slate-100">
                     {editTarget ? "Edit" : "Add"} {TYPE_CONFIG[formType].label}
                   </h2>
                 </div>
@@ -488,62 +488,62 @@ export default function ProfilesPage() {
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-4">{error}</div>
+                <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-4">{error}</div>
               )}
 
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Name *</label>
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Name *</label>
               <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-                placeholder="Full name" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-green-700" />
+                placeholder="Full name" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
 
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Phone</label>
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Phone</label>
               <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                placeholder="03XX-XXXXXXX" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-green-700" />
+                placeholder="03XX-XXXXXXX" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
 
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Address (Optional)</label>
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Address (Optional)</label>
               <input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })}
-                placeholder="Village / area address" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-green-700" />
+                placeholder="Village / area address" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
 
               {formType === "farmer" && (
                 <>
-                  <label className="text-gray-600 text-sm font-medium mb-2 block">Farm Name (Optional)</label>
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Farm Name (Optional)</label>
                   <input value={form.farmName} onChange={(e) => setForm({ ...form, farmName: e.target.value })}
-                    placeholder="e.g. Green Acres Farm" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-green-700" />
+                    placeholder="e.g. Green Acres Farm" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                 </>
               )}
 
               {formType === "dealer" && (
                 <>
-                  <label className="text-gray-600 text-sm font-medium mb-2 block">Business Name *</label>
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Business Name *</label>
                   <input value={form.businessName} onChange={(e) => setForm({ ...form, businessName: e.target.value })}
-                    placeholder="e.g. Al-Rahman Traders" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-green-700" />
-                  <label className="text-gray-600 text-sm font-medium mb-2 block">Products/Services (Optional)</label>
+                    placeholder="e.g. Al-Rahman Traders" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Products/Services (Optional)</label>
                   <input value={form.productsServices} onChange={(e) => setForm({ ...form, productsServices: e.target.value })}
-                    placeholder="e.g. Fertilizer, Seeds" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-green-700" />
+                    placeholder="e.g. Fertilizer, Seeds" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                 </>
               )}
 
               {formType === "labourContractor" && (
                 <>
-                  <label className="text-gray-600 text-sm font-medium mb-2 block">Team Size *</label>
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Team Size *</label>
                   <input type="number" value={form.teamSize} onChange={(e) => setForm({ ...form, teamSize: e.target.value })}
-                    placeholder="Number of workers" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-green-700" />
+                    placeholder="Number of workers" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                 </>
               )}
 
               {formType === "custom" && (
                 <>
-                  <label className="text-gray-600 text-sm font-medium mb-2 block">Custom Label *</label>
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Custom Label *</label>
                   <input value={form.customLabel} onChange={(e) => setForm({ ...form, customLabel: e.target.value })}
-                    placeholder="e.g. Landlord, Investor, Transporter" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-green-700" />
+                    placeholder="e.g. Landlord, Investor, Transporter" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                 </>
               )}
 
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
               <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })}
                 rows={2} placeholder="Any notes…"
-                className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-2 outline-none text-gray-800 text-base resize-none focus:border-green-700" />
+                className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-2 outline-none text-gray-800 dark:text-slate-100 text-base resize-none focus:border-green-700" />
 
-              <div className="pt-4 mt-2 border-t border-gray-100">
+              <div className="pt-4 mt-2 border-t border-gray-100 dark:border-slate-700/60">
                 <button onClick={handleSave} disabled={saving}
                   className="w-full py-4 rounded-2xl text-white font-bold text-base flex items-center justify-center gap-2 disabled:opacity-60 active:scale-95 transition-transform"
                   style={{ backgroundColor: "#1B5E20" }}>
@@ -559,11 +559,11 @@ export default function ProfilesPage() {
       {/* ── Delete / Deactivate Modal ── */}
       {delTarget && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40" onClick={() => !delBusy && setDelTarget(null)}>
-          <div className="bg-white w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl p-6" onClick={(e) => e.stopPropagation()}>
             {delChecking ? (
               <div className="flex flex-col items-center py-6">
                 <Loader2 size={28} className="animate-spin mb-3" style={{ color: "#1B5E20" }} />
-                <p className="text-gray-500 text-sm">Checking transaction history…</p>
+                <p className="text-gray-500 dark:text-slate-400 text-sm">Checking transaction history…</p>
               </div>
             ) : (
               <div className="flex flex-col items-center text-center">
@@ -572,12 +572,12 @@ export default function ProfilesPage() {
                 </div>
                 {delBlocked ? (
                   <>
-                    <p className="font-bold text-gray-800 mb-1">Can't delete — Khata has entries</p>
-                    <p className="text-gray-500 text-sm mb-6">
+                    <p className="font-bold text-gray-800 dark:text-slate-100 mb-1">Can't delete — Khata has entries</p>
+                    <p className="text-gray-500 dark:text-slate-400 text-sm mb-6">
                       {delTarget.name} has financial transactions linked to their Khata. Mark them Inactive instead — their history stays intact.
                     </p>
                     <div className="flex gap-3 w-full">
-                      <button onClick={() => setDelTarget(null)} className="flex-1 py-3 rounded-2xl border-2 border-gray-200 font-semibold text-sm text-gray-700">Cancel</button>
+                      <button onClick={() => setDelTarget(null)} className="flex-1 py-3 rounded-2xl border-2 border-gray-200 dark:border-slate-700 font-semibold text-sm text-gray-700 dark:text-slate-200">Cancel</button>
                       <button onClick={markInactive} disabled={delBusy}
                         className="flex-1 py-3 rounded-2xl text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60"
                         style={{ backgroundColor: "#E65100" }}>
@@ -587,10 +587,10 @@ export default function ProfilesPage() {
                   </>
                 ) : (
                   <>
-                    <p className="font-bold text-gray-800 mb-1">Delete this profile?</p>
-                    <p className="text-gray-500 text-sm mb-6">{delTarget.name} has no Khata entries — this can't be undone.</p>
+                    <p className="font-bold text-gray-800 dark:text-slate-100 mb-1">Delete this profile?</p>
+                    <p className="text-gray-500 dark:text-slate-400 text-sm mb-6">{delTarget.name} has no Khata entries — this can't be undone.</p>
                     <div className="flex gap-3 w-full">
-                      <button onClick={() => setDelTarget(null)} className="flex-1 py-3 rounded-2xl border-2 border-gray-200 font-semibold text-sm text-gray-700">Cancel</button>
+                      <button onClick={() => setDelTarget(null)} className="flex-1 py-3 rounded-2xl border-2 border-gray-200 dark:border-slate-700 font-semibold text-sm text-gray-700 dark:text-slate-200">Cancel</button>
                       <button onClick={confirmDelete} disabled={delBusy}
                         className="flex-1 py-3 rounded-2xl text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60"
                         style={{ backgroundColor: "#C62828" }}>

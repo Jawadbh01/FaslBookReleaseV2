@@ -91,7 +91,7 @@ export default function NotificationsPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => window.history.back()}
-              className="text-white p-1 rounded-full hover:bg-white/10 transition-colors"
+              className="text-white p-1 rounded-full hover:bg-white dark:bg-slate-800/10 transition-colors"
             >
               <ArrowLeft size={24} />
             </button>

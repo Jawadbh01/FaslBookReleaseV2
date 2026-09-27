@@ -102,9 +102,9 @@ export default function CropDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-slate-800">
         <div
-          className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100"
+          className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60"
           style={{ borderTopColor: "#1B5E20" }}
         />
       </div>
@@ -113,8 +113,8 @@ export default function CropDetailPage() {
 
   if (!crop) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <p className="text-gray-500">Crop not found</p>
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-slate-800">
+        <p className="text-gray-500 dark:text-slate-400">Crop not found</p>
       </div>
     );
   }
@@ -124,20 +124,20 @@ export default function CropDetailPage() {
   // ── Success Screen ─────────────────────────────────────────
   if (success) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 text-center">
+      <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col items-center justify-center px-6 text-center">
         <div
           className="w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-lg"
           style={{ backgroundColor: "#E8F5E9" }}
         >
           <CheckCircle size={52} color="#1B5E20" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-slate-100 mb-2">
           Harvest Recorded! 🌾
         </h1>
-        <p className="text-gray-500 text-sm mb-2">
+        <p className="text-gray-500 dark:text-slate-400 text-sm mb-2">
           {hForm.quantity} {hForm.unit} of {crop.cropName}
         </p>
-        <p className="text-gray-400 text-xs mb-8">
+        <p className="text-gray-400 dark:text-slate-500 text-xs mb-8">
           Stock added to Godown automatically
         </p>
 
@@ -148,11 +148,11 @@ export default function CropDetailPage() {
           <p className="text-green-800 text-sm font-semibold mb-2">
             ✅ What happened automatically:
           </p>
-          <p className="text-green-700 text-xs mb-1">• Crop marked as Harvested</p>
-          <p className="text-green-700 text-xs mb-1">• {hForm.quantity} {hForm.unit} added to Godown</p>
-          <p className="text-green-700 text-xs mb-1">• Inventory transaction created</p>
-          <p className="text-green-700 text-xs mb-1">• Ledger entry created</p>
-          <p className="text-green-700 text-xs">• Activity log updated</p>
+          <p className="text-green-700 dark:text-green-400 text-xs mb-1">• Crop marked as Harvested</p>
+          <p className="text-green-700 dark:text-green-400 text-xs mb-1">• {hForm.quantity} {hForm.unit} added to Godown</p>
+          <p className="text-green-700 dark:text-green-400 text-xs mb-1">• Inventory transaction created</p>
+          <p className="text-green-700 dark:text-green-400 text-xs mb-1">• Ledger entry created</p>
+          <p className="text-green-700 dark:text-green-400 text-xs">• Activity log updated</p>
         </div>
 
         <button
@@ -169,7 +169,7 @@ export default function CropDetailPage() {
   // ── Harvest Form ───────────────────────────────────────────
   if (showHarvest) {
     return (
-      <div className="min-h-screen bg-white flex flex-col">
+      <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
         <div
           className="flex items-center px-4 pt-12 pb-6"
           style={{ backgroundColor: "#1B5E20" }}
@@ -188,7 +188,7 @@ export default function CropDetailPage() {
 
         <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">
               {error}
             </div>
           )}
@@ -203,7 +203,7 @@ export default function CropDetailPage() {
               <p className="text-green-800 font-semibold text-sm">
                 Stock will be added to Godown automatically
               </p>
-              <p className="text-green-700 text-xs">
+              <p className="text-green-700 dark:text-green-400 text-xs">
                 Inventory, ledger and logs update instantly
               </p>
             </div>
@@ -211,24 +211,24 @@ export default function CropDetailPage() {
 
           {/* Quantity */}
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
               Harvested Quantity *
             </label>
             <div className="flex gap-3">
-              <div className="flex-1 flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <div className="flex-1 flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <input
                   type="number"
                   placeholder="e.g. 500"
                   value={hForm.quantity}
                   onChange={(e) => setHForm({ ...hForm, quantity: e.target.value })}
-                  className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                  className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
                 />
               </div>
-              <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <select
                   value={hForm.unit}
                   onChange={(e) => setHForm({ ...hForm, unit: e.target.value })}
-                  className="outline-none text-gray-800 text-base bg-transparent"
+                  className="outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
                 >
                   {units.map((u) => (
                     <option key={u} value={u}>{u}</option>
@@ -240,32 +240,32 @@ export default function CropDetailPage() {
 
           {/* Harvest Date */}
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
               Harvest Date *
             </label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <Calendar size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <input
                 type="date"
                 value={hForm.harvestDate}
                 onChange={(e) => setHForm({ ...hForm, harvestDate: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               />
             </div>
           </div>
 
           {/* Notes */}
           <div className="mb-8">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
               Notes (Optional)
             </label>
-            <div className="border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <textarea
                 placeholder="Quality notes, storage location etc..."
                 value={hForm.notes}
                 onChange={(e) => setHForm({ ...hForm, notes: e.target.value })}
                 rows={3}
-                className="w-full outline-none text-gray-800 text-base bg-transparent resize-none"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none"
               />
             </div>
           </div>
@@ -288,7 +288,7 @@ export default function CropDetailPage() {
 
   // ── Crop Detail ────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-24">
       <div
         className="flex items-center px-4 pt-12 pb-6"
         style={{ backgroundColor: "#1B5E20" }}
@@ -314,8 +314,8 @@ export default function CropDetailPage() {
 
       <div className="px-4 pt-4">
         {/* Status timeline */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm mb-4">
-          <p className="text-gray-600 font-semibold text-sm mb-3">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm mb-4">
+          <p className="text-gray-600 dark:text-slate-300 font-semibold text-sm mb-3">
             Status Timeline
           </p>
           <div className="flex items-center justify-between">
@@ -360,32 +360,32 @@ export default function CropDetailPage() {
         </div>
 
         {/* Details */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm mb-4">
-          <p className="text-gray-600 font-semibold text-sm mb-3">Details</p>
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm mb-4">
+          <p className="text-gray-600 dark:text-slate-300 font-semibold text-sm mb-3">Details</p>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-gray-50 rounded-xl p-3">
-              <p className="text-gray-400 text-xs mb-1">Sowing Date</p>
-              <p className="text-gray-800 font-semibold text-sm">{fmt(crop.sowingDate)}</p>
+            <div className="bg-gray-50 dark:bg-slate-900 rounded-xl p-3">
+              <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">Sowing Date</p>
+              <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm">{fmt(crop.sowingDate)}</p>
             </div>
-            <div className="bg-gray-50 rounded-xl p-3">
-              <p className="text-gray-400 text-xs mb-1">Expected Harvest</p>
-              <p className="text-gray-800 font-semibold text-sm">{fmt(crop.expectedHarvest)}</p>
+            <div className="bg-gray-50 dark:bg-slate-900 rounded-xl p-3">
+              <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">Expected Harvest</p>
+              <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm">{fmt(crop.expectedHarvest)}</p>
             </div>
-            <div className="bg-gray-50 rounded-xl p-3">
-              <p className="text-gray-400 text-xs mb-1">Parcel</p>
-              <p className="text-gray-800 font-semibold text-sm">{crop.parcelName || "—"}</p>
+            <div className="bg-gray-50 dark:bg-slate-900 rounded-xl p-3">
+              <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">Parcel</p>
+              <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm">{crop.parcelName || "—"}</p>
             </div>
-            <div className="bg-gray-50 rounded-xl p-3">
-              <p className="text-gray-400 text-xs mb-1">Farmer</p>
-              <p className="text-gray-800 font-semibold text-sm">
+            <div className="bg-gray-50 dark:bg-slate-900 rounded-xl p-3">
+              <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">Farmer</p>
+              <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm">
                 {crop.assignedFarmerName || "—"}
               </p>
             </div>
           </div>
           {crop.notes && (
-            <div className="mt-3 bg-gray-50 rounded-xl p-3">
-              <p className="text-gray-400 text-xs mb-1">Notes</p>
-              <p className="text-gray-700 text-sm">{crop.notes}</p>
+            <div className="mt-3 bg-gray-50 dark:bg-slate-900 rounded-xl p-3">
+              <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">Notes</p>
+              <p className="text-gray-700 dark:text-slate-200 text-sm">{crop.notes}</p>
             </div>
           )}
         </div>
@@ -399,11 +399,11 @@ export default function CropDetailPage() {
             <p className="text-green-800 font-semibold text-sm mb-2">
               ✅ Harvest Completed
             </p>
-            <p className="text-green-700 text-sm">
+            <p className="text-green-700 dark:text-green-400 text-sm">
               {crop.harvestedQuantity} {crop.harvestUnit} harvested
             </p>
             {crop.actualHarvest && (
-              <p className="text-green-600 text-xs mt-1">
+              <p className="text-green-600 dark:text-green-400 text-xs mt-1">
                 on {fmt(crop.actualHarvest)}
               </p>
             )}

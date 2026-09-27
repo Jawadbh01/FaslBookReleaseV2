@@ -275,7 +275,7 @@ export default function CropsPage() {
   // ── Add Form ───────────────────────────────────────────────
   if (showAdd) {
     return (
-      <div className="min-h-screen bg-white flex flex-col">
+      <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
         <div
           className="flex items-center px-4 pt-12 pb-6"
           style={{ backgroundColor: "#1B5E20" }}
@@ -296,22 +296,22 @@ export default function CropsPage() {
 
         <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
           {formError && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">
               {formError}
             </div>
           )}
 
           {/* Crop Name */}
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
               Crop Name *
             </label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <Wheat size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <select
                 value={form.cropName}
                 onChange={(e) => setForm({ ...form, cropName: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               >
                 <option value="">Select crop</option>
                 {cropSuggestions.map((c) => (
@@ -324,17 +324,17 @@ export default function CropsPage() {
           {/* Custom crop name if Other */}
           {form.cropName === "Other" && (
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
                 Crop Name (Custom)
               </label>
-              <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <Wheat size={20} color="#9E9E9E" className="mr-3 shrink-0" />
                 <input
                   type="text"
                   placeholder="Enter crop name"
                   value={form.customCrop}
                   onChange={(e) => setForm({ ...form, customCrop: e.target.value })}
-                  className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                  className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
                 />
               </div>
             </div>
@@ -342,7 +342,7 @@ export default function CropsPage() {
 
           {/* Season */}
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-3 block">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-3 block">
               Season
             </label>
             <div className="flex gap-3">
@@ -365,15 +365,15 @@ export default function CropsPage() {
 
           {/* Select Parcel */}
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
               Select Parcel *
             </label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <MapPin size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <select
                 value={form.parcelId}
                 onChange={(e) => setForm({ ...form, parcelId: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               >
                 <option value="">Select parcel</option>
                 {parcels.map((p) => (
@@ -384,7 +384,7 @@ export default function CropsPage() {
               </select>
             </div>
             {parcels.length === 0 && (
-              <p className="text-gray-400 text-xs mt-1 ml-2">
+              <p className="text-gray-400 dark:text-slate-500 text-xs mt-1 ml-2">
                 No parcels found. Add parcels first.
               </p>
             )}
@@ -392,15 +392,15 @@ export default function CropsPage() {
 
           {/* Assign Farmer */}
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
               Assign Farmer (Optional)
             </label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <User size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <select
                 value={form.assignedFarmer}
                 onChange={(e) => setForm({ ...form, assignedFarmer: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               >
                 <option value="">No farmer assigned</option>
                 {farmers.map((f) => (
@@ -412,48 +412,48 @@ export default function CropsPage() {
 
           {/* Sowing Date */}
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
               Sowing Date *
             </label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <Calendar size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <input
                 type="date"
                 value={form.sowingDate}
                 onChange={(e) => setForm({ ...form, sowingDate: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden"
               />
             </div>
           </div>
 
           {/* Expected Harvest */}
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
               Expected Harvest Date
             </label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <Calendar size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <input
                 type="date"
                 value={form.expectedHarvest}
                 onChange={(e) => setForm({ ...form, expectedHarvest: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-inner-spin-button]:hidden"
               />
             </div>
           </div>
 
           {/* Notes */}
           <div className="mb-8">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
               Notes (Optional)
             </label>
-            <div className="border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <textarea
                 placeholder="Any additional notes..."
                 value={form.notes}
                 onChange={(e) => setForm({ ...form, notes: e.target.value })}
                 rows={3}
-                className="w-full outline-none text-gray-800 text-base bg-transparent resize-none"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none"
               />
             </div>
           </div>
@@ -476,7 +476,7 @@ export default function CropsPage() {
 
   // ── Main List ──────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-24">
       {/* Header */}
       <div
         className="px-4 pt-12 pb-4"
@@ -542,7 +542,7 @@ export default function CropsPage() {
         {loading ? (
           <div className="flex justify-center pt-20">
             <div
-              className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100"
+              className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60"
               style={{ borderTopColor: "#1B5E20" }}
             />
           </div>
@@ -554,10 +554,10 @@ export default function CropsPage() {
             >
               <Sprout size={36} color="#1B5E20" />
             </div>
-            <p className="text-gray-600 font-semibold mb-2">
+            <p className="text-gray-600 dark:text-slate-300 font-semibold mb-2">
               {filter === "all" ? "No crops yet" : `No ${statusConfig[filter]?.label} crops`}
             </p>
-            <p className="text-gray-400 text-sm mb-6">
+            <p className="text-gray-400 dark:text-slate-500 text-sm mb-6">
               {filter === "all"
                 ? "Add your first crop to get started"
                 : "Try a different filter"
@@ -587,7 +587,7 @@ export default function CropsPage() {
               return (
                 <div
                   key={crop.id}
-                  className="bg-white rounded-2xl p-4 shadow-sm"
+                  className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm"
                 >
                   {/* Top */}
                   <div className="flex items-start justify-between mb-3">
@@ -599,10 +599,10 @@ export default function CropsPage() {
                         <Wheat size={22} color={sc.color} />
                       </div>
                       <div>
-                        <p className="font-bold text-gray-800 text-base">
+                        <p className="font-bold text-gray-800 dark:text-slate-100 text-base">
                           {crop.cropName}
                         </p>
-                        <p className="text-gray-500 text-xs">
+                        <p className="text-gray-500 dark:text-slate-400 text-xs">
                           {crop.season} • {crop.parcelName || "No parcel"}
                         </p>
                       </div>
@@ -622,11 +622,11 @@ export default function CropsPage() {
 
                   {/* Progress bar */}
                   <div className="mb-3">
-                    <div className="flex justify-between text-xs text-gray-400 mb-1">
+                    <div className="flex justify-between text-xs text-gray-400 dark:text-slate-500 mb-1">
                       <span>Progress</span>
                       <span>{Math.round(progress)}%</span>
                     </div>
-                    <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-100 dark:bg-slate-800/70 rounded-full overflow-hidden">
                       <div
                         className="h-full rounded-full transition-all"
                         style={{
@@ -639,17 +639,17 @@ export default function CropsPage() {
 
                   {/* Info row */}
                   <div className="grid grid-cols-2 gap-2 mb-3">
-                    <div className="bg-gray-50 rounded-xl p-2">
-                      <p className="text-gray-400 text-xs mb-0.5">Sowing</p>
-                      <p className="text-gray-800 text-xs font-semibold">
+                    <div className="bg-gray-50 dark:bg-slate-900 rounded-xl p-2">
+                      <p className="text-gray-400 dark:text-slate-500 text-xs mb-0.5">Sowing</p>
+                      <p className="text-gray-800 dark:text-slate-100 text-xs font-semibold">
                         {fmt(crop.sowingDate)}
                       </p>
                     </div>
-                    <div className="bg-gray-50 rounded-xl p-2">
-                      <p className="text-gray-400 text-xs mb-0.5">
+                    <div className="bg-gray-50 dark:bg-slate-900 rounded-xl p-2">
+                      <p className="text-gray-400 dark:text-slate-500 text-xs mb-0.5">
                         Expected Harvest
                       </p>
-                      <p className="text-gray-800 text-xs font-semibold">
+                      <p className="text-gray-800 dark:text-slate-100 text-xs font-semibold">
                         {fmt(crop.expectedHarvest)}
                       </p>
                     </div>
@@ -659,7 +659,7 @@ export default function CropsPage() {
                   {crop.assignedFarmerName && (
                     <div className="flex items-center gap-2 mb-3">
                       <User size={14} color="#9E9E9E" />
-                      <span className="text-gray-500 text-xs">
+                      <span className="text-gray-500 dark:text-slate-400 text-xs">
                         {crop.assignedFarmerName}
                       </span>
                     </div>

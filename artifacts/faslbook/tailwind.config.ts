@@ -1,6 +1,12 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  // Class-based dark mode, driven by `.dark` on <html>. The custom `fb-dark`
+  // variant lets us emit ONLY dark styles (no light CSS variables are needed —
+  // light mode keeps using plain Tailwind classes as-is).
+  // Single source of truth for dark mode: the `.dark` class on <html>,
+  // toggled by src/hooks/useDarkMode.ts. (The old `[data-fb-theme]` selector
+  // was never set anywhere, so `fb-dark:` variants silently never applied.)
   darkMode: "class",
   content: [
     "./src/**/*.{js,ts,jsx,tsx}",

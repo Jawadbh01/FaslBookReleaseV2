@@ -118,7 +118,7 @@ export default function NotificationBell({
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label="Notifications"
-        className="relative p-2 rounded-full transition-colors hover:bg-white/10"
+        className="relative p-2 rounded-full transition-colors hover:bg-white dark:bg-slate-800/10"
       >
         <Bell size={22} color={iconColor} />
         {unread > 0 && (
@@ -139,7 +139,7 @@ export default function NotificationBell({
       {/* Dropdown */}
       {open && (
         <div
-          className="fixed z-50 overflow-hidden flex flex-col rounded-2xl shadow-xl border border-gray-100 bg-white"
+          className="fixed z-50 overflow-hidden flex flex-col rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700/60 bg-white dark:bg-slate-800"
           style={{
             top: ref.current ? ref.current.getBoundingClientRect().bottom + 6 : 60,
             right: 12,
@@ -148,9 +148,9 @@ export default function NotificationBell({
           }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-50 shrink-0">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-50 dark:border-slate-800 shrink-0">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-sm text-gray-800">Notifications</span>
+              <span className="font-bold text-sm text-gray-800 dark:text-slate-100">Notifications</span>
               {unread > 0 && (
                 <span
                   className="text-white text-xs font-bold px-1.5 py-0.5 rounded-full"
@@ -164,14 +164,14 @@ export default function NotificationBell({
               {unread > 0 && (
                 <button
                   onClick={markAllRead}
-                  className="flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg hover:bg-gray-100 dark:bg-slate-800/70 transition-colors"
                   style={{ color: "#1B5E20" }}
                 >
                   <CheckCheck size={12} />
                   Mark all read
                 </button>
               )}
-              <button onClick={() => setOpen(false)} className="p-1 rounded-full hover:bg-gray-100">
+              <button onClick={() => setOpen(false)} className="p-1 rounded-full hover:bg-gray-100 dark:bg-slate-800/70">
                 <X size={14} color="#9E9E9E" />
               </button>
             </div>
@@ -182,7 +182,7 @@ export default function NotificationBell({
             {notifs.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 gap-2">
                 <Bell size={36} color="#E0E0E0" />
-                <p className="text-gray-400 text-sm font-medium">No notifications yet</p>
+                <p className="text-gray-400 dark:text-slate-500 text-sm font-medium">No notifications yet</p>
               </div>
             ) : (
               notifs.map((n) => {
@@ -195,7 +195,7 @@ export default function NotificationBell({
                       setOpen(false);
                       navigate("/notifications");
                     }}
-                    className="w-full text-left flex items-start gap-3 px-4 py-3 border-b border-gray-50 transition-colors hover:bg-gray-50 last:border-0"
+                    className="w-full text-left flex items-start gap-3 px-4 py-3 border-b border-gray-50 dark:border-slate-800 transition-colors hover:bg-gray-50 dark:bg-slate-900 last:border-0"
                     style={{ backgroundColor: n.read ? "white" : "#F1F8E9" }}
                   >
                     <div
@@ -206,10 +206,10 @@ export default function NotificationBell({
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <p className="text-sm font-semibold text-gray-800 leading-tight">{n.title}</p>
-                        <span className="text-xs text-gray-400 shrink-0 mt-0.5">{timeAgo(n.createdAt)}</span>
+                        <p className="text-sm font-semibold text-gray-800 dark:text-slate-100 leading-tight">{n.title}</p>
+                        <span className="text-xs text-gray-400 dark:text-slate-500 shrink-0 mt-0.5">{timeAgo(n.createdAt)}</span>
                       </div>
-                      <p className="text-xs text-gray-500 mt-0.5 leading-snug">{n.description}</p>
+                      <p className="text-xs text-gray-500 dark:text-slate-400 mt-0.5 leading-snug">{n.description}</p>
                       {!n.read && (
                         <span
                           className="inline-block mt-1 w-1.5 h-1.5 rounded-full"
@@ -226,7 +226,7 @@ export default function NotificationBell({
           {/* Footer — View all */}
           <button
             onClick={() => { setOpen(false); navigate("/notifications"); }}
-            className="w-full flex items-center justify-center gap-1.5 py-3 text-xs font-semibold border-t border-gray-100 hover:bg-gray-50 transition-colors shrink-0"
+            className="w-full flex items-center justify-center gap-1.5 py-3 text-xs font-semibold border-t border-gray-100 dark:border-slate-700/60 hover:bg-gray-50 dark:bg-slate-900 transition-colors shrink-0"
             style={{ color: "#1B5E20" }}
           >
             View all notifications <ChevronRight size={13} />

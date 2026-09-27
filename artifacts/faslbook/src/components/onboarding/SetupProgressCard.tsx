@@ -32,7 +32,7 @@ export default function SetupProgressCard({ state, onContinue, onDismiss }: Prop
             <p className="text-sm font-bold" style={{ color: GREEN }}>
               Complete Farm Setup
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-slate-400">
               {doneCount} of {steps.length} steps done
             </p>
           </div>
@@ -46,7 +46,7 @@ export default function SetupProgressCard({ state, onContinue, onDismiss }: Prop
         </div>
 
         {/* Progress bar */}
-        <div className="h-1.5 rounded-full bg-green-100">
+        <div className="h-1.5 rounded-full bg-green-100 dark:bg-green-950/40">
           <div
             className="h-full rounded-full transition-all duration-500"
             style={{ width: `${(doneCount / steps.length) * 100}%`, backgroundColor: GREEN }}

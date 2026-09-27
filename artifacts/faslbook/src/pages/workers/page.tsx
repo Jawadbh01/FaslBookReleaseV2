@@ -231,7 +231,7 @@ export default function WorkersPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 pb-24">
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-24">
         {/* Header */}
         <div style={{ backgroundColor: GREEN }} className="px-4 pt-12 pb-0">
           <div className="flex items-center justify-between mb-4">
@@ -285,7 +285,7 @@ export default function WorkersPage() {
         <div className="px-4 pt-4">
           {loading ? (
             <div className="flex justify-center pt-16">
-              <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: GREEN }} />
+              <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: GREEN }} />
             </div>
 
           ) : tab === "farmers" ? (
@@ -302,8 +302,8 @@ export default function WorkersPage() {
                   <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E8F5E9" }}>
                     <Wheat size={36} color={GREEN} />
                   </div>
-                  <p className="text-gray-600 font-semibold mb-1">No farmers yet</p>
-                  <p className="text-gray-400 text-sm">Tap "Add Farmer" to add one manually</p>
+                  <p className="text-gray-600 dark:text-slate-300 font-semibold mb-1">No farmers yet</p>
+                  <p className="text-gray-400 dark:text-slate-500 text-sm">Tap "Add Farmer" to add one manually</p>
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
@@ -311,7 +311,7 @@ export default function WorkersPage() {
                     const farmerParcels = parcels.filter((p) => p.assignedFarmer === farmer.id);
                     const attBadge = getAttLabel(farmer.id);
                     return (
-                      <div key={farmer.id} className="bg-white rounded-2xl px-4 py-4 shadow-sm">
+                      <div key={farmer.id} className="bg-white dark:bg-slate-800 rounded-2xl px-4 py-4 shadow-sm">
                         <div className="flex items-center gap-3">
                           <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
                             style={{ backgroundColor: GREEN }}>
@@ -319,7 +319,7 @@ export default function WorkersPage() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
-                              <p className="font-bold text-gray-800 truncate">{farmer.name}</p>
+                              <p className="font-bold text-gray-800 dark:text-slate-100 truncate">{farmer.name}</p>
                               {attBadge && (
                                 <span className="text-xs font-bold px-1.5 py-0.5 rounded-full shrink-0"
                                   style={{ color: attBadge.color, backgroundColor: attBadge.bg }}>
@@ -328,17 +328,17 @@ export default function WorkersPage() {
                               )}
                             </div>
                             {farmer.phone && (
-                              <p className="text-gray-400 text-xs flex items-center gap-1 mt-0.5">
+                              <p className="text-gray-400 dark:text-slate-500 text-xs flex items-center gap-1 mt-0.5">
                                 <Phone size={11} /> {farmer.phone}
                               </p>
                             )}
                             {farmerParcels.length > 0 && (
-                              <p className="text-xs text-green-700 flex items-center gap-1 mt-0.5">
+                              <p className="text-xs text-green-700 dark:text-green-400 flex items-center gap-1 mt-0.5">
                                 <MapPin size={11} /> {farmerParcels.map((p) => p.name).join(", ")}
                               </p>
                             )}
                             {farmer.notes && (
-                              <p className="text-gray-400 text-xs mt-0.5 truncate">{farmer.notes}</p>
+                              <p className="text-gray-400 dark:text-slate-500 text-xs mt-0.5 truncate">{farmer.notes}</p>
                             )}
                           </div>
                           {canEdit && (
@@ -391,7 +391,7 @@ export default function WorkersPage() {
                   }, 0);
                 return dailyCost > 0 ? (
                   <div className="rounded-2xl px-4 py-3 mb-3" style={{ backgroundColor: "#E8F5E9" }}>
-                    <p className="text-green-700 text-xs font-medium">Today's Labour Cost</p>
+                    <p className="text-green-700 dark:text-green-400 text-xs font-medium">Today's Labour Cost</p>
                     <p className="font-bold text-lg" style={{ color: GREEN }}>Rs. {Math.round(dailyCost).toLocaleString("en-PK")}</p>
                   </div>
                 ) : null;
@@ -402,8 +402,8 @@ export default function WorkersPage() {
                   <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E3F2FD" }}>
                     <Users size={36} color="#1565C0" />
                   </div>
-                  <p className="text-gray-600 font-semibold mb-1">No workers yet</p>
-                  <p className="text-gray-400 text-sm">Tap "Add Worker" to add daily or monthly workers</p>
+                  <p className="text-gray-600 dark:text-slate-300 font-semibold mb-1">No workers yet</p>
+                  <p className="text-gray-400 dark:text-slate-500 text-sm">Tap "Add Worker" to add daily or monthly workers</p>
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
@@ -411,7 +411,7 @@ export default function WorkersPage() {
                     const isDaily = worker.workerType === "daily";
                     const attBadge = getAttLabel(worker.id);
                     return (
-                      <div key={worker.id} className="bg-white rounded-2xl px-4 py-4 shadow-sm">
+                      <div key={worker.id} className="bg-white dark:bg-slate-800 rounded-2xl px-4 py-4 shadow-sm">
                         <div className="flex items-center gap-3">
                           <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
                             style={{ backgroundColor: isDaily ? "#1565C0" : "#6A1B9A" }}>
@@ -419,7 +419,7 @@ export default function WorkersPage() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
-                              <p className="font-bold text-gray-800 truncate">{worker.name}</p>
+                              <p className="font-bold text-gray-800 dark:text-slate-100 truncate">{worker.name}</p>
                               {attBadge && (
                                 <span className="text-xs font-bold px-1.5 py-0.5 rounded-full shrink-0"
                                   style={{ color: attBadge.color, backgroundColor: attBadge.bg }}>
@@ -432,12 +432,12 @@ export default function WorkersPage() {
                                 style={{ backgroundColor: isDaily ? "#E3F2FD" : "#F3E5F5", color: isDaily ? "#1565C0" : "#6A1B9A" }}>
                                 {isDaily ? "Daily" : "Monthly"}
                               </span>
-                              <span className="text-gray-400 text-xs">
+                              <span className="text-gray-400 dark:text-slate-500 text-xs">
                                 Rs. {isDaily ? `${(worker.dailyRate || 0).toLocaleString("en-PK")}/day` : `${(worker.monthlySalary || 0).toLocaleString("en-PK")}/mo`}
                               </span>
                             </div>
                             {worker.phone && (
-                              <p className="text-gray-400 text-xs flex items-center gap-1 mt-0.5">
+                              <p className="text-gray-400 dark:text-slate-500 text-xs flex items-center gap-1 mt-0.5">
                                 <Phone size={11} /> {worker.phone}
                               </p>
                             )}
@@ -477,27 +477,27 @@ export default function WorkersPage() {
                 <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#F3E5F5" }}>
                   <Clock size={36} color="#6A1B9A" />
                 </div>
-                <p className="text-gray-600 font-semibold mb-1">No pending requests</p>
-                <p className="text-gray-400 text-sm">Join requests will appear here</p>
+                <p className="text-gray-600 dark:text-slate-300 font-semibold mb-1">No pending requests</p>
+                <p className="text-gray-400 dark:text-slate-500 text-sm">Join requests will appear here</p>
               </div>
             ) : (
               <div className="flex flex-col gap-3">
                 {joinRequests.map((req) => (
-                  <div key={req.id} className="bg-white rounded-2xl px-4 py-4 shadow-sm">
+                  <div key={req.id} className="bg-white dark:bg-slate-800 rounded-2xl px-4 py-4 shadow-sm">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
                         style={{ backgroundColor: req.role === "manager" ? "#1565C0" : "#6A1B9A" }}>
                         {initials(req.userName)}
                       </div>
                       <div className="flex-1">
-                        <p className="font-bold text-gray-800">{req.userName || "Unknown"}</p>
-                        <p className="text-gray-400 text-xs">{req.userEmail}</p>
+                        <p className="font-bold text-gray-800 dark:text-slate-100">{req.userName || "Unknown"}</p>
+                        <p className="text-gray-400 dark:text-slate-500 text-xs">{req.userEmail}</p>
                         <div className="flex items-center gap-2 mt-0.5">
                           <span className="text-xs px-2 py-0.5 rounded-full font-medium capitalize"
                             style={{ backgroundColor: req.role === "manager" ? "#E3F2FD" : "#F3E5F5", color: req.role === "manager" ? "#1565C0" : "#6A1B9A" }}>
                             {req.role}
                           </span>
-                          <span className="text-gray-400 text-xs">{timeAgo(req.createdAt)}</span>
+                          <span className="text-gray-400 dark:text-slate-500 text-xs">{timeAgo(req.createdAt)}</span>
                         </div>
                       </div>
                     </div>
@@ -534,29 +534,29 @@ export default function WorkersPage() {
             </div>
           </div>
           <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
-            {error && <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>}
+            {error && <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>}
 
             {[
               { label: "Full Name *", type: "text", placeholder: "Farmer's full name", value: fForm.name, key: "name", icon: <User size={18} color="#9E9E9E" /> },
               { label: "Phone Number *", type: "tel", placeholder: "03XX-XXXXXXX", value: fForm.phone, key: "phone", icon: <Phone size={18} color="#9E9E9E" /> },
             ].map(({ label, type, placeholder, value, key, icon }) => (
               <div key={key} className="mb-4">
-                <label className="text-gray-600 text-sm font-medium mb-2 block">{label}</label>
-                <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">{label}</label>
+                <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                   <span className="mr-3 shrink-0">{icon}</span>
                   <input type={type} placeholder={placeholder} value={value}
                     onChange={(e) => setFForm({ ...fForm, [key]: e.target.value })}
-                    className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                    className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
                 </div>
               </div>
             ))}
 
             <div className="mb-8">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
-              <div className="border-2 border-gray-200 rounded-2xl px-4 py-3">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
+              <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3">
                 <textarea placeholder="Any notes…" value={fForm.notes}
                   onChange={(e) => setFForm({ ...fForm, notes: e.target.value })}
-                  rows={3} className="w-full outline-none text-gray-800 text-base bg-transparent resize-none" />
+                  rows={3} className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none" />
               </div>
             </div>
 
@@ -580,25 +580,25 @@ export default function WorkersPage() {
             </div>
           </div>
           <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
-            {error && <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>}
+            {error && <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>}
 
             {[
               { label: "Full Name *", type: "text", placeholder: "Full name", value: wForm.name, key: "name", icon: <User size={18} color="#9E9E9E" /> },
               { label: "Phone Number", type: "tel", placeholder: "03XX-XXXXXXX", value: wForm.phone, key: "phone", icon: <Phone size={18} color="#9E9E9E" /> },
             ].map(({ label, type, placeholder, value, key, icon }) => (
               <div key={key} className="mb-4">
-                <label className="text-gray-600 text-sm font-medium mb-2 block">{label}</label>
-                <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-blue-700">
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">{label}</label>
+                <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-blue-700">
                   <span className="mr-3 shrink-0">{icon}</span>
                   <input type={type} placeholder={placeholder} value={value}
                     onChange={(e) => setWForm({ ...wForm, [key]: e.target.value })}
-                    className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                    className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
                 </div>
               </div>
             ))}
 
             <div className="mb-5">
-              <label className="text-gray-600 text-sm font-medium mb-3 block">Worker Type</label>
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-3 block">Worker Type</label>
               <div className="flex gap-3">
                 {[{ val: "daily", label: "Daily Worker" }, { val: "monthly", label: "Monthly Salary" }].map(({ val, label }) => (
                   <button key={val} onClick={() => setWForm({ ...wForm, workerType: val as any })}
@@ -616,32 +616,32 @@ export default function WorkersPage() {
 
             {wForm.workerType === "daily" ? (
               <div className="mb-4">
-                <label className="text-gray-600 text-sm font-medium mb-2 block">Daily Rate (Rs.) *</label>
-                <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-blue-700">
-                  <span className="text-gray-400 mr-2 font-medium">Rs.</span>
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Daily Rate (Rs.) *</label>
+                <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-blue-700">
+                  <span className="text-gray-400 dark:text-slate-500 mr-2 font-medium">Rs.</span>
                   <input type="number" placeholder="0" value={wForm.dailyRate}
                     onChange={(e) => setWForm({ ...wForm, dailyRate: e.target.value })}
-                    className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                    className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
                 </div>
               </div>
             ) : (
               <div className="mb-4">
-                <label className="text-gray-600 text-sm font-medium mb-2 block">Monthly Salary (Rs.) *</label>
-                <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-blue-700">
-                  <span className="text-gray-400 mr-2 font-medium">Rs.</span>
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Monthly Salary (Rs.) *</label>
+                <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-blue-700">
+                  <span className="text-gray-400 dark:text-slate-500 mr-2 font-medium">Rs.</span>
                   <input type="number" placeholder="0" value={wForm.monthlySalary}
                     onChange={(e) => setWForm({ ...wForm, monthlySalary: e.target.value })}
-                    className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                    className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
                 </div>
               </div>
             )}
 
             <div className="mb-8">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
-              <div className="border-2 border-gray-200 rounded-2xl px-4 py-3">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
+              <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3">
                 <textarea placeholder="Any notes…" value={wForm.notes}
                   onChange={(e) => setWForm({ ...wForm, notes: e.target.value })}
-                  rows={3} className="w-full outline-none text-gray-800 text-base bg-transparent resize-none" />
+                  rows={3} className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none" />
               </div>
             </div>
 
@@ -657,21 +657,21 @@ export default function WorkersPage() {
       {/* ── Delete Confirmation Modal ── */}
       {(modal === "deleteFarmer" || modal === "deleteWorker") && editTarget && (
         <div className="fixed inset-0 z-50 flex items-end" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
-          <div className="w-full bg-white rounded-t-3xl p-6">
+          <div className="w-full bg-white dark:bg-slate-800 rounded-t-3xl p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: "#FFEBEE" }}>
                 <AlertTriangle size={24} color="#C62828" />
               </div>
               <div>
-                <p className="font-bold text-gray-800">Remove {modal === "deleteFarmer" ? "Farmer" : "Worker"}?</p>
-                <p className="text-gray-500 text-sm">
+                <p className="font-bold text-gray-800 dark:text-slate-100">Remove {modal === "deleteFarmer" ? "Farmer" : "Worker"}?</p>
+                <p className="text-gray-500 dark:text-slate-400 text-sm">
                   "{(editTarget as any).name}" will be permanently removed.
                 </p>
               </div>
             </div>
-            {error && <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-4">{error}</div>}
+            {error && <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-4">{error}</div>}
             <div className="flex gap-3">
-              <button onClick={closeModal} className="flex-1 py-3.5 rounded-2xl font-bold border-2 border-gray-200 text-gray-600 active:scale-95 transition-transform">
+              <button onClick={closeModal} className="flex-1 py-3.5 rounded-2xl font-bold border-2 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300 active:scale-95 transition-transform">
                 Cancel
               </button>
               <button onClick={modal === "deleteFarmer" ? handleDeleteFarmer : handleDeleteWorker} disabled={saving}

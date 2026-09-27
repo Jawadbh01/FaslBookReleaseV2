@@ -194,7 +194,7 @@ export default function AttendancePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-36">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-36">
       {/* Header */}
       <div style={{ backgroundColor: "#1B5E20" }} className="px-4 pt-12 pb-4">
         <div className="flex items-center justify-between mb-4">
@@ -236,7 +236,7 @@ export default function AttendancePage() {
               max={toDateStr(today)}
               value={toDateStr(date)}
               onChange={(e) => { if (e.target.value) { setDate(new Date(e.target.value + "T00:00:00")); setShowDatePicker(false); } }}
-              className="w-full rounded-xl px-4 py-2 text-gray-800 text-sm font-medium outline-none border-0"
+              className="w-full rounded-xl px-4 py-2 text-gray-800 dark:text-slate-100 text-sm font-medium outline-none border-0"
             />
           </div>
         )}
@@ -267,7 +267,7 @@ export default function AttendancePage() {
 
       {/* Summary bar */}
       {mergedWorkers.length > 0 && !loading && (
-        <div className="mx-4 mt-3 bg-white rounded-2xl px-4 py-3 shadow-sm">
+        <div className="mx-4 mt-3 bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 shadow-sm">
           <div className="flex items-center justify-between">
             {[
               { label: "Present", value: present, color: "#1B5E20" },
@@ -277,14 +277,14 @@ export default function AttendancePage() {
             ].map(({ label, value, color }) => (
               <div key={label} className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: color }} />
-                <span className="text-xs text-gray-500">{label}</span>
+                <span className="text-xs text-gray-500 dark:text-slate-400">{label}</span>
                 <span className="font-bold text-sm" style={{ color }}>{value}</span>
               </div>
             ))}
           </div>
           {labourCost > 0 && (
-            <div className="mt-2 pt-2 border-t border-gray-100 flex items-center justify-between">
-              <span className="text-xs text-gray-500">Labour Cost Today</span>
+            <div className="mt-2 pt-2 border-t border-gray-100 dark:border-slate-700/60 flex items-center justify-between">
+              <span className="text-xs text-gray-500 dark:text-slate-400">Labour Cost Today</span>
               <span className="font-bold text-sm" style={{ color: "#1B5E20" }}>
                 Rs. {Math.round(labourCost).toLocaleString("en-PK")}
               </span>
@@ -297,31 +297,31 @@ export default function AttendancePage() {
       <div className="px-4 pt-3 flex flex-col gap-2">
         {loading ? (
           <div className="flex justify-center pt-16">
-            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: "#1B5E20" }} />
+            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: "#1B5E20" }} />
           </div>
         ) : mergedWorkers.length === 0 ? (
           <div className="text-center pt-16">
-            <p className="text-gray-500 font-medium">No active workers found</p>
-            <p className="text-gray-400 text-sm mt-1">Add workers in the Team tab first</p>
+            <p className="text-gray-500 dark:text-slate-400 font-medium">No active workers found</p>
+            <p className="text-gray-400 dark:text-slate-500 text-sm mt-1">Add workers in the Team tab first</p>
           </div>
         ) : (
           rows.map((row) => {
             const isDaily = row.workerType === "daily";
             const ini = row.workerName.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2) || "?";
             return (
-              <div key={row.workerId} className="bg-white rounded-2xl px-4 py-3 shadow-sm flex items-center gap-3">
+              <div key={row.workerId} className="bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 shadow-sm flex items-center gap-3">
                 <div className="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
                   style={{ backgroundColor: isDaily ? "#1565C0" : "#6A1B9A" }}>
                   {ini}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-gray-800 text-sm truncate">{row.workerName}</p>
+                  <p className="font-semibold text-gray-800 dark:text-slate-100 text-sm truncate">{row.workerName}</p>
                   <div className="flex items-center gap-2 mt-0.5">
                     <span className="text-xs px-1.5 py-0.5 rounded-full font-medium"
                       style={{ backgroundColor: isDaily ? "#E3F2FD" : "#F3E5F5", color: isDaily ? "#1565C0" : "#6A1B9A" }}>
                       {isDaily ? "Daily" : "Monthly"}
                     </span>
-                    <span className="text-gray-400 text-xs">
+                    <span className="text-gray-400 dark:text-slate-500 text-xs">
                       {isDaily ? `Rs. ${row.dailyRate.toLocaleString("en-PK")}/day` : `Rs. ${row.monthlySalary.toLocaleString("en-PK")}/mo`}
                     </span>
                   </div>

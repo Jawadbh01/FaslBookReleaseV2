@@ -305,18 +305,18 @@ export default function FarmerDetailPage() {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: "#1B5E20" }} />
+      <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: "#1B5E20" }} />
     </div>
   );
 
   if (!farmer) return (
     <div className="min-h-screen flex items-center justify-center">
-      <p className="text-gray-500">Farmer not found</p>
+      <p className="text-gray-500 dark:text-slate-400">Farmer not found</p>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-24">
       {/* Header */}
       <div style={{ backgroundColor: "#1B5E20" }} className="px-4 pt-12 pb-6">
         <div className="flex items-center gap-3 mb-4">
@@ -326,7 +326,7 @@ export default function FarmerDetailPage() {
           <div className="flex-1">
             <h1 className="text-white text-xl font-bold">{farmer.displayName || "Unnamed"}</h1>
             <div className="flex items-center gap-2 mt-1">
-              <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white bg-opacity-20 text-white">Farmer</span>
+              <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white dark:bg-slate-800 bg-opacity-20 text-white">Farmer</span>
               <span className="px-2 py-0.5 rounded-full text-xs font-bold" style={{ backgroundColor: "#E8F5E9", color: "#1B5E20" }}>Active</span>
             </div>
           </div>
@@ -350,19 +350,19 @@ export default function FarmerDetailPage() {
 
       <div className="px-4 pt-4 flex flex-col gap-4">
         {/* Assigned Parcels */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
           <div className="flex items-center gap-2 mb-3">
             <MapPin size={16} color="#1B5E20" />
-            <p className="font-bold text-gray-800">Assigned Parcels</p>
+            <p className="font-bold text-gray-800 dark:text-slate-100">Assigned Parcels</p>
           </div>
           {parcels.length === 0 ? (
-            <p className="text-gray-400 text-sm text-center py-3">No parcels assigned</p>
+            <p className="text-gray-400 dark:text-slate-500 text-sm text-center py-3">No parcels assigned</p>
           ) : (
             <div className="flex flex-col gap-2">
               {parcels.map((p) => (
-                <div key={p.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
-                  <p className="text-gray-800 font-medium text-sm">{p.name}</p>
-                  {p.acres && <p className="text-gray-400 text-xs">{p.acres} acres</p>}
+                <div key={p.id} className="flex items-center justify-between py-2 border-b border-gray-50 dark:border-slate-800 last:border-0">
+                  <p className="text-gray-800 dark:text-slate-100 font-medium text-sm">{p.name}</p>
+                  {p.acres && <p className="text-gray-400 dark:text-slate-500 text-xs">{p.acres} acres</p>}
                 </div>
               ))}
             </div>
@@ -370,11 +370,11 @@ export default function FarmerDetailPage() {
         </div>
 
         {/* Khata */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Receipt size={16} color="#1B5E20" />
-              <p className="font-bold text-gray-800">Khata</p>
+              <p className="font-bold text-gray-800 dark:text-slate-100">Khata</p>
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -414,14 +414,14 @@ export default function FarmerDetailPage() {
           )}
 
           {sortedLedger.length === 0 ? (
-            <p className="text-gray-400 text-sm text-center py-3">No khata entries for this farmer yet</p>
+            <p className="text-gray-400 dark:text-slate-500 text-sm text-center py-3">No khata entries for this farmer yet</p>
           ) : (
             <div className="flex flex-col gap-2">
               {sortedLedger.slice(0, 10).map((e) => (
-                <div key={e.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                <div key={e.id} className="flex items-center justify-between py-2 border-b border-gray-50 dark:border-slate-800 last:border-0">
                   <div>
-                    <p className="text-gray-800 font-medium text-sm">{e.categoryLabel || e.category}</p>
-                    <p className="text-gray-400 text-xs">{e.parcelName || "—"} · {e.date}</p>
+                    <p className="text-gray-800 dark:text-slate-100 font-medium text-sm">{e.categoryLabel || e.category}</p>
+                    <p className="text-gray-400 dark:text-slate-500 text-xs">{e.parcelName || "—"} · {e.date}</p>
                   </div>
                   <p className="font-semibold text-sm" style={{ color: e.type === "income" ? "#1B5E20" : "#C62828" }}>
                     {e.type === "income" ? "+" : "-"}{fmtRs(e.amount)}
@@ -434,19 +434,19 @@ export default function FarmerDetailPage() {
 
         {/* Stock Received */}
         {invTxs.length > 0 && (
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
             <div className="flex items-center gap-2 mb-3">
               <Package size={16} color="#E65100" />
-              <p className="font-bold text-gray-800">Stock Received</p>
+              <p className="font-bold text-gray-800 dark:text-slate-100">Stock Received</p>
             </div>
             <div className="flex flex-col gap-2">
               {invTxs.slice(0, 10).map((tx) => (
-                <div key={tx.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                <div key={tx.id} className="flex items-center justify-between py-2 border-b border-gray-50 dark:border-slate-800 last:border-0">
                   <div>
-                    <p className="text-gray-800 font-medium text-sm">{tx.itemName}</p>
-                    <p className="text-gray-400 text-xs">{fmtDate(tx.date)}</p>
+                    <p className="text-gray-800 dark:text-slate-100 font-medium text-sm">{tx.itemName}</p>
+                    <p className="text-gray-400 dark:text-slate-500 text-xs">{fmtDate(tx.date)}</p>
                   </div>
-                  <p className="text-gray-600 font-semibold text-sm">{tx.quantity} {tx.unit}</p>
+                  <p className="text-gray-600 dark:text-slate-300 font-semibold text-sm">{tx.quantity} {tx.unit}</p>
                 </div>
               ))}
             </div>
@@ -455,20 +455,20 @@ export default function FarmerDetailPage() {
 
         {/* Harvest History */}
         {harvestedCrops.length > 0 && (
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
             <div className="flex items-center gap-2 mb-3">
               <BarChart2 size={16} color="#1565C0" />
-              <p className="font-bold text-gray-800">Harvest History</p>
+              <p className="font-bold text-gray-800 dark:text-slate-100">Harvest History</p>
             </div>
             <div className="flex flex-col gap-2">
               {harvestedCrops.map((c) => (
-                <div key={c.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                <div key={c.id} className="flex items-center justify-between py-2 border-b border-gray-50 dark:border-slate-800 last:border-0">
                   <div>
-                    <p className="text-gray-800 font-medium text-sm">{c.cropName}</p>
-                    {c.harvestDate && <p className="text-gray-400 text-xs">{c.harvestDate}</p>}
+                    <p className="text-gray-800 dark:text-slate-100 font-medium text-sm">{c.cropName}</p>
+                    {c.harvestDate && <p className="text-gray-400 dark:text-slate-500 text-xs">{c.harvestDate}</p>}
                   </div>
                   {c.totalYield && (
-                    <p className="text-gray-600 font-semibold text-sm">{c.totalYield} {c.yieldUnit || "kg"}</p>
+                    <p className="text-gray-600 dark:text-slate-300 font-semibold text-sm">{c.totalYield} {c.yieldUnit || "kg"}</p>
                   )}
                 </div>
               ))}
@@ -480,10 +480,10 @@ export default function FarmerDetailPage() {
       {/* Add Income / Expense modal */}
       {addOpen && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40" onClick={closeAddForm}>
-          <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="px-6 pt-6 pb-6 overflow-y-auto flex-1 min-h-0">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-lg font-bold text-gray-800">
+                <h2 className="text-lg font-bold text-gray-800 dark:text-slate-100">
                   {addSaved ? "Saved" : addType === "credit" ? "Add Income" : "Add Expense"}
                 </h2>
                 <button onClick={closeAddForm}><X size={22} color="#9CA3AF" /></button>
@@ -494,20 +494,20 @@ export default function FarmerDetailPage() {
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E8F5E9" }}>
                     <CheckCircle size={36} color="#1B5E20" />
                   </div>
-                  <p className="text-gray-800 font-bold text-base mb-1">
+                  <p className="text-gray-800 dark:text-slate-100 font-bold text-base mb-1">
                     {addType === "credit" ? "Income" : "Expense"} added to {farmer?.displayName}'s Khata
                   </p>
-                  <p className="text-gray-400 text-sm">
+                  <p className="text-gray-400 dark:text-slate-500 text-sm">
                     {addType === "credit" ? "+" : "−"}Rs. {Number(addForm.amount).toLocaleString("en-PK")}
                   </p>
                 </div>
               ) : (
                 <>
                   {addError && (
-                    <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-4">{addError}</div>
+                    <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-4">{addError}</div>
                   )}
 
-                  <label className="text-gray-600 text-sm font-medium mb-2 block">
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
                     {addType === "credit" ? "Income Type" : "Category"}
                   </label>
                   <div className="grid grid-cols-4 gap-2 mb-4">
@@ -529,30 +529,30 @@ export default function FarmerDetailPage() {
                     ))}
                   </div>
 
-                  <label className="text-gray-600 text-sm font-medium mb-2 block">Amount (Rs.)</label>
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Amount (Rs.)</label>
                   <input
                     type="number"
                     placeholder="e.g. 5,000"
                     value={addForm.amount}
                     onChange={(e) => setAddForm({ ...addForm, amount: e.target.value })}
-                    className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-green-700"
+                    className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700"
                   />
 
-                  <label className="text-gray-600 text-sm font-medium mb-2 block">Date</label>
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Date</label>
                   <input
                     type="date"
                     value={addForm.date}
                     onChange={(e) => setAddForm({ ...addForm, date: e.target.value })}
-                    className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base focus:border-green-700"
+                    className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700"
                   />
 
                   {parcels.length > 0 && (
                     <>
-                      <label className="text-gray-600 text-sm font-medium mb-2 block">Parcel (Optional)</label>
+                      <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Parcel (Optional)</label>
                       <select
                         value={addForm.parcelId}
                         onChange={(e) => setAddForm({ ...addForm, parcelId: e.target.value })}
-                        className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base bg-white focus:border-green-700"
+                        className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base bg-white dark:bg-slate-800 focus:border-green-700"
                       >
                         <option value="">— No parcel —</option>
                         {parcels.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -560,22 +560,22 @@ export default function FarmerDetailPage() {
                     </>
                   )}
 
-                  <label className="text-gray-600 text-sm font-medium mb-2 block">Crop Cycle *</label>
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Crop Cycle *</label>
                   <select
                     value={addForm.cropCycleId}
                     onChange={(e) => setAddForm({ ...addForm, cropCycleId: e.target.value })}
-                    className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 text-base bg-white focus:border-green-700"
+                    className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 outline-none text-gray-800 dark:text-slate-100 text-base bg-white dark:bg-slate-800 focus:border-green-700"
                   >
                     <option value="">— Select crop cycle —</option>
                     {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.crop})</option>)}
                   </select>
 
-                  <label className="text-gray-600 text-sm font-medium mb-2 block">Notes (Optional)</label>
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes (Optional)</label>
                   <textarea
                     value={addForm.notes}
                     onChange={(e) => setAddForm({ ...addForm, notes: e.target.value })}
                     rows={2}
-                    className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 mb-2 outline-none text-gray-800 text-base resize-none focus:border-green-700"
+                    className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-2 outline-none text-gray-800 dark:text-slate-100 text-base resize-none focus:border-green-700"
                   />
                 </>
               )}
@@ -583,7 +583,7 @@ export default function FarmerDetailPage() {
               {/* Action button lives inside the scrollable area (not a sticky
                   sibling) so it's always reachable by scrolling — even when
                   the on-screen keyboard shrinks the visible viewport on mobile. */}
-              <div className="pt-4 mt-2 border-t border-gray-100">
+              <div className="pt-4 mt-2 border-t border-gray-100 dark:border-slate-700/60">
                 {addSaved ? (
                   <button
                     onClick={closeAddForm}

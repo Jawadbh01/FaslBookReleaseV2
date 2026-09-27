@@ -83,13 +83,13 @@ export default function ProfileDetailPage() {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: "#1B5E20" }} />
+      <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: "#1B5E20" }} />
     </div>
   );
 
   if (!profile || !TYPE_CONFIG[profileType]) return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-3">
-      <p className="text-gray-500">Profile not found</p>
+      <p className="text-gray-500 dark:text-slate-400">Profile not found</p>
       <button onClick={() => navigate("/profiles")} className="text-sm font-semibold" style={{ color: "#1B5E20" }}>Back to Profiles</button>
     </div>
   );
@@ -113,7 +113,7 @@ export default function ProfileDetailPage() {
       }));
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-24">
       {/* Header */}
       <div style={{ backgroundColor: "#1B5E20" }} className="px-4 pt-12 pb-6">
         <div className="flex items-center gap-3 mb-4">
@@ -149,32 +149,32 @@ export default function ProfileDetailPage() {
 
       <div className="px-4 pt-4 flex flex-col gap-4">
         {/* Basic Info */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
-          <p className="font-bold text-gray-800 mb-3">Basic Information</p>
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
+          <p className="font-bold text-gray-800 dark:text-slate-100 mb-3">Basic Information</p>
           <div className="flex flex-col gap-2">
-            <div className="flex justify-between text-sm"><span className="text-gray-400">Name</span><span className="text-gray-800 font-medium">{profile.name}</span></div>
-            {profile.phone && <div className="flex justify-between text-sm"><span className="text-gray-400">Phone</span><span className="text-gray-800 font-medium">{profile.phone}</span></div>}
-            {profile.address && <div className="flex justify-between text-sm"><span className="text-gray-400">Address</span><span className="text-gray-800 font-medium text-right">{profile.address}</span></div>}
-            {profileType === "farmer" && profile.farmName && <div className="flex justify-between text-sm"><span className="text-gray-400">Farm Name</span><span className="text-gray-800 font-medium">{profile.farmName}</span></div>}
-            {profileType === "dealer" && profile.businessName && <div className="flex justify-between text-sm"><span className="text-gray-400">Business Name</span><span className="text-gray-800 font-medium">{profile.businessName}</span></div>}
-            {profileType === "dealer" && profile.productsServices && <div className="flex justify-between text-sm"><span className="text-gray-400">Products/Services</span><span className="text-gray-800 font-medium text-right">{profile.productsServices}</span></div>}
-            {profileType === "labourContractor" && <div className="flex justify-between text-sm"><span className="text-gray-400">Team Size</span><span className="text-gray-800 font-medium">{profile.teamSize ?? 0} workers</span></div>}
-            {profileType === "custom" && profile.customLabel && <div className="flex justify-between text-sm"><span className="text-gray-400">Custom Label</span><span className="text-gray-800 font-medium">{profile.customLabel}</span></div>}
+            <div className="flex justify-between text-sm"><span className="text-gray-400 dark:text-slate-500">Name</span><span className="text-gray-800 dark:text-slate-100 font-medium">{profile.name}</span></div>
+            {profile.phone && <div className="flex justify-between text-sm"><span className="text-gray-400 dark:text-slate-500">Phone</span><span className="text-gray-800 dark:text-slate-100 font-medium">{profile.phone}</span></div>}
+            {profile.address && <div className="flex justify-between text-sm"><span className="text-gray-400 dark:text-slate-500">Address</span><span className="text-gray-800 dark:text-slate-100 font-medium text-right">{profile.address}</span></div>}
+            {profileType === "farmer" && profile.farmName && <div className="flex justify-between text-sm"><span className="text-gray-400 dark:text-slate-500">Farm Name</span><span className="text-gray-800 dark:text-slate-100 font-medium">{profile.farmName}</span></div>}
+            {profileType === "dealer" && profile.businessName && <div className="flex justify-between text-sm"><span className="text-gray-400 dark:text-slate-500">Business Name</span><span className="text-gray-800 dark:text-slate-100 font-medium">{profile.businessName}</span></div>}
+            {profileType === "dealer" && profile.productsServices && <div className="flex justify-between text-sm"><span className="text-gray-400 dark:text-slate-500">Products/Services</span><span className="text-gray-800 dark:text-slate-100 font-medium text-right">{profile.productsServices}</span></div>}
+            {profileType === "labourContractor" && <div className="flex justify-between text-sm"><span className="text-gray-400 dark:text-slate-500">Team Size</span><span className="text-gray-800 dark:text-slate-100 font-medium">{profile.teamSize ?? 0} workers</span></div>}
+            {profileType === "custom" && profile.customLabel && <div className="flex justify-between text-sm"><span className="text-gray-400 dark:text-slate-500">Custom Label</span><span className="text-gray-800 dark:text-slate-100 font-medium">{profile.customLabel}</span></div>}
           </div>
           {profile.notes && (
-            <div className="mt-3 pt-3 border-t border-gray-50 flex items-start gap-2">
+            <div className="mt-3 pt-3 border-t border-gray-50 dark:border-slate-800 flex items-start gap-2">
               <StickyNote size={14} color="#9CA3AF" className="mt-0.5 shrink-0" />
-              <p className="text-gray-500 text-sm">{profile.notes}</p>
+              <p className="text-gray-500 dark:text-slate-400 text-sm">{profile.notes}</p>
             </div>
           )}
         </div>
 
         {/* Linked Khata */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <BookOpen size={16} color="#1B5E20" />
-              <p className="font-bold text-gray-800">Linked Khata Account</p>
+              <p className="font-bold text-gray-800 dark:text-slate-100">Linked Khata Account</p>
             </div>
             <button onClick={() => navigate(`/khata?view=${profileType}&id=${id}`)}
               className="px-3 py-1.5 rounded-full text-xs font-bold active:scale-95 transition-transform"
@@ -204,16 +204,16 @@ export default function ProfileDetailPage() {
             </div>
           </div>
 
-          <p className="font-bold text-gray-700 text-sm mb-2">Recent Transactions</p>
+          <p className="font-bold text-gray-700 dark:text-slate-200 text-sm mb-2">Recent Transactions</p>
           {recentEntries.length === 0 ? (
-            <p className="text-gray-400 text-sm text-center py-4">No transactions yet</p>
+            <p className="text-gray-400 dark:text-slate-500 text-sm text-center py-4">No transactions yet</p>
           ) : (
             <div className="flex flex-col gap-2">
               {recentEntries.map((e) => (
-                <div key={e.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                <div key={e.id} className="flex items-center justify-between py-2 border-b border-gray-50 dark:border-slate-800 last:border-0">
                   <div className="min-w-0">
-                    <p className="text-gray-800 font-medium text-sm truncate">{e.label}</p>
-                    <p className="text-gray-400 text-xs">{fmtDate(e.date)}</p>
+                    <p className="text-gray-800 dark:text-slate-100 font-medium text-sm truncate">{e.label}</p>
+                    <p className="text-gray-400 dark:text-slate-500 text-xs">{fmtDate(e.date)}</p>
                   </div>
                   <p className="font-semibold text-sm shrink-0" style={{ color: e.credit ? "#1B5E20" : "#C62828" }}>
                     {e.credit ? "+" : "−"}{fmt(e.amount)}

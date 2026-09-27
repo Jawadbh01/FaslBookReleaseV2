@@ -105,7 +105,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="h-full bg-white flex flex-col">
+    <div className="h-full bg-white dark:bg-slate-800 flex flex-col">
       {/* Header */}
       <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: config.color }}>
         <button onClick={() => window.history.back()} className="text-white mr-3">
@@ -124,11 +124,11 @@ export default function RegisterPage() {
 
       <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">
+          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">
             <p>{error}</p>
             {error.includes("already registered") && (
               <button onClick={() => window.location.href = "/email"}
-                className="mt-2 text-red-700 underline font-semibold text-xs">
+                className="mt-2 text-red-700 dark:text-red-400 underline font-semibold text-xs">
                 → Go to Login
               </button>
             )}
@@ -152,7 +152,7 @@ export default function RegisterPage() {
         <div className="flex flex-col items-center mb-6">
           <div
             onClick={() => document.getElementById("regPhoto")?.click()}
-            className="w-24 h-24 rounded-full border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform overflow-hidden"
+            className="w-24 h-24 rounded-full border-2 border-dashed border-gray-300 dark:border-slate-600 flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform overflow-hidden"
             style={{ backgroundColor: "#F9F9F9" }}
           >
             {photoPreview ? (
@@ -160,54 +160,54 @@ export default function RegisterPage() {
             ) : (
               <>
                 <Camera size={28} color="#9E9E9E" />
-                <p className="text-gray-400 text-xs mt-1">Add Photo</p>
+                <p className="text-gray-400 dark:text-slate-500 text-xs mt-1">Add Photo</p>
               </>
             )}
           </div>
-          <p className="text-gray-400 text-xs mt-2">Optional</p>
+          <p className="text-gray-400 dark:text-slate-500 text-xs mt-2">Optional</p>
         </div>
 
         {/* Full Name */}
         <div className="mb-4">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">Full Name</label>
-          <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Full Name</label>
+          <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
             <User size={20} color="#9E9E9E" className="mr-3 shrink-0" />
             <input type="text" placeholder="Muhammad Ali" value={name}
               onChange={(e) => setName(e.target.value)}
-              className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
           </div>
         </div>
 
         {/* Email */}
         <div className="mb-4">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">Email Address</label>
-          <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Email Address</label>
+          <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
             <Mail size={20} color="#9E9E9E" className="mr-3 shrink-0" />
             <input type="email" placeholder="example@email.com" value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
           </div>
         </div>
 
         {/* Phone */}
         <div className="mb-4">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">Phone Number</label>
-          <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Phone Number</label>
+          <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
             <Phone size={20} color="#9E9E9E" className="mr-3 shrink-0" />
             <input type="tel" placeholder="03XX-XXXXXXX" value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
           </div>
         </div>
 
         {/* Password */}
         <div className="mb-4">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">Password</label>
-          <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Password</label>
+          <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
             <Lock size={20} color="#9E9E9E" className="mr-3 shrink-0" />
             <input type={showPassword ? "text" : "password"} placeholder="Minimum 6 characters"
               value={password} onChange={(e) => setPassword(e.target.value)}
-              className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
             <button type="button" onClick={() => setShowPassword(!showPassword)}>
               {showPassword ? <EyeOff size={20} color="#9E9E9E" /> : <Eye size={20} color="#9E9E9E" />}
             </button>
@@ -216,12 +216,12 @@ export default function RegisterPage() {
 
         {/* Confirm Password */}
         <div className="mb-8">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">Confirm Password</label>
-          <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Confirm Password</label>
+          <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
             <Lock size={20} color="#9E9E9E" className="mr-3 shrink-0" />
             <input type="password" placeholder="Re-enter password" value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
-              className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
           </div>
         </div>
 
@@ -232,7 +232,7 @@ export default function RegisterPage() {
         </button>
 
         <div className="text-center mt-5">
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 dark:text-slate-400 text-sm">
             Already have account?{" "}
             <button onClick={() => window.location.href = "/email"} className="font-bold" style={{ color: config.color }}>
               Login

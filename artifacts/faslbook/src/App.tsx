@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import AuthProvider from "@/components/shared/AuthProvider";
 import BottomNav from "@/components/shared/BottomNav";
@@ -5,52 +6,59 @@ import ConditionalTopBar from "@/components/shared/ConditionalTopBar";
 import SyncIndicator from "@/components/shared/SyncIndicator";
 import OfflineSaveToast from "@/components/shared/OfflineSaveToast";
 
-// Auth pages
-import LoginPage from "@/pages/login/page";
-import EmailPage from "@/pages/email/page";
-import RegisterPage from "@/pages/register/page";
-import RoleSelectPage from "@/pages/role-select/page";
-import CreateFarmPage from "@/pages/create-farm/page";
-import JoinFarmPage from "@/pages/join-farm/page";
-import PendingPage from "@/pages/pending/page";
-import OfflinePage from "@/pages/offline/page";
+// All page routes are code-split so the initial bundle only contains the shell.
+const LoginPage = lazy(() => import("@/pages/login/page"));
+const EmailPage = lazy(() => import("@/pages/email/page"));
+const RegisterPage = lazy(() => import("@/pages/register/page"));
+const RoleSelectPage = lazy(() => import("@/pages/role-select/page"));
+const CreateFarmPage = lazy(() => import("@/pages/create-farm/page"));
+const JoinFarmPage = lazy(() => import("@/pages/join-farm/page"));
+const PendingPage = lazy(() => import("@/pages/pending/page"));
+const OfflinePage = lazy(() => import("@/pages/offline/page"));
 
-// Dashboard pages
-import OverviewPage from "@/pages/overview/page";
-import CropsPage from "@/pages/crops/page";
-import CropDetailPage from "@/pages/crops/[id]/page";
-import FarmersPage from "@/pages/farmers/page";
-import WorkersPage from "@/pages/workers/page";
-import WorkerDetailPage from "@/pages/workers/worker/[id]/page";
-import FarmerDetailPage from "@/pages/workers/farmer/[id]/page";
-import AttendancePage from "@/pages/workers/attendance/page";
-import AttendanceHistoryPage from "@/pages/workers/attendance/history/page";
-import WorkforcePage from "@/pages/workforce/page";
-import WorkforceProfilePage from "@/pages/workforce/[id]/page";
-import WorkforceAttendancePage from "@/pages/workforce/attendance/page";
-import WorkforceAttendanceHistoryPage from "@/pages/workforce/attendance/history/page";
-import WorkforceEmployeePrintPage from "@/pages/workforce/[id]/print/page";
-import ParcelsPage from "@/pages/parcels/page";
-import ExpensesPage from "@/pages/expenses/page";
-import IncomePage from "@/pages/income/page";
-import InventoryPage from "@/pages/inventory/page";
-import InventoryDetailPage from "@/pages/inventory/[id]/page";
-import LedgerPage from "@/pages/ledger/page";
-import LoansPage from "@/pages/loans/page";
-import DealersPage from "@/pages/dealers/page";
-import ApprovalsPage from "@/pages/approvals/page";
-import NotificationsPage from "@/pages/notifications/page";
-import ProfilePage from "@/pages/profile/page";
-import ReportsPage from "@/pages/reports/page";
-import PrintHubPage from "@/pages/reports/print/page";
-import SeasonsPage from "@/pages/seasons/page";
-import CropCycleDetailPage from "@/pages/crop-cycles/[id]/page";
-import OwnerExpensesPage from "@/pages/owner-expenses/page";
-import KhataPage from "@/pages/khata/page";
-import LabourContractorsPage from "@/pages/labour-contractors/page";
-import LabourContractorProfilePage from "@/pages/labour-contractors/[id]/page";
-import ProfilesPage from "@/pages/profiles/page";
-import ProfileDetailPage from "@/pages/profiles/[type]/[id]/page";
+const OverviewPage = lazy(() => import("@/pages/overview/page"));
+const CropsPage = lazy(() => import("@/pages/crops/page"));
+const CropDetailPage = lazy(() => import("@/pages/crops/[id]/page"));
+const FarmersPage = lazy(() => import("@/pages/farmers/page"));
+const WorkersPage = lazy(() => import("@/pages/workers/page"));
+const WorkerDetailPage = lazy(() => import("@/pages/workers/worker/[id]/page"));
+const FarmerDetailPage = lazy(() => import("@/pages/workers/farmer/[id]/page"));
+const AttendancePage = lazy(() => import("@/pages/workers/attendance/page"));
+const AttendanceHistoryPage = lazy(() => import("@/pages/workers/attendance/history/page"));
+const WorkforcePage = lazy(() => import("@/pages/workforce/page"));
+const WorkforceProfilePage = lazy(() => import("@/pages/workforce/[id]/page"));
+const WorkforceAttendancePage = lazy(() => import("@/pages/workforce/attendance/page"));
+const WorkforceAttendanceHistoryPage = lazy(() => import("@/pages/workforce/attendance/history/page"));
+const WorkforceEmployeePrintPage = lazy(() => import("@/pages/workforce/[id]/print/page"));
+const ParcelsPage = lazy(() => import("@/pages/parcels/page"));
+const ExpensesPage = lazy(() => import("@/pages/expenses/page"));
+const IncomePage = lazy(() => import("@/pages/income/page"));
+const InventoryPage = lazy(() => import("@/pages/inventory/page"));
+const InventoryDetailPage = lazy(() => import("@/pages/inventory/[id]/page"));
+const LedgerPage = lazy(() => import("@/pages/ledger/page"));
+const LoansPage = lazy(() => import("@/pages/loans/page"));
+const DealersPage = lazy(() => import("@/pages/dealers/page"));
+const ApprovalsPage = lazy(() => import("@/pages/approvals/page"));
+const NotificationsPage = lazy(() => import("@/pages/notifications/page"));
+const ProfilePage = lazy(() => import("@/pages/profile/page"));
+const ReportsPage = lazy(() => import("@/pages/reports/page"));
+const PrintHubPage = lazy(() => import("@/pages/reports/print/page"));
+const SeasonsPage = lazy(() => import("@/pages/seasons/page"));
+const CropCycleDetailPage = lazy(() => import("@/pages/crop-cycles/[id]/page"));
+const OwnerExpensesPage = lazy(() => import("@/pages/owner-expenses/page"));
+const KhataPage = lazy(() => import("@/pages/khata/page"));
+const LabourContractorsPage = lazy(() => import("@/pages/labour-contractors/page"));
+const LabourContractorProfilePage = lazy(() => import("@/pages/labour-contractors/[id]/page"));
+const ProfilesPage = lazy(() => import("@/pages/profiles/page"));
+const ProfileDetailPage = lazy(() => import("@/pages/profiles/[type]/[id]/page"));
+
+function PageLoader() {
+  return (
+    <div className="flex items-center justify-center" style={{ height: "60vh" }}>
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600" />
+    </div>
+  );
+}
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -72,6 +80,7 @@ function AnimatedSwitch() {
 
   return (
     <div key={pathname} className="page-transition" style={{ height: "100%" }}>
+      <Suspense fallback={<PageLoader />}>
       <Switch>
         <Route path="/">
           {() => { window.location.replace("/login"); return null; }}
@@ -225,6 +234,7 @@ function AnimatedSwitch() {
           {() => { window.location.replace("/login"); return null; }}
         </Route>
       </Switch>
+      </Suspense>
     </div>
   );
 }

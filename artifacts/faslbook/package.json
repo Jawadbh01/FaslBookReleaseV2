@@ -87,11 +87,11 @@
     "vaul": "^1.1.2",
     "vite": "catalog:",
     "wouter": "^3.3.5",
-    "xlsx": "^0.18.5",
     "zod": "catalog:",
     "zustand": "^5.0.14"
   },
   "dependencies": {
-    "@capacitor-firebase/authentication": "8.4.0"
+    "@capacitor-firebase/authentication": "8.4.0",
+    "exceljs": "^4.4.0"
   }
 }

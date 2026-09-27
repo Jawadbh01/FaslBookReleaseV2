@@ -334,7 +334,7 @@ export default function DealersPage() {
   // ── Add Dealer Form ────────────────────────────────────────
   if (showAdd) {
     return (
-      <div className="min-h-screen bg-white flex flex-col">
+      <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
         <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
           <button onClick={() => { setShowAdd(false); setError(""); }} className="text-white mr-3">
             <X size={24} />
@@ -346,7 +346,7 @@ export default function DealersPage() {
         </div>
         <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>
           )}
           {[
             { label: "Dealer Name *", key: "name", placeholder: "e.g. Al-Rahman Traders", icon: Handshake },
@@ -354,28 +354,28 @@ export default function DealersPage() {
             { label: "Address", key: "address", placeholder: "Shop/area address", icon: MapPin },
           ].map(({ label, key, placeholder, icon: Icon }) => (
             <div key={key} className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">{label}</label>
-              <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">{label}</label>
+              <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <Icon size={20} color="#9E9E9E" className="mr-3 shrink-0" />
                 <input
                   type="text"
                   placeholder={placeholder}
                   value={(dForm as any)[key]}
                   onChange={(e) => setDForm({ ...dForm, [key]: e.target.value })}
-                  className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                  className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
                 />
               </div>
             </div>
           ))}
           <div className="mb-8">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
-            <div className="border-2 border-gray-200 rounded-2xl px-4 py-3">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
+            <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3">
               <textarea
                 placeholder="Any notes about this dealer..."
                 value={dForm.notes}
                 onChange={(e) => setDForm({ ...dForm, notes: e.target.value })}
                 rows={3}
-                className="w-full outline-none text-gray-800 text-base bg-transparent resize-none"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none"
               />
             </div>
           </div>
@@ -397,7 +397,7 @@ export default function DealersPage() {
     const { totalPurchased: selPurchased, totalPaid: selPaid } = dealerTotals(selectedDealer.id);
     const outstanding = selPurchased - selPaid;
     return (
-      <div className="min-h-screen bg-white flex flex-col">
+      <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
         <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
           <button onClick={() => { setShowTx(false); setError(""); }} className="text-white mr-3">
             <X size={24} />
@@ -411,18 +411,18 @@ export default function DealersPage() {
         </div>
         <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>
           )}
 
           {outstanding > 0 && (
             <div className="rounded-2xl p-4 mb-5" style={{ backgroundColor: "#FFF3E0" }}>
               <p className="text-orange-800 text-xs font-medium">Outstanding Balance</p>
-              <p className="text-orange-700 font-bold text-lg">{fmt(outstanding)}</p>
+              <p className="text-orange-700 dark:text-orange-400 font-bold text-lg">{fmt(outstanding)}</p>
             </div>
           )}
 
           <div className="mb-5">
-            <label className="text-gray-600 text-sm font-medium mb-3 block">Transaction Type</label>
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-3 block">Transaction Type</label>
             <div className="flex gap-3">
               {[
                 { val: "purchase", label: "Purchase", icon: ArrowDownLeft, color: "#C62828", bg: "#FFEBEE" },
@@ -448,36 +448,36 @@ export default function DealersPage() {
 
           {txForm.type === "purchase" && (
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Items Purchased *</label>
-              <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Items Purchased *</label>
+              <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <input
                   type="text"
                   placeholder="e.g. DAP Fertilizer 10 Bags"
                   value={txForm.items}
                   onChange={(e) => setTxForm({ ...txForm, items: e.target.value })}
-                  className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                  className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
                 />
               </div>
             </div>
           )}
 
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Amount (Rs.) *</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
-              <span className="text-gray-400 mr-2 font-medium">Rs.</span>
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Amount (Rs.) *</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <span className="text-gray-400 dark:text-slate-500 mr-2 font-medium">Rs.</span>
               <input
                 type="number"
                 placeholder="0"
                 value={txForm.amount}
                 onChange={(e) => setTxForm({ ...txForm, amount: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               />
             </div>
           </div>
 
           {txForm.type === "purchase" && (
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-3 block">Payment Type</label>
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-3 block">Payment Type</label>
               <div className="flex gap-3">
                 {[
                   { val: "cash", label: "Cash" },
@@ -505,24 +505,24 @@ export default function DealersPage() {
           )}
 
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Date</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Date</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <input
                 type="date"
                 value={txForm.date}
                 onChange={(e) => setTxForm({ ...txForm, date: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Crop Cycle *</label>
-            <div className="border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700 bg-white">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Crop Cycle *</label>
+            <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700 bg-white dark:bg-slate-800">
               <select
                 value={txForm.cropCycleId}
                 onChange={(e) => setTxForm({ ...txForm, cropCycleId: e.target.value })}
-                className="w-full outline-none text-gray-800 text-base bg-transparent"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               >
                 <option value="">— Select crop cycle —</option>
                 {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.crop})</option>)}
@@ -531,14 +531,14 @@ export default function DealersPage() {
           </div>
 
           <div className="mb-8">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
-            <div className="border-2 border-gray-200 rounded-2xl px-4 py-3">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
+            <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3">
               <textarea
                 placeholder="Optional notes..."
                 value={txForm.notes}
                 onChange={(e) => setTxForm({ ...txForm, notes: e.target.value })}
                 rows={2}
-                className="w-full outline-none text-gray-800 text-base bg-transparent resize-none"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none"
               />
             </div>
           </div>
@@ -561,7 +561,7 @@ export default function DealersPage() {
 
   // ── Main List ──────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-24">
       <div className="px-4 pt-12 pb-5" style={{ backgroundColor: "#1B5E20" }}>
         <div className="flex items-center justify-between mb-1">
           <div>
@@ -594,9 +594,9 @@ export default function DealersPage() {
 
       <div className="px-4 pt-4">
         {totalOutstanding > 0 && (
-          <div className="bg-white rounded-2xl p-4 shadow-sm mb-4 flex items-center justify-between">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm mb-4 flex items-center justify-between">
             <div>
-              <p className="text-gray-500 text-xs mb-1">Total Outstanding Balance</p>
+              <p className="text-gray-500 dark:text-slate-400 text-xs mb-1">Total Outstanding Balance</p>
               <p className="font-bold text-xl" style={{ color: "#C62828" }}>
                 {fmt(totalOutstanding)}
               </p>
@@ -609,15 +609,15 @@ export default function DealersPage() {
 
         {loading ? (
           <div className="flex justify-center pt-20">
-            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: "#1B5E20" }} />
+            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: "#1B5E20" }} />
           </div>
         ) : dealers.length === 0 ? (
           <div className="flex flex-col items-center justify-center pt-20 text-center">
             <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E8F5E9" }}>
               <Handshake size={36} color="#1B5E20" />
             </div>
-            <p className="text-gray-600 font-semibold mb-2">No dealers yet</p>
-            <p className="text-gray-400 text-sm mb-6">Add your suppliers and vendors</p>
+            <p className="text-gray-600 dark:text-slate-300 font-semibold mb-2">No dealers yet</p>
+            <p className="text-gray-400 dark:text-slate-500 text-sm mb-6">Add your suppliers and vendors</p>
             {canEdit && (
               <button
                 onClick={() => setShowAdd(true)}
@@ -636,16 +636,16 @@ export default function DealersPage() {
               const outstanding = totalPurchased - totalPaid;
               const hasBalance = outstanding > 0;
               return (
-                <div key={dealer.id} className="bg-white rounded-2xl p-4 shadow-sm">
+                <div key={dealer.id} className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "#E8F5E9" }}>
                         <Handshake size={22} color="#1B5E20" />
                       </div>
                       <div>
-                        <p className="font-bold text-gray-800 text-base">{dealer.name}</p>
+                        <p className="font-bold text-gray-800 dark:text-slate-100 text-base">{dealer.name}</p>
                         {dealer.phone && (
-                          <p className="text-gray-500 text-xs">{dealer.phone}</p>
+                          <p className="text-gray-500 dark:text-slate-400 text-xs">{dealer.phone}</p>
                         )}
                       </div>
                     </div>
@@ -660,22 +660,22 @@ export default function DealersPage() {
 
                   <div className="grid grid-cols-2 gap-2 mb-3">
                     <div className="rounded-xl p-2" style={{ backgroundColor: "#F5F5F5" }}>
-                      <p className="text-gray-400 text-xs mb-0.5">Total Purchased</p>
-                      <p className="text-gray-800 font-bold text-sm">{fmt(totalPurchased)}</p>
+                      <p className="text-gray-400 dark:text-slate-500 text-xs mb-0.5">Total Purchased</p>
+                      <p className="text-gray-800 dark:text-slate-100 font-bold text-sm">{fmt(totalPurchased)}</p>
                     </div>
                     <div className="rounded-xl p-2" style={{ backgroundColor: "#F5F5F5" }}>
-                      <p className="text-gray-400 text-xs mb-0.5">Total Paid</p>
+                      <p className="text-gray-400 dark:text-slate-500 text-xs mb-0.5">Total Paid</p>
                       <p className="font-bold text-sm" style={{ color: "#1B5E20" }}>{fmt(totalPaid)}</p>
                     </div>
                   </div>
 
                   {totalPurchased > 0 && (
                     <div className="mb-3">
-                      <div className="flex justify-between text-xs text-gray-400 mb-1">
+                      <div className="flex justify-between text-xs text-gray-400 dark:text-slate-500 mb-1">
                         <span>Paid</span>
                         <span>{Math.round((totalPaid / (totalPurchased || 1)) * 100)}%</span>
                       </div>
-                      <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="w-full h-2 bg-gray-100 dark:bg-slate-800/70 rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full"
                           style={{
@@ -723,12 +723,12 @@ export default function DealersPage() {
                     if (txns.length === 0) return null;
                     const isExpanded = expandedDealer === dealer.id;
                     return (
-                      <div className="border-t border-gray-100 pt-2">
+                      <div className="border-t border-gray-100 dark:border-slate-700/60 pt-2">
                         <button
                           onClick={() => setExpandedDealer(isExpanded ? null : dealer.id)}
                           className="w-full flex items-center justify-between py-1"
                         >
-                          <span className="text-xs font-semibold text-gray-500">
+                          <span className="text-xs font-semibold text-gray-500 dark:text-slate-400">
                             {txns.length} transaction{txns.length !== 1 ? "s" : ""}
                           </span>
                           {isExpanded ? <ChevronUp size={16} color="#9CA3AF" /> : <ChevronDown size={16} color="#9CA3AF" />}
@@ -744,11 +744,11 @@ export default function DealersPage() {
                                     : <ArrowUpRight size={13} color="#1B5E20" />}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                  <p className="text-xs font-semibold text-gray-800 truncate">
+                                  <p className="text-xs font-semibold text-gray-800 dark:text-slate-100 truncate">
                                     {tx.type === "dealerPurchase" ? (tx.description || "Purchase") : "Payment"}
-                                    {tx.edited && <span className="text-gray-400 font-normal italic"> (edited)</span>}
+                                    {tx.edited && <span className="text-gray-400 dark:text-slate-500 font-normal italic"> (edited)</span>}
                                   </p>
-                                  <p className="text-[10px] text-gray-400">{fmtTxDate(tx.date)}</p>
+                                  <p className="text-[10px] text-gray-400 dark:text-slate-500">{fmtTxDate(tx.date)}</p>
                                 </div>
                                 <p className="text-xs font-bold shrink-0" style={{ color: tx.type === "dealerPurchase" ? "#C62828" : "#1B5E20" }}>
                                   {tx.type === "dealerPurchase" ? "+" : "−"}{fmt(tx.amount)}
@@ -785,20 +785,20 @@ export default function DealersPage() {
       {/* ── Edit Transaction Modal ─────────────────────────────── */}
       {editingTx && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40" onClick={() => { setEditingTx(null); setEditTxSaved(false); }}>
-          <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
           <div className="px-6 pt-6 pb-6 overflow-y-auto flex-1 min-h-0">
             <div className="flex items-center justify-between mb-5">
               <div>
-                <h2 className="text-lg font-bold text-gray-800">
+                <h2 className="text-lg font-bold text-gray-800 dark:text-slate-100">
                   {editTxSaved ? "Saved" : `Edit ${editingTx.type === "dealerPurchase" ? "Purchase" : "Payment"}`}
                 </h2>
-                <p className="text-gray-400 text-xs">{editingTx.dealerName}</p>
+                <p className="text-gray-400 dark:text-slate-500 text-xs">{editingTx.dealerName}</p>
               </div>
               <button onClick={() => { setEditingTx(null); setEditTxSaved(false); }}><X size={22} color="#9CA3AF" /></button>
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-4">{error}</div>
+              <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-4">{error}</div>
             )}
 
             {editTxSaved ? (
@@ -806,36 +806,36 @@ export default function DealersPage() {
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E8F5E9" }}>
                   <Check size={36} color="#1B5E20" />
                 </div>
-                <p className="text-gray-800 font-bold text-base mb-1">Changes saved</p>
-                <p className="text-gray-400 text-sm">This {editingTx.type} has been updated.</p>
+                <p className="text-gray-800 dark:text-slate-100 font-bold text-base mb-1">Changes saved</p>
+                <p className="text-gray-400 dark:text-slate-500 text-sm">This {editingTx.type} has been updated.</p>
               </div>
             ) : (
             <>
             {editingTx.type === "dealerPurchase" && (
               <div className="mb-4">
-                <label className="text-gray-600 text-sm font-medium mb-2 block">Items Purchased</label>
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Items Purchased</label>
                 <input
                   type="text"
                   value={editForm.items}
                   onChange={(e) => setEditForm({ ...editForm, items: e.target.value })}
-                  className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700"
+                  className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700"
                 />
               </div>
             )}
 
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Amount (Rs.)</label>
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Amount (Rs.)</label>
               <input
                 type="number"
                 value={editForm.amount}
                 onChange={(e) => setEditForm({ ...editForm, amount: e.target.value })}
-                className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700"
+                className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700"
               />
             </div>
 
             {editingTx.type === "dealerPurchase" && (
               <div className="mb-4">
-                <label className="text-gray-600 text-sm font-medium mb-3 block">Payment Type</label>
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-3 block">Payment Type</label>
                 <div className="flex gap-3">
                   {[{ val: "cash", label: "Cash" }, { val: "credit", label: "Credit" }].map(({ val, label }) => (
                     <button
@@ -856,22 +856,22 @@ export default function DealersPage() {
             )}
 
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Date</label>
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Date</label>
               <input
                 type="date"
                 value={editForm.date}
                 onChange={(e) => setEditForm({ ...editForm, date: e.target.value })}
-                className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700"
+                className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700"
               />
             </div>
 
             <div className="mb-2">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
               <textarea
                 value={editForm.notes}
                 onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })}
                 rows={2}
-                className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base resize-none focus:border-green-700"
+                className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base resize-none focus:border-green-700"
               />
             </div>
             </>
@@ -881,7 +881,7 @@ export default function DealersPage() {
                 sibling) so it is always reachable by scrolling — even when
                 the on-screen keyboard shrinks the visible viewport on mobile,
                 which `dvh`-based max-heights alone can't account for. */}
-            <div className="pt-4 mt-2 border-t border-gray-100">
+            <div className="pt-4 mt-2 border-t border-gray-100 dark:border-slate-700/60">
               {editTxSaved ? (
                 <button
                   onClick={() => { setEditingTx(null); setEditTxSaved(false); }}

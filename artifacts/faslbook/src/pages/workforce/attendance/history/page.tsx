@@ -117,7 +117,7 @@ export default function WorkforceAttendanceHistoryPage() {
   const totalEarnings = filteredRecords.reduce((sum, r) => sum + earnedForRecord(r), 0);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-10">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-10">
       {/* Header */}
       <div style={{ backgroundColor: GREEN }} className="px-4 pt-12 pb-5">
         <div className="flex items-center gap-3">
@@ -154,24 +154,24 @@ export default function WorkforceAttendanceHistoryPage() {
         {filter === "custom" && (
           <div className="flex gap-3">
             <div className="flex-1">
-              <label className="text-gray-500 text-xs mb-1 block">From</label>
+              <label className="text-gray-500 dark:text-slate-400 text-xs mb-1 block">From</label>
               <input type="date" value={customFrom} onChange={(e) => setCustomFrom(e.target.value)}
                 max={today.toISOString().split("T")[0]}
-                className="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-700" />
+                className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-700" />
             </div>
             <div className="flex-1">
-              <label className="text-gray-500 text-xs mb-1 block">To</label>
+              <label className="text-gray-500 dark:text-slate-400 text-xs mb-1 block">To</label>
               <input type="date" value={customTo} onChange={(e) => setCustomTo(e.target.value)}
                 max={today.toISOString().split("T")[0]}
-                className="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-700" />
+                className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm outline-none focus:border-green-700" />
             </div>
           </div>
         )}
 
         {/* Employee filter */}
-        <div className="bg-white rounded-2xl px-4 py-2 shadow-sm">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl px-4 py-2 shadow-sm">
           <select value={selectedEmployee} onChange={(e) => setSelectedEmployee(e.target.value)}
-            className="w-full outline-none text-gray-700 text-sm py-1 bg-transparent">
+            className="w-full outline-none text-gray-700 dark:text-slate-200 text-sm py-1 bg-transparent">
             <option value="all">All Employees</option>
             {employees.map((emp) => (
               <option key={emp.id} value={emp.id}>{emp.name} — {typeLabel(emp)}</option>
@@ -181,7 +181,7 @@ export default function WorkforceAttendanceHistoryPage() {
 
         {/* Summary card */}
         {!loading && filteredRecords.length > 0 && (
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
             <div className="grid grid-cols-4 gap-2">
               <div className="rounded-xl p-2 text-center" style={{ backgroundColor: "#E8F5E9" }}>
                 <p className="text-xs font-medium" style={{ color: GREEN }}>Present</p>
@@ -212,8 +212,8 @@ export default function WorkforceAttendanceHistoryPage() {
           </div>
         ) : filteredRecords.length === 0 ? (
           <div className="text-center pt-10">
-            <p className="text-gray-500 font-medium">No records found</p>
-            <p className="text-gray-400 text-sm mt-1">Try a different date range or employee filter</p>
+            <p className="text-gray-500 dark:text-slate-400 font-medium">No records found</p>
+            <p className="text-gray-400 dark:text-slate-500 text-sm mt-1">Try a different date range or employee filter</p>
           </div>
         ) : (
           <div className="flex flex-col gap-2">
@@ -223,14 +223,14 @@ export default function WorkforceAttendanceHistoryPage() {
               const emp = empMap[rec.workerId];
               const empColor = emp ? (TYPE_COLORS[emp.employeeType] || GREEN) : GREEN;
               return (
-                <div key={rec.id} className="bg-white rounded-2xl px-4 py-3 shadow-sm flex items-center gap-3">
+                <div key={rec.id} className="bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 shadow-sm flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
                     style={{ backgroundColor: empColor }}>
                     {initials(rec.workerName)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-gray-800 text-sm truncate">{rec.workerName}</p>
-                    <p className="text-gray-400 text-xs">{fmtDate(rec.date)}</p>
+                    <p className="font-semibold text-gray-800 dark:text-slate-100 text-sm truncate">{rec.workerName}</p>
+                    <p className="text-gray-400 dark:text-slate-500 text-xs">{fmtDate(rec.date)}</p>
                   </div>
                   <div className="flex flex-col items-end gap-1 shrink-0">
                     <span className="px-2 py-0.5 rounded-full text-xs font-bold"

@@ -68,16 +68,16 @@ export default function WorkforceEmployeePrintPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: GREEN }} />
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: GREEN }} />
       </div>
     );
   }
 
   if (!employee) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-500">Employee not found.</p>
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+        <p className="text-gray-500 dark:text-slate-400">Employee not found.</p>
       </div>
     );
   }
@@ -87,14 +87,14 @@ export default function WorkforceEmployeePrintPage() {
       <style>{PRINT_CSS}</style>
 
       {/* ═══ SCREEN UI ═══ */}
-      <div className="no-print min-h-screen bg-gray-50 pb-24">
+      <div className="no-print min-h-screen bg-gray-50 dark:bg-slate-900 pb-24">
 
         {/* Header */}
         <div className="px-4 pt-10 pb-5" style={{ backgroundColor: GREEN }}>
           <div className="flex items-center gap-3 mb-4">
             <button
               onClick={() => window.history.back()}
-              className="p-1.5 rounded-full hover:bg-white/15 active:scale-95 transition-transform">
+              className="p-1.5 rounded-full hover:bg-white dark:bg-slate-800/15 active:scale-95 transition-transform">
               <ArrowLeft size={20} color="white" />
             </button>
             <div className="flex-1 min-w-0">
@@ -110,7 +110,7 @@ export default function WorkforceEmployeePrintPage() {
           </div>
 
           {/* Month navigator */}
-          <div className="flex items-center justify-between bg-white/15 rounded-2xl px-4 py-3">
+          <div className="flex items-center justify-between bg-white dark:bg-slate-800/15 rounded-2xl px-4 py-3">
             <button onClick={prevMonth} className="w-9 h-9 rounded-full flex items-center justify-center active:scale-95"
               style={{ backgroundColor: "rgba(255,255,255,0.18)" }}>
               <ChevronLeft size={18} color="white" />
@@ -129,7 +129,7 @@ export default function WorkforceEmployeePrintPage() {
 
         {/* Preview */}
         <div className="px-4 py-4">
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm overflow-hidden">
             <div style={{ transform: "scale(0.82)", transformOrigin: "top left", width: "122%", pointerEvents: "none" }}>
               <WorkforceEmployeeReportTemplate
                 employee={employee}

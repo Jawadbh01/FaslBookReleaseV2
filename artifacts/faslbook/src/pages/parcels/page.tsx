@@ -146,7 +146,7 @@ export default function ParcelsPage() {
 
   if (showAdd) {
     return (
-      <div className="min-h-screen bg-white flex flex-col">
+      <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
         <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
           <button onClick={() => { setShowAdd(false); setSelected(null); resetForm(); }} className="text-white mr-3">
             <X size={24} />
@@ -159,55 +159,55 @@ export default function ParcelsPage() {
 
         <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
           {formError && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>
           )}
 
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">{t("parcel_name")} *</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">{t("parcel_name")} *</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <MapPin size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <input type="text" placeholder={t("parcel_name_placeholder")} value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">{t("acres")} *</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">{t("acres")} *</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <Map size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <input type="number" placeholder="e.g. 25.5" value={form.acres}
                 onChange={(e) => setForm({ ...form, acres: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
-              <span className="text-gray-400 text-sm">{t("acres")}</span>
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
+              <span className="text-gray-400 dark:text-slate-500 text-sm">{t("acres")}</span>
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">{t("location")} *</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">{t("location")} *</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <MapPin size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <input type="text" placeholder={t("location_placeholder")} value={form.location}
                 onChange={(e) => setForm({ ...form, location: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">{t("assign_farmer")}</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">{t("assign_farmer")}</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <User size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <select value={form.assignedFarmer} onChange={(e) => setForm({ ...form, assignedFarmer: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent">
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
                 <option value="">{t("no_farmer")}</option>
                 {farmers.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
               </select>
             </div>
-            {farmers.length === 0 && <p className="text-gray-400 text-xs mt-1 ml-2">{t("no_farmers_yet")}</p>}
+            {farmers.length === 0 && <p className="text-gray-400 dark:text-slate-500 text-xs mt-1 ml-2">{t("no_farmers_yet")}</p>}
           </div>
 
           <div className="mb-8">
-            <label className="text-gray-600 text-sm font-medium mb-3 block">{t("status")}</label>
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-3 block">{t("status")}</label>
             <div className="grid grid-cols-2 gap-2">
               {Object.entries(statusConfig).map(([key, val]) => (
                 <button key={key} onClick={() => setForm({ ...form, status: key })}
@@ -231,7 +231,7 @@ export default function ParcelsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-24">
       <div className="px-4 pt-12 pb-5" style={{ backgroundColor: "#1B5E20" }}>
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -256,11 +256,11 @@ export default function ParcelsPage() {
             )}
           </div>
         </div>
-        <div className="flex items-center bg-white rounded-2xl px-4 py-3 gap-3">
+        <div className="flex items-center bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 gap-3">
           <Search size={18} color="#9E9E9E" />
           <input type="text" placeholder={t("search_parcels")} value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 outline-none text-gray-800 text-sm bg-transparent" />
+            className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-sm bg-transparent" />
           {search && <button onClick={() => setSearch("")}><X size={16} color="#9E9E9E" /></button>}
         </div>
       </div>
@@ -268,15 +268,15 @@ export default function ParcelsPage() {
       <div className="px-4 pt-4">
         {loading ? (
           <div className="flex justify-center pt-20">
-            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: "#1B5E20" }} />
+            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: "#1B5E20" }} />
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center pt-20 text-center">
             <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E8F5E9" }}>
               <MapPin size={36} color="#1B5E20" />
             </div>
-            <p className="text-gray-600 font-semibold mb-2">{search ? t("no_parcels_found") : t("no_parcels")}</p>
-            <p className="text-gray-400 text-sm mb-6">{search ? t("try_different") : t("no_parcels_sub")}</p>
+            <p className="text-gray-600 dark:text-slate-300 font-semibold mb-2">{search ? t("no_parcels_found") : t("no_parcels")}</p>
+            <p className="text-gray-400 dark:text-slate-500 text-sm mb-6">{search ? t("try_different") : t("no_parcels_sub")}</p>
             {canEdit && !search && (
               <button onClick={() => setShowAdd(true)} className="flex items-center gap-2 px-6 py-3 rounded-2xl text-white font-bold" style={{ backgroundColor: "#1B5E20" }}>
                 <Plus size={18} />{t("add_first_parcel")}
@@ -288,15 +288,15 @@ export default function ParcelsPage() {
             {filtered.map((parcel) => {
               const sc = statusConfig[parcel.status] || statusConfig.active;
               return (
-                <div key={parcel.id} className="bg-white rounded-2xl p-4 shadow-sm">
+                <div key={parcel.id} className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "#E8F5E9" }}>
                         <MapPin size={22} color="#1B5E20" />
                       </div>
                       <div>
-                        <p className="font-bold text-gray-800 text-base">{parcel.name}</p>
-                        <p className="text-gray-500 text-xs">{parcel.location}</p>
+                        <p className="font-bold text-gray-800 dark:text-slate-100 text-base">{parcel.name}</p>
+                        <p className="text-gray-500 dark:text-slate-400 text-xs">{parcel.location}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -314,22 +314,22 @@ export default function ParcelsPage() {
                   <div className="grid grid-cols-3 gap-2 mb-3">
                     <div className="rounded-xl p-2 text-center" style={{ backgroundColor: "#F1F8E9" }}>
                       <p className="text-green-800 font-bold text-sm">{parcel.acres}</p>
-                      <p className="text-green-600 text-xs">{t("acres")}</p>
+                      <p className="text-green-600 dark:text-green-400 text-xs">{t("acres")}</p>
                     </div>
                     <div className="rounded-xl p-2 text-center" style={{ backgroundColor: "#F5F5F5" }}>
-                      <p className="text-gray-800 font-bold text-xs truncate">{parcel.assignedFarmerName || "—"}</p>
-                      <p className="text-gray-500 text-xs">{t("farmer")}</p>
+                      <p className="text-gray-800 dark:text-slate-100 font-bold text-xs truncate">{parcel.assignedFarmerName || "—"}</p>
+                      <p className="text-gray-500 dark:text-slate-400 text-xs">{t("farmer")}</p>
                     </div>
                     <div className="rounded-xl p-2 text-center" style={{ backgroundColor: "#FFF3E0" }}>
                       <p className="text-orange-800 font-bold text-xs truncate">{parcel.currentCropName || "—"}</p>
-                      <p className="text-orange-600 text-xs">{t("crop")}</p>
+                      <p className="text-orange-600 dark:text-orange-400 text-xs">{t("crop")}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1">
                       <Wheat size={14} color="#9E9E9E" />
-                      <span className="text-gray-400 text-xs">
+                      <span className="text-gray-400 dark:text-slate-500 text-xs">
                         {parcel.currentCropName ? `${t("growing")}: ${parcel.currentCropName}` : t("no_active_crop")}
                       </span>
                     </div>

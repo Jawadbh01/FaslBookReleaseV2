@@ -74,11 +74,11 @@ export default function CloudStatusIcon({ color = "white", size = 18 }: Props) {
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-            <span className="text-gray-800 font-bold text-sm">Sync Status</span>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-slate-700/60">
+            <span className="text-gray-800 dark:text-slate-100 font-bold text-sm">Sync Status</span>
             <button
               onClick={() => setOpen(false)}
-              className="w-6 h-6 rounded-full flex items-center justify-center bg-gray-100"
+              className="w-6 h-6 rounded-full flex items-center justify-center bg-gray-100 dark:bg-slate-800/70"
             >
               <X size={12} color="#9CA3AF" />
             </button>
@@ -93,8 +93,8 @@ export default function CloudStatusIcon({ color = "white", size = 18 }: Props) {
               <Icon size={16} color={statusColor} className={spinning ? "animate-spin" : undefined} />
             </div>
             <div>
-              <p className="text-gray-800 text-sm font-semibold">{statusLabel}</p>
-              <p className="text-gray-400 text-xs">
+              <p className="text-gray-800 dark:text-slate-100 text-sm font-semibold">{statusLabel}</p>
+              <p className="text-gray-400 dark:text-slate-500 text-xs">
                 {state === "offline"
                   ? "Changes saved locally"
                   : "All data up to date"}
@@ -105,8 +105,8 @@ export default function CloudStatusIcon({ color = "white", size = 18 }: Props) {
           {/* Last synced */}
           <div className="px-4 pb-3 flex items-center gap-2">
             <Clock size={12} color="#9CA3AF" />
-            <p className="text-gray-400 text-xs">
-              Last synced: <span className="font-medium text-gray-600">{formatLastSynced(lastSynced)}</span>
+            <p className="text-gray-400 dark:text-slate-500 text-xs">
+              Last synced: <span className="font-medium text-gray-600 dark:text-slate-300">{formatLastSynced(lastSynced)}</span>
             </p>
           </div>
 
