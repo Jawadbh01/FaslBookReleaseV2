@@ -15,9 +15,8 @@ The app runs on port 25207 (injected by the artifact workflow as `$PORT`).
 ## Stack
 
 - **Frontend**: React 19 + Vite + TypeScript, `wouter` router, Tailwind v3, shadcn/ui
-- **Backend**: Firebase (Auth + Firestore + Storage) — no custom API server for the main app
-- **API Server**: Express + Drizzle ORM (separate artifact at `/api`)
-- **Monorepo**: pnpm workspace (`artifacts/faslbook`, `artifacts/api-server`, `artifacts/mockup-sandbox`)
+- **Backend**: Firebase (Auth + Firestore + Storage) — there is no custom API server; the dead Express/Drizzle `api-server` artifact was removed
+- **Monorepo**: pnpm workspace (`artifacts/faslbook`, `artifacts/mockup-sandbox`, `lib/*`)
 
 ## Firebase secrets required
 
