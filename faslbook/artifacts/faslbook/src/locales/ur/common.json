@@ -1,0 +1,41 @@
+{
+  "app": {
+    "name": "فصل بک",
+    "tagline": "زرعی انتظام آسان"
+  },
+  "nav": {
+    "overview": "جائزہ",
+    "parcels": "پلاٹس",
+    "crops": "فصلیں",
+    "inventory": "اسٹاک",
+    "farmers": "کسان",
+    "workers": "مزدور",
+    "dealers": "ڈیلر",
+    "expenses": "اخراجات",
+    "income": "آمدنی",
+    "loans": "قرض",
+    "ledger": "کھاتہ",
+    "reports": "رپورٹس"
+  },
+  "auth": {
+    "login": "لاگ ان",
+    "register": "رجسٹر",
+    "logout": "لاگ آؤٹ",
+    "email": "ای میل",
+    "password": "پاس ورڈ",
+    "name": "پورا نام",
+    "forgotPassword": "پاس ورڈ بھول گئے؟"
+  },
+  "common": {
+    "save": "محفوظ کریں",
+    "cancel": "منسوخ",
+    "delete": "حذف کریں",
+    "edit": "ترمیم",
+    "add": "اضافہ کریں",
+    "search": "تلاش کریں",
+    "filter": "فلٹر",
+    "loading": "لوڈ ہو رہا ہے...",
+    "noData": "کوئی ڈیٹا نہیں ملا",
+    "error": "کچھ غلط ہو گیا"
+  }
+}

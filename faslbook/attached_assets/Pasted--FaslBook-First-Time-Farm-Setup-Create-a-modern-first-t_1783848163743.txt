@@ -1,0 +1,118 @@
+## FaslBook - First Time Farm Setup
+
+Create a modern first-time onboarding flow.
+
+Do not change the existing UI, business logic, or database structure.
+
+### First Login
+After a user successfully logs in for the first time, show a modal instead of immediately opening the dashboard.
+
+Title:
+Welcome to FaslBook
+
+Message:
+Let's set up your farm so you can start managing everything easily. This only takes a few minutes.
+
+Buttons:
+- Continue Setup (Primary)
+- Skip for Now (Secondary)
+
+The popup should only appear once for new users.
+
+---
+
+### Continue Setup
+
+Create a simple step-by-step setup flow with a progress indicator.
+
+Step 1
+Farm Information
+- Farm Name
+- Location (Optional)
+
+Step 2
+Create First Crop Cycle
+- Crop Cycle Name
+- Crop
+- Start Date
+- End Date
+
+Step 3
+Create First Parcel
+- Parcel Name
+- Area
+- Unit
+
+Step 4
+Create First Profile (Optional)
+Allow creating one of:
+- Farmer
+- Dealer
+- Labour Contractor
+
+Also provide a Skip button.
+
+Step 5
+Setup Complete
+
+Show:
+✅ Farm Created
+✅ Crop Cycle Created
+✅ Parcel Created
+
+Button:
+Go to Dashboard
+
+---
+
+### Skip Setup
+
+If the user selects Skip for Now:
+
+- Close the setup.
+- Open the Dashboard.
+- Never force the setup again.
+
+Instead, show a small dashboard card:
+
+Complete Farm Setup
+
+Display completed and remaining steps.
+
+Example:
+✔ Farm
+✔ Crop Cycle
+⬜ Parcel
+⬜ First Profile
+
+Button:
+Continue Setup
+
+Hide this card automatically after setup is completed.
+
+---
+
+### Smart Validation
+
+Do not block users unnecessarily.
+
+If a user skips setup and later tries to use a feature requiring missing data:
+
+Example:
+- Add Expense → No Crop Cycle → Ask to create Crop Cycle.
+- Add Parcel → No Farm → Ask to create Farm.
+- Add Farmer Khata → No Farmer → Ask to create Farmer.
+
+After creating the missing item, automatically return the user to the original screen with the new record selected.
+
+---
+
+### Requirements
+
+- Keep existing design language.
+- Keep current navigation.
+- Do not modify existing features.
+- Save setup progress automatically.
+- Users can leave and continue setup later.
+- Only show onboarding to first-time users.
+- The flow should feel simple, modern, and professional.

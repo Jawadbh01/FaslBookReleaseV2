@@ -1,33 +1,28 @@
-# Dependencies
-node_modules/
-.pnpm-store/
-
-# Build outputs
+# Build artifacts and compiled outputs
 dist/
 build/
 *.tsbuildinfo
 
-# Environment & secrets - never commit
+# Dependency directories
+node_modules/
+
+# Environment files
 .env
 .env.local
 .env.*.local
-!.env.example
-google-services.json
-GoogleService-Info.plist
-serviceAccount*.json
 
-# Android build artifacts
-android/app/build/
-android/build/
-android/.gradle/
-android/local.properties
-
-# Editor / OS
-.DS_Store
+# Editor/IDE specific files
+.vscode/
 .idea/
-.vscode/*
-!.vscode/extensions.json
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
 
 # Logs
 *.log
-replit.log*
+
+# Compressed archives (specifically for project backups/artifacts)
+*.zip
