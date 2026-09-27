@@ -500,15 +500,15 @@ export default function OverviewPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: "#1B5E20" }} />
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900">
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: "#1B5E20" }} />
       </div>
     );
   }
 
   return (
     <>
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-20">
 
       {/* ── Header ───────────────────────────────────────────── */}
       <div
@@ -578,7 +578,7 @@ export default function OverviewPage() {
               {user?.photoURL ? (
                 <img src={user.photoURL} alt="profile" className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-white/25">
+                <div className="w-full h-full flex items-center justify-center bg-white dark:bg-slate-800/25">
                   <span className="text-white font-bold" style={{ fontSize: 10 }}>{initials}</span>
                 </div>
               )}
@@ -642,17 +642,17 @@ export default function OverviewPage() {
           <div className="mb-2.5 rounded-xl px-3 py-2.5 space-y-2"
             style={{ backgroundColor: "rgba(0,0,0,0.15)" }}>
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-white/10 animate-pulse" />
+              <div className="w-7 h-7 rounded-full bg-white dark:bg-slate-800/10 animate-pulse" />
               <div className="flex-1 space-y-1">
-                <div className="h-3.5 w-16 rounded bg-white/10 animate-pulse" />
-                <div className="h-2.5 w-24 rounded bg-white/10 animate-pulse" />
+                <div className="h-3.5 w-16 rounded bg-white dark:bg-slate-800/10 animate-pulse" />
+                <div className="h-2.5 w-24 rounded bg-white dark:bg-slate-800/10 animate-pulse" />
               </div>
-              <div className="h-3 w-20 rounded bg-white/10 animate-pulse" />
+              <div className="h-3 w-20 rounded bg-white dark:bg-slate-800/10 animate-pulse" />
             </div>
             <div className="flex gap-3">
-              <div className="h-2.5 w-12 rounded bg-white/10 animate-pulse" />
-              <div className="h-2.5 w-16 rounded bg-white/10 animate-pulse" />
-              <div className="h-2.5 w-12 rounded bg-white/10 animate-pulse" />
+              <div className="h-2.5 w-12 rounded bg-white dark:bg-slate-800/10 animate-pulse" />
+              <div className="h-2.5 w-16 rounded bg-white dark:bg-slate-800/10 animate-pulse" />
+              <div className="h-2.5 w-12 rounded bg-white dark:bg-slate-800/10 animate-pulse" />
             </div>
           </div>
         )}
@@ -670,9 +670,9 @@ export default function OverviewPage() {
 
       {/* ── Summary Cards ─────────────────────────────────────── */}
       <div className="px-4 -mt-2">
-        <div className="bg-white rounded-2xl p-4 shadow-md">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-md">
           <div className="flex items-center justify-between mb-3 relative">
-            <p className="font-bold text-gray-800 text-sm">Overview</p>
+            <p className="font-bold text-gray-800 dark:text-slate-100 text-sm">Overview</p>
             <button
               onClick={() => setShowFilterMenu((v) => !v)}
               className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium max-w-[160px]"
@@ -684,11 +684,11 @@ export default function OverviewPage() {
             {showFilterMenu && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setShowFilterMenu(false)} />
-                <div className="absolute right-0 top-9 z-20 bg-white rounded-2xl shadow-lg border border-gray-100 py-2 min-w-[180px] max-w-[220px]">
+                <div className="absolute right-0 top-9 z-20 bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-gray-100 dark:border-slate-700/60 py-2 min-w-[180px] max-w-[220px]">
                   {/* Active crop cycles */}
                   {activeCropCycles.length > 0 && (
                     <>
-                      <p className="px-4 pt-1 pb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400">Crop Cycles</p>
+                      <p className="px-4 pt-1 pb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-slate-500">Crop Cycles</p>
                       {activeCropCycles.map((cc) => (
                         <button
                           key={cc.id}
@@ -703,11 +703,11 @@ export default function OverviewPage() {
                           {cc.name}
                         </button>
                       ))}
-                      <div className="mx-4 my-1 border-t border-gray-100" />
+                      <div className="mx-4 my-1 border-t border-gray-100 dark:border-slate-700/60" />
                     </>
                   )}
                   {/* Date ranges */}
-                  <p className="px-4 pt-1 pb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400">Date Range</p>
+                  <p className="px-4 pt-1 pb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-slate-500">Date Range</p>
                   {(["last30", "last60"] as const).map((key) => {
                     const label = key === "last30" ? "Last 30 Days" : "Last 60 Days";
                     return (
@@ -735,7 +735,7 @@ export default function OverviewPage() {
               return (
                 <div key={card.key} className="rounded-xl p-3" style={{ backgroundColor: card.bg }}>
                   <div className="flex items-center justify-between mb-1">
-                    <p className="text-gray-500 text-xs font-medium">{t(card.key)}</p>
+                    <p className="text-gray-500 dark:text-slate-400 text-xs font-medium">{t(card.key)}</p>
                     <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: card.color + "22" }}>
                       <Icon size={14} color={card.color} />
                     </div>
@@ -750,13 +750,13 @@ export default function OverviewPage() {
 
           {/* Loans + Dealer */}
           <div className="grid grid-cols-2 gap-3 mt-3">
-            <div className="rounded-xl p-3 bg-gray-50">
-              <p className="text-gray-400 text-xs mb-1">{t("pending_loans")}</p>
-              <p className="font-bold text-sm text-gray-800">{fmt(pendingLoans)}</p>
+            <div className="rounded-xl p-3 bg-gray-50 dark:bg-slate-900">
+              <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">{t("pending_loans")}</p>
+              <p className="font-bold text-sm text-gray-800 dark:text-slate-100">{fmt(pendingLoans)}</p>
             </div>
-            <div className="rounded-xl p-3 bg-gray-50">
-              <p className="text-gray-400 text-xs mb-1">{t("dealer_dues")}</p>
-              <p className="font-bold text-sm text-gray-800">{fmt(dealerDues)}</p>
+            <div className="rounded-xl p-3 bg-gray-50 dark:bg-slate-900">
+              <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">{t("dealer_dues")}</p>
+              <p className="font-bold text-sm text-gray-800 dark:text-slate-100">{fmt(dealerDues)}</p>
             </div>
           </div>
         </div>
@@ -773,7 +773,7 @@ export default function OverviewPage() {
 
       {/* ── Quick Actions ─────────────────────────────────────── */}
       <div className="px-4 mt-4">
-        <p className="font-bold text-gray-800 text-sm mb-3">{t("quick_actions")}</p>
+        <p className="font-bold text-gray-800 dark:text-slate-100 text-sm mb-3">{t("quick_actions")}</p>
         <div className="grid grid-cols-2 gap-2.5">
           {actions
             .filter((a) => a.label !== "Add Expense" && a.label !== "Add Income")
@@ -782,7 +782,7 @@ export default function OverviewPage() {
               const Icon = action.icon;
               return (
                 <Link key={action.label} href={action.href}>
-                  <div className="bg-white rounded-2xl px-3.5 py-3 flex items-center gap-3 shadow-sm active:scale-95 transition-transform">
+                  <div className="bg-white dark:bg-slate-800 rounded-2xl px-3.5 py-3 flex items-center gap-3 shadow-sm active:scale-95 transition-transform">
                     <div
                       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                       style={{ backgroundColor: action.bg }}
@@ -790,8 +790,8 @@ export default function OverviewPage() {
                       <Icon size={20} color={action.color} />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-gray-800 text-sm font-semibold truncate leading-tight">{action.label}</p>
-                      <p className="text-gray-400 text-[10px] truncate">{action.urdu}</p>
+                      <p className="text-gray-800 dark:text-slate-100 text-sm font-semibold truncate leading-tight">{action.label}</p>
+                      <p className="text-gray-400 dark:text-slate-500 text-[10px] truncate">{action.urdu}</p>
                     </div>
                   </div>
                 </Link>
@@ -812,12 +812,12 @@ export default function OverviewPage() {
       {recentLedger.length > 0 && (
         <div className="px-4 mt-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="font-bold text-gray-800 text-sm">Recent Transactions</p>
+            <p className="font-bold text-gray-800 dark:text-slate-100 text-sm">Recent Transactions</p>
             <Link href="/ledger" className="text-xs font-medium flex items-center gap-1" style={{ color: "#1B5E20" }}>
               View all <ChevronRight size={12} color="#1B5E20" />
             </Link>
           </div>
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm overflow-hidden">
             {recentLedger.map((entry, i) => {
               const CREDIT_TYPES = ["income", "loanTaken", "dealerPayment"];
               const isCredit = CREDIT_TYPES.includes(entry.type);
@@ -847,8 +847,8 @@ export default function OverviewPage() {
                       : <ArrowDownRight size={16} color="#C62828" />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-gray-800 text-sm font-medium truncate">{label}</p>
-                    <p className="text-gray-400 text-xs">{fmtEntryDate(entry.date)}</p>
+                    <p className="text-gray-800 dark:text-slate-100 text-sm font-medium truncate">{label}</p>
+                    <p className="text-gray-400 dark:text-slate-500 text-xs">{fmtEntryDate(entry.date)}</p>
                   </div>
                   <p className="font-bold text-sm shrink-0" style={{ color: isCredit ? "#1B5E20" : "#C62828" }}>
                     {isCredit ? "+" : "−"}{fmt(entry.amount)}
@@ -863,15 +863,15 @@ export default function OverviewPage() {
 
       {/* ── Recent Activity ───────────────────────────────────── */}
       <div className="px-4 mt-4">
-        <p className="font-bold text-gray-800 text-sm mb-3">{t("recent_activity")}</p>
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+        <p className="font-bold text-gray-800 dark:text-slate-100 text-sm mb-3">{t("recent_activity")}</p>
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm overflow-hidden">
           {recentActivity.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-10">
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-3" style={{ backgroundColor: "#E8F5E9" }}>
                 <Wheat size={24} color="#1B5E20" />
               </div>
-              <p className="text-gray-500 text-sm font-medium">{t("no_activity")}</p>
-              <p className="text-gray-400 text-xs mt-1">{t("no_activity_sub")}</p>
+              <p className="text-gray-500 dark:text-slate-400 text-sm font-medium">{t("no_activity")}</p>
+              <p className="text-gray-400 dark:text-slate-500 text-xs mt-1">{t("no_activity_sub")}</p>
             </div>
           ) : (() => {
             const visibleItems = showAllActivity
@@ -892,7 +892,7 @@ export default function OverviewPage() {
                         <AIcon size={16} color={color} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-gray-800 text-sm font-medium truncate">
+                        <p className="text-gray-800 dark:text-slate-100 text-sm font-medium truncate">
                           {(() => {
                             const a = item.action || "";
                             if (a.includes("EXPENSE")) return "Expense Added";
@@ -904,7 +904,7 @@ export default function OverviewPage() {
                             return item.categoryLabel || item.category || a.replace(/_/g, " ") || "Activity";
                           })()}
                         </p>
-                        <p className="text-gray-400 text-xs">{item.userName || "System"}</p>
+                        <p className="text-gray-400 dark:text-slate-500 text-xs">{item.userName || "System"}</p>
                       </div>
                       <div className="text-right shrink-0">
                         {item.amount && (
@@ -912,7 +912,7 @@ export default function OverviewPage() {
                             {fmt(item.amount)}
                           </p>
                         )}
-                        <p className="text-gray-400 text-xs">{timeAgo(item.createdAt)}</p>
+                        <p className="text-gray-400 dark:text-slate-500 text-xs">{timeAgo(item.createdAt)}</p>
                       </div>
                     </div>
                   );
@@ -985,16 +985,16 @@ export default function OverviewPage() {
           </div>
 
           {/* Results */}
-          <div className="flex-1 overflow-y-auto bg-gray-50">
+          <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-slate-900">
             {searchLoading && (
               <div className="flex items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-3 border-gray-200" style={{ borderTopColor: "#1B5E20", borderWidth: 3 }} />
+                <div className="animate-spin rounded-full h-8 w-8 border-3 border-gray-200 dark:border-slate-700" style={{ borderTopColor: "#1B5E20", borderWidth: 3 }} />
               </div>
             )}
 
             {!searchLoading && !searchQuery && (
               <div className="px-4 pt-5 pb-4">
-                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-3">Quick Access</p>
+                <p className="text-[11px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wide mb-3">Quick Access</p>
                 <div className="grid grid-cols-3 gap-2">
                   {[
                     { icon:"👨‍🌾", label:"Farmers",      href:"/workers?type=farmer" },
@@ -1008,9 +1008,9 @@ export default function OverviewPage() {
                     { icon:"🖨️", label:"Print",         href:"/reports/print" },
                   ].map(item => (
                     <Link key={item.href} href={item.href} onClick={() => setShowSearch(false)}>
-                      <div className="flex flex-col items-center justify-center gap-1.5 bg-white rounded-2xl py-3 shadow-sm active:scale-95 transition-transform">
+                      <div className="flex flex-col items-center justify-center gap-1.5 bg-white dark:bg-slate-800 rounded-2xl py-3 shadow-sm active:scale-95 transition-transform">
                         <span style={{ fontSize: 22 }}>{item.icon}</span>
-                        <span className="text-xs font-semibold text-gray-700">{item.label}</span>
+                        <span className="text-xs font-semibold text-gray-700 dark:text-slate-200">{item.label}</span>
                       </div>
                     </Link>
                   ))}
@@ -1021,8 +1021,8 @@ export default function OverviewPage() {
             {!searchLoading && searchQuery && searchResults.length === 0 && (
               <div className="flex flex-col items-center justify-center py-16 text-center px-6">
                 <span style={{ fontSize: 40 }}>🔍</span>
-                <p className="mt-3 text-gray-600 font-semibold">No results for "{searchQuery}"</p>
-                <p className="text-xs text-gray-400 mt-1">Try a farmer name, parcel, item or amount</p>
+                <p className="mt-3 text-gray-600 dark:text-slate-300 font-semibold">No results for "{searchQuery}"</p>
+                <p className="text-xs text-gray-400 dark:text-slate-500 mt-1">Try a farmer name, parcel, item or amount</p>
               </div>
             )}
 
@@ -1033,12 +1033,12 @@ export default function OverviewPage() {
                 <div className="px-4 pt-4 pb-6 flex flex-col gap-4">
                   {KIND_ORDER.filter(k => grouped[k]?.length).map(kind => (
                     <div key={kind}>
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2">{KIND_LABEL[kind]}</p>
-                      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+                      <p className="text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wide mb-2">{KIND_LABEL[kind]}</p>
+                      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm overflow-hidden">
                         {grouped[kind]!.map((r, i) => (
                           <Link key={r.id} href={r.href} onClick={() => setShowSearch(false)}>
                             <div
-                              className="flex items-center gap-3 px-4 py-3 active:bg-gray-50 transition-colors"
+                              className="flex items-center gap-3 px-4 py-3 active:bg-gray-50 dark:bg-slate-900 transition-colors"
                               style={{ borderTop: i > 0 ? "1px solid #F3F4F6" : "none" }}
                             >
                               <span
@@ -1048,8 +1048,8 @@ export default function OverviewPage() {
                                 {r.icon}
                               </span>
                               <div className="flex-1 min-w-0">
-                                <p className="font-semibold text-gray-800 text-sm truncate">{r.title}</p>
-                                {r.sub && <p className="text-xs text-gray-400 truncate">{r.sub}</p>}
+                                <p className="font-semibold text-gray-800 dark:text-slate-100 text-sm truncate">{r.title}</p>
+                                {r.sub && <p className="text-xs text-gray-400 dark:text-slate-500 truncate">{r.sub}</p>}
                               </div>
                               <ChevronRight size={14} color="#9CA3AF" />
                             </div>

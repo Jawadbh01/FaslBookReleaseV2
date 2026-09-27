@@ -78,7 +78,7 @@ export default function TopBar() {
       <div className="flex items-center h-14 px-2 gap-1">
         <button
           onClick={() => window.history.back()}
-          className="p-2 rounded-full hover:bg-white/10 active:bg-white/20 transition-colors"
+          className="p-2 rounded-full hover:bg-white dark:bg-slate-800/10 active:bg-white dark:bg-slate-800/20 transition-colors"
           aria-label="Go back"
           style={{ WebkitTapHighlightColor: "transparent" }}
         >

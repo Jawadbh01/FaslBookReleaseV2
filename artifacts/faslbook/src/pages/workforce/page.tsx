@@ -207,7 +207,7 @@ export default function WorkforcePage() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 pb-28">
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-28">
         {/* Header */}
         <div style={{ backgroundColor: GREEN }} className="px-4 pt-4 pb-0">
           <div className="flex items-center justify-between mb-4">
@@ -274,23 +274,23 @@ export default function WorkforcePage() {
               <div className="flex-1 relative">
                 <select
                   value={filterType} onChange={(e) => setFilterType(e.target.value as any)}
-                  className="w-full appearance-none bg-white text-gray-800 text-xs font-semibold rounded-xl px-3 py-2.5 pr-7 outline-none">
+                  className="w-full appearance-none bg-white dark:bg-slate-800 text-gray-800 dark:text-slate-100 text-xs font-semibold rounded-xl px-3 py-2.5 pr-7 outline-none">
                   <option value="all">All Types</option>
                   {(Object.keys(TYPE_LABELS) as EmployeeType[]).map((t) => (
                     <option key={t} value={t}>{TYPE_LABELS[t]}</option>
                   ))}
                 </select>
-                <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 pointer-events-none" />
               </div>
               <div className="flex-1 relative">
                 <select
                   value={filterStatus} onChange={(e) => setFilterStatus(e.target.value as any)}
-                  className="w-full appearance-none bg-white text-gray-800 text-xs font-semibold rounded-xl px-3 py-2.5 pr-7 outline-none">
+                  className="w-full appearance-none bg-white dark:bg-slate-800 text-gray-800 dark:text-slate-100 text-xs font-semibold rounded-xl px-3 py-2.5 pr-7 outline-none">
                   <option value="all">All Status</option>
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                 </select>
-                <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 pointer-events-none" />
               </div>
             </div>
           )}
@@ -299,7 +299,7 @@ export default function WorkforcePage() {
         <div className="px-4 pt-4">
           {loading ? (
             <div className="flex justify-center pt-16">
-              <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: GREEN }} />
+              <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: GREEN }} />
             </div>
           ) : (
             <>
@@ -312,13 +312,13 @@ export default function WorkforcePage() {
                   </div>
                   {employees.length === 0 ? (
                     <>
-                      <p className="text-gray-600 font-semibold mb-1">No employees yet</p>
-                      <p className="text-gray-400 text-sm">Tap "Add Employee" to get started</p>
+                      <p className="text-gray-600 dark:text-slate-300 font-semibold mb-1">No employees yet</p>
+                      <p className="text-gray-400 dark:text-slate-500 text-sm">Tap "Add Employee" to get started</p>
                     </>
                   ) : (
                     <>
-                      <p className="text-gray-600 font-semibold mb-1">No results</p>
-                      <p className="text-gray-400 text-sm">Try a different search or filter</p>
+                      <p className="text-gray-600 dark:text-slate-300 font-semibold mb-1">No results</p>
+                      <p className="text-gray-400 dark:text-slate-500 text-sm">Try a different search or filter</p>
                     </>
                   )}
                 </div>
@@ -329,7 +329,7 @@ export default function WorkforcePage() {
                     const attBadge = getAttBadge(emp.id);
                     const isInactive = emp.status === "inactive";
                     return (
-                      <div key={emp.id} className="bg-white rounded-2xl px-4 py-4 shadow-sm"
+                      <div key={emp.id} className="bg-white dark:bg-slate-800 rounded-2xl px-4 py-4 shadow-sm"
                         style={{ opacity: isInactive ? 0.72 : 1 }}>
                         <div className="flex items-center gap-3">
                           <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
@@ -338,7 +338,7 @@ export default function WorkforcePage() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <p className="font-bold text-gray-800">{emp.name}</p>
+                              <p className="font-bold text-gray-800 dark:text-slate-100">{emp.name}</p>
                               {attBadge && (
                                 <span className="text-xs font-bold px-1.5 py-0.5 rounded-full shrink-0"
                                   style={{ color: attBadge.color, backgroundColor: attBadge.bg }}>
@@ -357,10 +357,10 @@ export default function WorkforcePage() {
                                 style={{ backgroundColor: tc.bg, color: tc.color }}>
                                 {typeLabel(emp)}
                               </span>
-                              <span className="text-gray-400 text-xs">{fmtSalary(emp)}</span>
+                              <span className="text-gray-400 dark:text-slate-500 text-xs">{fmtSalary(emp)}</span>
                             </div>
                             {emp.phone && (
-                              <p className="text-gray-400 text-xs flex items-center gap-1 mt-0.5">
+                              <p className="text-gray-400 dark:text-slate-500 text-xs flex items-center gap-1 mt-0.5">
                                 <Phone size={11} /> {emp.phone}
                               </p>
                             )}
@@ -408,7 +408,7 @@ export default function WorkforcePage() {
 
       {/* ── Add / Edit Employee Modal ── */}
       {isModal && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-white overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex flex-col bg-white dark:bg-slate-800 overflow-y-auto">
           <div className="flex items-center px-4 pt-12 pb-5 shrink-0" style={{ backgroundColor: GREEN }}>
             <button onClick={closeModal} className="text-white mr-3 active:scale-95"><X size={24} /></button>
             <div>
@@ -417,36 +417,36 @@ export default function WorkforcePage() {
             </div>
           </div>
           <div className="px-6 pt-6 pb-12">
-            {error && <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>}
+            {error && <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>}
 
             {/* Full Name */}
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Full Name *</label>
-              <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Full Name *</label>
+              <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <User size={18} color="#9E9E9E" className="mr-3 shrink-0" />
                 <input type="text" placeholder="Employee's full name" value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                  className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
               </div>
             </div>
 
             {/* Phone */}
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Phone Number</label>
-              <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Phone Number</label>
+              <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <Phone size={18} color="#9E9E9E" className="mr-3 shrink-0" />
                 <input type="tel" placeholder="03XX-XXXXXXX" value={form.phone}
                   onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                  className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
               </div>
             </div>
 
             {/* Employee Type */}
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Employee Type *</label>
-              <div className="border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Employee Type *</label>
+              <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <select value={form.employeeType} onChange={(e) => setForm({ ...form, employeeType: e.target.value as EmployeeType })}
-                  className="w-full outline-none text-gray-800 text-base bg-transparent">
+                  className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
                   {(Object.keys(TYPE_LABELS) as EmployeeType[]).map((t) => (
                     <option key={t} value={t}>{TYPE_LABELS[t]}</option>
                   ))}
@@ -457,29 +457,29 @@ export default function WorkforcePage() {
             {/* Custom Type Name */}
             {form.employeeType === "custom" && (
               <div className="mb-4">
-                <label className="text-gray-600 text-sm font-medium mb-2 block">Custom Type Name *</label>
-                <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Custom Type Name *</label>
+                <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                   <input type="text" placeholder="e.g. Gardener, Cook…" value={form.customTypeName}
                     onChange={(e) => setForm({ ...form, customTypeName: e.target.value })}
-                    className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                    className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
                 </div>
               </div>
             )}
 
             {/* Join Date */}
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Join Date</label>
-              <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Join Date</label>
+              <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <Calendar size={18} color="#9E9E9E" className="mr-3 shrink-0" />
                 <input type="date" value={form.joinDate}
                   onChange={(e) => setForm({ ...form, joinDate: e.target.value })}
-                  className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                  className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
               </div>
             </div>
 
             {/* Salary Type */}
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Salary Type *</label>
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Salary Type *</label>
               <div className="grid grid-cols-3 gap-2">
                 {(["daily", "monthly", "contract"] as SalaryType[]).map((t) => (
                   <button key={t} onClick={() => setForm({ ...form, salaryType: t })}
@@ -497,21 +497,21 @@ export default function WorkforcePage() {
 
             {/* Salary Amount */}
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
                 {form.salaryType === "daily" ? "Daily Wage *" : form.salaryType === "monthly" ? "Monthly Salary *" : "Contract Amount *"}
               </label>
-              <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <DollarSign size={18} color="#9E9E9E" className="mr-3 shrink-0" />
-                <span className="text-gray-400 mr-2 font-medium">Rs.</span>
+                <span className="text-gray-400 dark:text-slate-500 mr-2 font-medium">Rs.</span>
                 <input type="number" placeholder="0" value={form.salary}
                   onChange={(e) => setForm({ ...form, salary: e.target.value })}
-                  className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                  className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
               </div>
             </div>
 
             {/* Status */}
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Status</label>
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Status</label>
               <div className="grid grid-cols-2 gap-2">
                 {(["active", "inactive"] as const).map((s) => (
                   <button key={s} onClick={() => setForm({ ...form, status: s })}
@@ -529,33 +529,33 @@ export default function WorkforcePage() {
 
             {/* Address (optional) */}
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Address (Optional)</label>
-              <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Address (Optional)</label>
+              <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <MapPin size={18} color="#9E9E9E" className="mr-3 shrink-0" />
                 <input type="text" placeholder="Home address" value={form.address}
                   onChange={(e) => setForm({ ...form, address: e.target.value })}
-                  className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                  className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
               </div>
             </div>
 
             {/* Emergency Contact (optional) */}
             <div className="mb-4">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Emergency Contact (Optional)</label>
-              <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Emergency Contact (Optional)</label>
+              <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <Phone size={18} color="#9E9E9E" className="mr-3 shrink-0" />
                 <input type="tel" placeholder="Emergency phone number" value={form.emergencyContact}
                   onChange={(e) => setForm({ ...form, emergencyContact: e.target.value })}
-                  className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+                  className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
               </div>
             </div>
 
             {/* Notes */}
             <div className="mb-8">
-              <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
-              <div className="border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
+              <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
                 <textarea placeholder="Any notes…" value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                  rows={3} className="w-full outline-none text-gray-800 text-base bg-transparent resize-none" />
+                  rows={3} className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none" />
               </div>
             </div>
 
@@ -571,18 +571,18 @@ export default function WorkforcePage() {
       {/* ── Delete Confirm ── */}
       {modal === "delete" && editTarget && (
         <div className="fixed inset-0 z-50 flex items-end" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
-          <div className="w-full bg-white rounded-t-3xl px-6 pt-6 pb-10">
+          <div className="w-full bg-white dark:bg-slate-800 rounded-t-3xl px-6 pt-6 pb-10">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: "#FFEBEE" }}>
                 <AlertTriangle size={24} color="#C62828" />
               </div>
               <div>
-                <p className="font-bold text-gray-800">Delete Employee?</p>
-                <p className="text-gray-400 text-sm">{editTarget.name}</p>
+                <p className="font-bold text-gray-800 dark:text-slate-100">Delete Employee?</p>
+                <p className="text-gray-400 dark:text-slate-500 text-sm">{editTarget.name}</p>
               </div>
             </div>
-            <p className="text-gray-500 text-sm mb-6">This will permanently delete the employee record. Attendance records are not deleted.</p>
-            {error && <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-xl mb-4">{error}</div>}
+            <p className="text-gray-500 dark:text-slate-400 text-sm mb-6">This will permanently delete the employee record. Attendance records are not deleted.</p>
+            {error && <div className="bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-4">{error}</div>}
             <div className="flex gap-3">
               <button onClick={closeModal} className="flex-1 py-3.5 rounded-2xl border-2 font-bold text-sm" style={{ borderColor: "#E5E7EB", color: "#616161" }}>Cancel</button>
               <button onClick={handleDelete} disabled={saving}

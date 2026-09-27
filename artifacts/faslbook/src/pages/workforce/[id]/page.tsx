@@ -193,20 +193,20 @@ export default function WorkforceProfilePage() {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: GREEN }} />
+      <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: GREEN }} />
     </div>
   );
 
   if (!employee) return (
     <div className="min-h-screen flex items-center justify-center">
-      <p className="text-gray-500">Employee not found</p>
+      <p className="text-gray-500 dark:text-slate-400">Employee not found</p>
     </div>
   );
 
   const empColor = TYPE_COLORS[employee.employeeType] || GREEN;
 
   if (showPay) return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
       <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: GREEN }}>
         <button onClick={() => setShowPay(false)} className="text-white mr-3"><X size={24} /></button>
         <div>
@@ -215,38 +215,38 @@ export default function WorkforceProfilePage() {
         </div>
       </div>
       <div className="px-6 pt-6 pb-10">
-        {payError && <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{payError}</div>}
+        {payError && <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{payError}</div>}
         {pending > 0 && (
           <div className="rounded-2xl p-4 mb-5" style={{ backgroundColor: "#FFF3E0" }}>
             <p className="text-orange-800 text-xs font-medium">Pending for {MONTHS[calMonth]}</p>
-            <p className="text-orange-700 font-bold text-xl">{fmt(pending)}</p>
+            <p className="text-orange-700 dark:text-orange-400 font-bold text-xl">{fmt(pending)}</p>
           </div>
         )}
         <div className="mb-4">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">Amount *</label>
-          <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
-            <span className="text-gray-400 mr-2 font-medium">Rs.</span>
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Amount *</label>
+          <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <span className="text-gray-400 dark:text-slate-500 mr-2 font-medium">Rs.</span>
             <input type="number" placeholder={String(Math.round(pending))} value={payAmount}
               onChange={(e) => setPayAmount(e.target.value)}
-              className="flex-1 outline-none text-gray-800 text-base bg-transparent" />
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent" />
           </div>
         </div>
         <div className="mb-4">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">Crop Cycle *</label>
-          <div className="border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Crop Cycle *</label>
+          <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
             <select value={payCropCycleId} onChange={(e) => setPayCropCycleId(e.target.value)}
-              className="w-full outline-none text-gray-800 text-base bg-transparent">
+              className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
               <option value="">— Select crop cycle —</option>
               {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.crop})</option>)}
             </select>
           </div>
         </div>
         <div className="mb-8">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
-          <div className="border-2 border-gray-200 rounded-2xl px-4 py-3">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
+          <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3">
             <textarea value={payNote} onChange={(e) => setPayNote(e.target.value)}
               placeholder="Optional..." rows={2}
-              className="w-full outline-none text-gray-800 text-base bg-transparent resize-none" />
+              className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none" />
           </div>
         </div>
         <button onClick={handlePay} disabled={saving}
@@ -259,7 +259,7 @@ export default function WorkforceProfilePage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-28">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-28">
       {/* Header */}
       <div style={{ backgroundColor: empColor }} className="px-4 pt-12 pb-6">
         <div className="flex items-center gap-3 mb-4">
@@ -267,7 +267,7 @@ export default function WorkforceProfilePage() {
           <div className="flex-1">
             <h1 className="text-white text-xl font-bold">{employee.name}</h1>
             <div className="flex items-center gap-2 mt-1">
-              <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">
+              <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white dark:bg-slate-800/20 text-white">
                 {typeLabel(employee)}
               </span>
               <span className="px-2 py-0.5 rounded-full text-xs font-bold"
@@ -284,7 +284,7 @@ export default function WorkforceProfilePage() {
           </button>
         </div>
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl bg-white/20">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl bg-white dark:bg-slate-800/20">
             {initials(employee.name)}
           </div>
           <div className="flex flex-col gap-0.5">
@@ -303,8 +303,8 @@ export default function WorkforceProfilePage() {
       <div className="px-4 pt-4 flex flex-col gap-4">
 
         {/* Personal Information */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
-          <p className="font-bold text-gray-800 mb-3">Personal Information</p>
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
+          <p className="font-bold text-gray-800 dark:text-slate-100 mb-3">Personal Information</p>
           <div className="flex flex-col gap-2.5">
             {employee.phone && (
               <div className="flex items-center gap-3">
@@ -312,8 +312,8 @@ export default function WorkforceProfilePage() {
                   <Phone size={14} color="#1565C0" />
                 </div>
                 <div>
-                  <p className="text-gray-400 text-[10px] font-medium uppercase">Phone</p>
-                  <p className="text-gray-800 text-sm font-semibold">{employee.phone}</p>
+                  <p className="text-gray-400 dark:text-slate-500 text-[10px] font-medium uppercase">Phone</p>
+                  <p className="text-gray-800 dark:text-slate-100 text-sm font-semibold">{employee.phone}</p>
                 </div>
               </div>
             )}
@@ -323,8 +323,8 @@ export default function WorkforceProfilePage() {
                   <MapPin size={14} color={GREEN} />
                 </div>
                 <div>
-                  <p className="text-gray-400 text-[10px] font-medium uppercase">Address</p>
-                  <p className="text-gray-800 text-sm font-semibold">{employee.address}</p>
+                  <p className="text-gray-400 dark:text-slate-500 text-[10px] font-medium uppercase">Address</p>
+                  <p className="text-gray-800 dark:text-slate-100 text-sm font-semibold">{employee.address}</p>
                 </div>
               </div>
             )}
@@ -334,8 +334,8 @@ export default function WorkforceProfilePage() {
                   <Phone size={14} color="#C62828" />
                 </div>
                 <div>
-                  <p className="text-gray-400 text-[10px] font-medium uppercase">Emergency Contact</p>
-                  <p className="text-gray-800 text-sm font-semibold">{employee.emergencyContact}</p>
+                  <p className="text-gray-400 dark:text-slate-500 text-[10px] font-medium uppercase">Emergency Contact</p>
+                  <p className="text-gray-800 dark:text-slate-100 text-sm font-semibold">{employee.emergencyContact}</p>
                 </div>
               </div>
             )}
@@ -343,59 +343,59 @@ export default function WorkforceProfilePage() {
         </div>
 
         {/* Employment Details */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
-          <p className="font-bold text-gray-800 mb-3">Employment Details</p>
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
+          <p className="font-bold text-gray-800 dark:text-slate-100 mb-3">Employment Details</p>
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-xl p-3" style={{ backgroundColor: "#F8F9FA" }}>
-              <p className="text-gray-400 text-[10px] font-medium uppercase mb-1">Employee Type</p>
-              <p className="text-gray-800 text-sm font-bold">{typeLabel(employee)}</p>
+              <p className="text-gray-400 dark:text-slate-500 text-[10px] font-medium uppercase mb-1">Employee Type</p>
+              <p className="text-gray-800 dark:text-slate-100 text-sm font-bold">{typeLabel(employee)}</p>
             </div>
             <div className="rounded-xl p-3" style={{ backgroundColor: "#F8F9FA" }}>
-              <p className="text-gray-400 text-[10px] font-medium uppercase mb-1">Salary Type</p>
-              <p className="text-gray-800 text-sm font-bold">{SALARY_LABELS[employee.salaryType]}</p>
+              <p className="text-gray-400 dark:text-slate-500 text-[10px] font-medium uppercase mb-1">Salary Type</p>
+              <p className="text-gray-800 dark:text-slate-100 text-sm font-bold">{SALARY_LABELS[employee.salaryType]}</p>
             </div>
             <div className="rounded-xl p-3" style={{ backgroundColor: "#F8F9FA" }}>
-              <p className="text-gray-400 text-[10px] font-medium uppercase mb-1">
+              <p className="text-gray-400 dark:text-slate-500 text-[10px] font-medium uppercase mb-1">
                 {employee.salaryType === "daily" ? "Daily Wage" : employee.salaryType === "monthly" ? "Monthly Salary" : "Contract Amount"}
               </p>
-              <p className="text-gray-800 text-sm font-bold">Rs. {(employee.salary || 0).toLocaleString("en-PK")}</p>
+              <p className="text-gray-800 dark:text-slate-100 text-sm font-bold">Rs. {(employee.salary || 0).toLocaleString("en-PK")}</p>
             </div>
             <div className="rounded-xl p-3" style={{ backgroundColor: "#F8F9FA" }}>
-              <p className="text-gray-400 text-[10px] font-medium uppercase mb-1">Join Date</p>
-              <p className="text-gray-800 text-sm font-bold">{fmtDate(employee.joinDate) || "—"}</p>
+              <p className="text-gray-400 dark:text-slate-500 text-[10px] font-medium uppercase mb-1">Join Date</p>
+              <p className="text-gray-800 dark:text-slate-100 text-sm font-bold">{fmtDate(employee.joinDate) || "—"}</p>
             </div>
           </div>
         </div>
 
         {/* Month navigator */}
-        <div className="flex items-center justify-between bg-white rounded-2xl px-4 py-3 shadow-sm">
+        <div className="flex items-center justify-between bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 shadow-sm">
           <button onClick={prevMonth} className="active:scale-95"><ChevronLeft size={20} color={GREEN} /></button>
-          <p className="font-bold text-gray-800">{MONTHS[calMonth]} {calYear}</p>
+          <p className="font-bold text-gray-800 dark:text-slate-100">{MONTHS[calMonth]} {calYear}</p>
           <button onClick={nextMonth} className="active:scale-95"><ChevronRight size={20} color={GREEN} /></button>
         </div>
 
         {/* Attendance Summary */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
-          <p className="font-bold text-gray-800 mb-3">Attendance Summary</p>
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
+          <p className="font-bold text-gray-800 dark:text-slate-100 mb-3">Attendance Summary</p>
           <div className="grid grid-cols-3 gap-2 mb-3">
             <div className="rounded-xl p-3 text-center" style={{ backgroundColor: "#E8F5E9" }}>
-              <p className="text-green-600 text-xs mb-0.5">Present</p>
-              <p className="text-green-700 font-bold text-xl">{presentDays}</p>
+              <p className="text-green-600 dark:text-green-400 text-xs mb-0.5">Present</p>
+              <p className="text-green-700 dark:text-green-400 font-bold text-xl">{presentDays}</p>
             </div>
             <div className="rounded-xl p-3 text-center" style={{ backgroundColor: "#FFF3E0" }}>
-              <p className="text-orange-600 text-xs mb-0.5">Half Day</p>
-              <p className="text-orange-700 font-bold text-xl">{halfDays}</p>
+              <p className="text-orange-600 dark:text-orange-400 text-xs mb-0.5">Half Day</p>
+              <p className="text-orange-700 dark:text-orange-400 font-bold text-xl">{halfDays}</p>
             </div>
             <div className="rounded-xl p-3 text-center" style={{ backgroundColor: "#FFEBEE" }}>
-              <p className="text-red-600 text-xs mb-0.5">Absent</p>
-              <p className="text-red-700 font-bold text-xl">{absentDays}</p>
+              <p className="text-red-600 dark:text-red-400 text-xs mb-0.5">Absent</p>
+              <p className="text-red-700 dark:text-red-400 font-bold text-xl">{absentDays}</p>
             </div>
           </div>
 
           {/* Attendance calendar */}
           <div className="grid grid-cols-7 gap-1 mb-2">
             {["S","M","T","W","T","F","S"].map((d, i) => (
-              <p key={i} className="text-center text-xs text-gray-400 font-medium py-1">{d}</p>
+              <p key={i} className="text-center text-xs text-gray-400 dark:text-slate-500 font-medium py-1">{d}</p>
             ))}
           </div>
           <div className="grid grid-cols-7 gap-1">
@@ -420,26 +420,26 @@ export default function WorkforceProfilePage() {
             ].map(({ label, color, bg }) => (
               <div key={label} className="flex items-center gap-1">
                 <div className="w-4 h-4 rounded-md" style={{ backgroundColor: bg }} />
-                <span className="text-xs text-gray-500">{label}</span>
+                <span className="text-xs text-gray-500 dark:text-slate-400">{label}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Salary Information */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
-          <p className="font-bold text-gray-800 mb-3">Salary Information — {MONTHS[calMonth]}</p>
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
+          <p className="font-bold text-gray-800 dark:text-slate-100 mb-3">Salary Information — {MONTHS[calMonth]}</p>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-400 text-xs">Earned</p>
-              <p className="font-bold text-gray-800 text-lg">{fmt(earned)}</p>
+              <p className="text-gray-400 dark:text-slate-500 text-xs">Earned</p>
+              <p className="font-bold text-gray-800 dark:text-slate-100 text-lg">{fmt(earned)}</p>
             </div>
             <div className="text-center">
-              <p className="text-gray-400 text-xs">Paid</p>
+              <p className="text-gray-400 dark:text-slate-500 text-xs">Paid</p>
               <p className="font-bold text-lg" style={{ color: GREEN }}>{fmt(paidThisMonth)}</p>
             </div>
             <div className="text-right">
-              <p className="text-gray-400 text-xs">Pending</p>
+              <p className="text-gray-400 dark:text-slate-500 text-xs">Pending</p>
               <p className="font-bold text-lg" style={{ color: pending > 0 ? "#C62828" : GREEN }}>{fmt(pending)}</p>
             </div>
           </div>
@@ -447,14 +447,14 @@ export default function WorkforceProfilePage() {
 
         {/* Payment History */}
         {payments.length > 0 && (
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <p className="font-bold text-gray-800 mb-3">Payment History</p>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
+            <p className="font-bold text-gray-800 dark:text-slate-100 mb-3">Payment History</p>
             <div className="flex flex-col gap-2">
               {payments.slice(0, 8).map((p) => (
-                <div key={p.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                <div key={p.id} className="flex items-center justify-between py-2 border-b border-gray-50 dark:border-slate-800 last:border-0">
                   <div>
-                    <p className="text-gray-800 text-sm font-medium">{MONTHS[p.month]} {p.year}</p>
-                    <p className="text-gray-400 text-xs">
+                    <p className="text-gray-800 dark:text-slate-100 text-sm font-medium">{MONTHS[p.month]} {p.year}</p>
+                    <p className="text-gray-400 dark:text-slate-500 text-xs">
                       {p.createdAt?.toDate ? p.createdAt.toDate().toLocaleDateString("en-PK") : "—"}
                     </p>
                   </div>
@@ -467,9 +467,9 @@ export default function WorkforceProfilePage() {
 
         {/* Notes */}
         {employee.notes && (
-          <div className="bg-white rounded-2xl p-4 shadow-sm">
-            <p className="font-bold text-gray-800 mb-2">Notes</p>
-            <p className="text-gray-600 text-sm leading-relaxed">{employee.notes}</p>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
+            <p className="font-bold text-gray-800 dark:text-slate-100 mb-2">Notes</p>
+            <p className="text-gray-600 dark:text-slate-300 text-sm leading-relaxed">{employee.notes}</p>
           </div>
         )}
       </div>

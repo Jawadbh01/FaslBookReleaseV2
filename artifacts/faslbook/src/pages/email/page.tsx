@@ -80,7 +80,7 @@ export default function EmailLoginPage() {
 
   // ═══ FORGOT PASSWORD VIEW ════════════════════════════════════
   if (forgotMode) return (
-    <div className="h-full bg-white flex flex-col">
+    <div className="h-full bg-white dark:bg-slate-800 flex flex-col">
       {/* Header */}
       <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
         <button onClick={() => { setForgotMode(false); setResetSent(false); setResetError(""); }} className="text-white mr-3">
@@ -100,12 +100,12 @@ export default function EmailLoginPage() {
               style={{ backgroundColor: "#E8F5E9" }}>
               <CheckCircle size={44} color="#1B5E20" />
             </div>
-            <h2 className="text-xl font-bold text-gray-800 mb-2">Email Sent!</h2>
-            <p className="text-gray-500 text-sm leading-relaxed mb-2">
+            <h2 className="text-xl font-bold text-gray-800 dark:text-slate-100 mb-2">Email Sent!</h2>
+            <p className="text-gray-500 dark:text-slate-400 text-sm leading-relaxed mb-2">
               A password reset link has been sent to:
             </p>
-            <p className="font-semibold text-gray-800 mb-6">{resetEmail}</p>
-            <p className="text-gray-400 text-xs mb-10 leading-relaxed">
+            <p className="font-semibold text-gray-800 dark:text-slate-100 mb-6">{resetEmail}</p>
+            <p className="text-gray-400 dark:text-slate-500 text-xs mb-10 leading-relaxed">
               Check your inbox (and spam folder). Click the link in the email to set a new password.
             </p>
             <button
@@ -118,18 +118,18 @@ export default function EmailLoginPage() {
         ) : (
           // ── Input state ──
           <>
-            <p className="text-gray-500 text-sm mb-8 leading-relaxed">
+            <p className="text-gray-500 dark:text-slate-400 text-sm mb-8 leading-relaxed">
               Enter the email address linked to your FaslBook account and we'll send you a reset link.
             </p>
 
             {resetError && (
-              <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">
+              <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">
                 {resetError}
               </div>
             )}
 
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Email Address</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 mb-8 focus-within:border-green-700">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Email Address</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-8 focus-within:border-green-700">
               <Mail size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <input
                 type="email"
@@ -137,7 +137,7 @@ export default function EmailLoginPage() {
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleResetPassword()}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
                 autoFocus
               />
             </div>
@@ -157,7 +157,7 @@ export default function EmailLoginPage() {
 
   // ═══ LOGIN VIEW ═══════════════════════════════════════════════
   return (
-    <div className="h-full bg-white flex flex-col">
+    <div className="h-full bg-white dark:bg-slate-800 flex flex-col">
       {/* Header */}
       <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
         <button onClick={() => window.history.back()} className="text-white mr-3">
@@ -174,28 +174,28 @@ export default function EmailLoginPage() {
 
       <div className="flex-1 px-6 pt-8 pb-10 overflow-y-auto">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-6">
+          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-6">
             {error}
           </div>
         )}
 
         <div className="mb-5">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">Email Address</label>
-          <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Email Address</label>
+          <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
             <Mail size={20} color="#9E9E9E" className="mr-3 shrink-0" />
             <input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
             />
           </div>
         </div>
 
         <div className="mb-3">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">Password</label>
-          <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Password</label>
+          <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
             <Lock size={20} color="#9E9E9E" className="mr-3 shrink-0" />
             <input
               type={showPassword ? "text" : "password"}
@@ -203,7 +203,7 @@ export default function EmailLoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-              className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
             />
             <button type="button" onClick={() => setShowPassword(!showPassword)}>
               {showPassword ? <EyeOff size={20} color="#9E9E9E" /> : <Eye size={20} color="#9E9E9E" />}
@@ -231,7 +231,7 @@ export default function EmailLoginPage() {
         </button>
 
         <div className="text-center mt-6">
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 dark:text-slate-400 text-sm">
             No account?{" "}
             <button
               onClick={() => window.location.href = "/role-select"}

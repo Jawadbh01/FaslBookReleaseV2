@@ -7,7 +7,7 @@ export default function FarmersPage() {
   
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
       <div className="px-4 pt-12 pb-5" style={{ backgroundColor: "#1B5E20" }}>
         <div className="flex items-center justify-between">
           <div>
@@ -29,8 +29,8 @@ export default function FarmersPage() {
         <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E8F5E9" }}>
           <User size={32} color="#1B5E20" />
         </div>
-        <p className="text-gray-600 font-semibold">Farmers content coming soon</p>
-        <p className="text-gray-400 text-sm mt-1">Use the Print button to view the Farmer Report</p>
+        <p className="text-gray-600 dark:text-slate-300 font-semibold">Farmers content coming soon</p>
+        <p className="text-gray-400 dark:text-slate-500 text-sm mt-1">Use the Print button to view the Farmer Report</p>
       </div>
     </div>
   );

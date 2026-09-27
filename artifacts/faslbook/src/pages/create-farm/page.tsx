@@ -109,7 +109,7 @@ export default function CreateFarmPage() {
   // Success screen — use window.location.href for guaranteed navigation
   if (createdFarmId) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6">
+      <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col items-center justify-center px-6">
         <div
           className="w-20 h-20 rounded-full flex items-center justify-center mb-6 shadow-lg"
           style={{ backgroundColor: "#1B5E20" }}
@@ -117,10 +117,10 @@ export default function CreateFarmPage() {
           <Wheat size={40} color="white" />
         </div>
 
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-slate-100 mb-2">
           Farm Created! 🎉
         </h1>
-        <p className="text-gray-500 text-sm text-center mb-8">
+        <p className="text-gray-500 dark:text-slate-400 text-sm text-center mb-8">
           Your farm is ready. Share your Farm ID with managers and farmers to join.
         </p>
 
@@ -129,7 +129,7 @@ export default function CreateFarmPage() {
           className="w-full rounded-2xl p-6 mb-8 text-center"
           style={{ backgroundColor: "#E8F5E9" }}
         >
-          <p className="text-green-700 text-sm font-medium mb-2">
+          <p className="text-green-700 dark:text-green-400 text-sm font-medium mb-2">
             Your Farm ID
           </p>
           <p
@@ -163,7 +163,7 @@ export default function CreateFarmPage() {
   }
 
   return (
-    <div className="h-full bg-white flex flex-col">
+    <div className="h-full bg-white dark:bg-slate-800 flex flex-col">
       {/* Header */}
       <div
         className="px-4 pt-12 pb-8"
@@ -176,7 +176,7 @@ export default function CreateFarmPage() {
           <ArrowLeft size={24} />
         </button>
         <div className="flex items-center gap-3">
-          <div className="bg-white rounded-full p-2 shadow">
+          <div className="bg-white dark:bg-slate-800 rounded-full p-2 shadow">
             <Wheat size={28} color="#1B5E20" />
           </div>
           <div>
@@ -190,73 +190,73 @@ export default function CreateFarmPage() {
 
       <div className="flex-1 px-6 pt-8 pb-10 overflow-y-auto">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">
+          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">
             {error}
           </div>
         )}
 
         {/* Farm Name */}
         <div className="mb-5">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
             Farm Name
           </label>
-          <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+          <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
             <Wheat size={20} color="#9E9E9E" className="mr-3 shrink-0" />
             <input
               type="text"
               placeholder="e.g. Ali Farm, Green Fields"
               value={farmName}
               onChange={(e) => setFarmName(e.target.value)}
-              className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
             />
           </div>
         </div>
 
         {/* Village */}
         <div className="mb-5">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
             Village
           </label>
-          <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+          <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
             <MapPin size={20} color="#9E9E9E" className="mr-3 shrink-0" />
             <input
               type="text"
               placeholder="Enter village name"
               value={village}
               onChange={(e) => setVillage(e.target.value)}
-              className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
             />
           </div>
         </div>
 
         {/* District */}
         <div className="mb-5">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
             District
           </label>
-          <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+          <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
             <MapPin size={20} color="#9E9E9E" className="mr-3 shrink-0" />
             <input
               type="text"
               placeholder="Enter district name"
               value={district}
               onChange={(e) => setDistrict(e.target.value)}
-              className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
             />
           </div>
         </div>
 
         {/* Province */}
         <div className="mb-8">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
             Province
           </label>
-          <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+          <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
             <MapPin size={20} color="#9E9E9E" className="mr-3 shrink-0" />
             <select
               value={province}
               onChange={(e) => setProvince(e.target.value)}
-              className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
             >
               <option value="">Select Province</option>
               {provinces.map((p) => (

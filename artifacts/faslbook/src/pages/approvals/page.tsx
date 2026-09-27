@@ -90,7 +90,7 @@ export default function ApprovalsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
       {/* Header */}
       <div
         className="px-4 pt-6 pb-6"
@@ -108,7 +108,7 @@ export default function ApprovalsPage() {
         {loading ? (
           <div className="flex justify-center pt-20">
             <div
-              className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100"
+              className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60"
               style={{ borderTopColor: "#1B5E20" }}
             />
           </div>
@@ -120,10 +120,10 @@ export default function ApprovalsPage() {
             >
               <Clock size={36} color="#1B5E20" />
             </div>
-            <p className="text-gray-600 font-semibold mb-2">
+            <p className="text-gray-600 dark:text-slate-300 font-semibold mb-2">
               No Pending Requests
             </p>
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-400 dark:text-slate-500 text-sm">
               When managers or farmers request to join, they will appear here.
             </p>
           </div>
@@ -137,7 +137,7 @@ export default function ApprovalsPage() {
               return (
                 <div
                   key={req.id}
-                  className="bg-white rounded-2xl p-5 shadow-sm"
+                  className="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm"
                 >
                   {/* User Info */}
                   <div className="flex items-center gap-3 mb-4">
@@ -148,10 +148,10 @@ export default function ApprovalsPage() {
                       <User size={24} color="#9E9E9E" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-bold text-gray-800">
+                      <p className="font-bold text-gray-800 dark:text-slate-100">
                         {req.userName || "Unknown User"}
                       </p>
-                      <p className="text-gray-500 text-xs">
+                      <p className="text-gray-500 dark:text-slate-400 text-xs">
                         {req.userEmail}
                       </p>
                     </div>
@@ -187,7 +187,7 @@ export default function ApprovalsPage() {
                     <button
                       onClick={() => handleReject(req)}
                       disabled={isProcessing}
-                      className="flex-1 py-3 rounded-xl border-2 border-red-200 text-red-500 font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="flex-1 py-3 rounded-xl border-2 border-red-200 dark:border-red-900/60 text-red-500 font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       <XCircle size={18} />
                       Reject

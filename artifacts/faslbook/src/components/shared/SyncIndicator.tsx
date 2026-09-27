@@ -82,14 +82,14 @@ export default function SyncIndicator({ iconColor = "#1B5E20" }: { iconColor?: s
             <div>
               <span>Offline — saves queued locally</span>
               {pendingCount > 0 && (
-                <span className="ml-1 bg-white/25 rounded-full px-1.5 py-0.5 text-[10px]">
+                <span className="ml-1 bg-white dark:bg-slate-800/25 rounded-full px-1.5 py-0.5 text-[10px]">
                   {pendingCount} pending
                 </span>
               )}
             </div>
           </div>
           <button onClick={syncNow}
-            className="flex items-center gap-1 bg-white/20 hover:bg-white/30 rounded-full px-2.5 py-1 text-white text-[11px] font-bold transition-colors">
+            className="flex items-center gap-1 bg-white dark:bg-slate-800/20 hover:bg-white dark:bg-slate-800/30 rounded-full px-2.5 py-1 text-white text-[11px] font-bold transition-colors">
             <RefreshCw size={11} /> Retry
           </button>
         </div>
@@ -101,7 +101,7 @@ export default function SyncIndicator({ iconColor = "#1B5E20" }: { iconColor?: s
           className="fixed left-4 right-4 z-[9998] rounded-2xl shadow-2xl overflow-hidden"
           style={{ bottom: 96, animation: "slideUp 0.3s ease-out forwards" }}
         >
-          <div className="bg-white border border-gray-100 rounded-2xl">
+          <div className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700/60 rounded-2xl">
             <div className="flex items-start justify-between px-4 pt-4 pb-1">
               <div className="flex items-center gap-2">
                 <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
@@ -109,17 +109,17 @@ export default function SyncIndicator({ iconColor = "#1B5E20" }: { iconColor?: s
                   <Download size={18} color="#1B5E20" />
                 </div>
                 <div>
-                  <p className="font-bold text-gray-800 text-sm">Save for Offline Use?</p>
-                  <p className="text-gray-500 text-xs">Cache app so it works without internet</p>
+                  <p className="font-bold text-gray-800 dark:text-slate-100 text-sm">Save for Offline Use?</p>
+                  <p className="text-gray-500 dark:text-slate-400 text-xs">Cache app so it works without internet</p>
                 </div>
               </div>
               <button onClick={() => { setShowSetup(false); setupDismissed.current = true; }}
-                className="p-1 text-gray-400 active:scale-95">
+                className="p-1 text-gray-400 dark:text-slate-500 active:scale-95">
                 <X size={18} />
               </button>
             </div>
             {cacheError && (
-              <p className="px-4 pb-1 -mt-1 text-red-600 text-[11px] font-medium">{cacheError}</p>
+              <p className="px-4 pb-1 -mt-1 text-red-600 dark:text-red-400 text-[11px] font-medium">{cacheError}</p>
             )}
             <div className="px-4 pb-4 pt-2 flex gap-2">
               <button onClick={handleCacheNow} disabled={caching || cached}
@@ -146,7 +146,7 @@ export default function SyncIndicator({ iconColor = "#1B5E20" }: { iconColor?: s
         <div className="fixed bottom-20 left-1/2 z-[9998] -translate-x-1/2 pointer-events-none"
           style={{ animation: leaving ? "pillOut 0.35s ease-in forwards" : "pillIn 0.35s ease-out forwards" }}>
           {state === "syncing" && (
-            <div className="flex items-center gap-2 bg-gray-900/85 backdrop-blur-sm text-white text-[11px] font-semibold rounded-full px-3.5 py-2 shadow-lg">
+            <div className="flex items-center gap-2 bg-gray-900 dark:bg-black/85 backdrop-blur-sm text-white text-[11px] font-semibold rounded-full px-3.5 py-2 shadow-lg">
               <RefreshCw size={12} className="animate-spin" />
               Syncing changes…
             </div>

@@ -122,7 +122,7 @@ function ReceiptModal({ url, onClose }: { url: string; onClose: () => void }) {
       <div className="relative max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
         <button
           onClick={onClose}
-          className="absolute -top-10 right-0 w-9 h-9 rounded-full bg-white/20 flex items-center justify-center"
+          className="absolute -top-10 right-0 w-9 h-9 rounded-full bg-white dark:bg-slate-800/20 flex items-center justify-center"
         >
           <X size={20} color="white" />
         </button>
@@ -461,12 +461,12 @@ export default function LedgerPage() {
   // SUCCESS
   // ══════════════════════════════════════════════════════════
   if (success) return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 text-center">
+    <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col items-center justify-center px-6 text-center">
       <div className="w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-lg" style={{ backgroundColor: "#E8F5E9" }}>
         <CheckCircle size={52} color="#1B5E20" />
       </div>
-      <h1 className="text-2xl font-bold text-gray-800 mb-2">{successMsg.title}</h1>
-      <p className="text-gray-500 text-sm mb-10">{successMsg.sub}</p>
+      <h1 className="text-2xl font-bold text-gray-800 dark:text-slate-100 mb-2">{successMsg.title}</h1>
+      <p className="text-gray-500 dark:text-slate-400 text-sm mb-10">{successMsg.sub}</p>
       <button onClick={goBack}
         className="w-full py-4 rounded-2xl text-white font-bold text-base active:scale-95 transition-transform"
         style={{ backgroundColor: "#1B5E20" }}>
@@ -479,7 +479,7 @@ export default function LedgerPage() {
   // ADD INCOME FORM
   // ══════════════════════════════════════════════════════════
   if (view === "addIncome") return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
       <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
         <button onClick={goBack} className="text-white mr-3"><ArrowLeft size={24} /></button>
         <h1 className="text-white text-xl font-bold">Add Income</h1>
@@ -487,11 +487,11 @@ export default function LedgerPage() {
 
       <div className="flex-1 px-5 pt-6 pb-10 overflow-y-auto">
         {formError && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>
+          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>
         )}
 
         {/* Income Type */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-3 block">Income Type</label>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-3 block">Income Type</label>
         <div className="grid grid-cols-4 gap-3 mb-5">
           {Object.entries(incomeTypes).map(([key, cfg]) => (
             <button key={key} onClick={() => setIncomeForm({ ...incomeForm, type: key })}
@@ -504,26 +504,26 @@ export default function LedgerPage() {
         </div>
 
         {/* Amount */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Amount (Rs.)</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 focus-within:border-green-700 bg-white">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Amount (Rs.)</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 focus-within:border-green-700 bg-white dark:bg-slate-800">
           <input type="number" placeholder="e.g. 45,000" value={incomeForm.amount}
             onChange={(e) => setIncomeForm({ ...incomeForm, amount: e.target.value })}
-            className="w-full outline-none text-gray-800 text-xl font-semibold bg-transparent" />
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-xl font-semibold bg-transparent" />
         </div>
 
         {/* Date */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Date</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white flex items-center">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Date</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-white dark:bg-slate-800 flex items-center">
           <input type="date" value={incomeForm.date}
             onChange={(e) => setIncomeForm({ ...incomeForm, date: e.target.value })}
-            className="flex-1 outline-none text-gray-800 text-base bg-transparent [&::-webkit-calendar-picker-indicator]:hidden" />
-          <span className="text-gray-400 text-sm">
+            className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent [&::-webkit-calendar-picker-indicator]:hidden" />
+          <span className="text-gray-400 dark:text-slate-500 text-sm">
             {incomeForm.date ? new Date(incomeForm.date + "T00:00:00").toLocaleDateString("en-PK", { day: "numeric", month: "short", year: "numeric" }) : ""}
           </span>
         </div>
 
         {/* Crop Cycle — required, drives Season auto-fill */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Crop Cycle</label>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Crop Cycle</label>
         {cropCycles.length === 0 ? (
           <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
             style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
@@ -535,9 +535,9 @@ export default function LedgerPage() {
             </Link>
           </div>
         ) : (
-          <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+          <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-white dark:bg-slate-800">
             <select value={incomeForm.cropCycleId} onChange={(e) => onIncomeCropCycleChange(e.target.value)}
-              className="w-full outline-none text-gray-800 text-base bg-transparent">
+              className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
               <option value="">— Select crop cycle —</option>
               {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.crop})</option>)}
             </select>
@@ -547,7 +547,7 @@ export default function LedgerPage() {
         {/* Season — auto-filled from crop cycle, editable */}
         {cropCycles.length > 0 && (
           <>
-            <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Season (auto-filled, editable)</label>
+            <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Season (auto-filled, editable)</label>
             {incomeForm.cropCycleId && !incomeForm.seasonId ? (
               <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
                 style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
@@ -559,17 +559,17 @@ export default function LedgerPage() {
                 </Link>
               </div>
             ) : (
-              <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+              <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-white dark:bg-slate-800">
                 <input type="text" value={incomeForm.seasonId ? (cropCycles.find(c=>c.id===incomeForm.cropCycleId)?.seasonName || "") : ""}
                   readOnly
-                  className="w-full outline-none text-gray-500 text-base bg-transparent" placeholder="No season linked" />
+                  className="w-full outline-none text-gray-500 dark:text-slate-400 text-base bg-transparent" placeholder="No season linked" />
               </div>
             )}
           </>
         )}
 
         {/* Farmer — picks farmer first; parcel auto-fills from their linked parcel */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Farmer</label>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Farmer</label>
         {farmers.length === 0 ? (
           <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
             style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
@@ -581,14 +581,14 @@ export default function LedgerPage() {
             </Link>
           </div>
         ) : (
-          <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+          <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-white dark:bg-slate-800">
             <select value={incomeForm.farmerId}
               onChange={(e) => {
                 const fId = e.target.value;
                 const linked = parcels.find((p) => p.assignedFarmer === fId);
                 setIncomeForm({ ...incomeForm, farmerId: fId, parcelId: linked?.id || "" });
               }}
-              className="w-full outline-none text-gray-800 text-base bg-transparent">
+              className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
               <option value="">— Select farmer —</option>
               {farmers.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
             </select>
@@ -596,11 +596,11 @@ export default function LedgerPage() {
         )}
 
         {/* Parcel — read-only, auto-filled from the selected farmer's linked parcel */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Parcel</label>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Parcel</label>
         {!incomeForm.farmerId ? (
-          <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-gray-50 flex items-center gap-2">
+          <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-gray-50 dark:bg-slate-900 flex items-center gap-2">
             <MapPin size={16} color="#9CA3AF" />
-            <span className="text-gray-400 text-sm">Select a farmer first</span>
+            <span className="text-gray-400 dark:text-slate-500 text-sm">Select a farmer first</span>
           </div>
         ) : (() => {
           const linked = parcels.find((p) => p.assignedFarmer === incomeForm.farmerId);
@@ -608,7 +608,7 @@ export default function LedgerPage() {
             <div className="border-2 rounded-2xl px-4 py-3.5 mb-4 flex items-center gap-2"
               style={{ borderColor: "#A5D6A7", backgroundColor: "#F1F8E9" }}>
               <MapPin size={16} color="#2E7D32" />
-              <span className="text-gray-800 text-base font-medium flex-1">{linked.name}</span>
+              <span className="text-gray-800 dark:text-slate-100 text-base font-medium flex-1">{linked.name}</span>
               <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: "#C8E6C9", color: "#1B5E20" }}>Auto</span>
             </div>
           ) : (
@@ -639,16 +639,16 @@ export default function LedgerPage() {
             <div className="rounded-2xl px-4 py-4 mb-4" style={{ backgroundColor: "#F1F8E9", border: "1.5px solid #A5D6A7" }}>
               <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: "#2E7D32" }}>📊 Khata Breakdown — {farmers.find(f => f.id === incomeForm.farmerId)?.name}</p>
               <div className="flex gap-2">
-                <div className="flex-1 bg-white rounded-xl px-2 py-2.5 text-center">
-                  <p className="text-[10px] text-gray-400 mb-1">Total Income</p>
+                <div className="flex-1 bg-white dark:bg-slate-800 rounded-xl px-2 py-2.5 text-center">
+                  <p className="text-[10px] text-gray-400 dark:text-slate-500 mb-1">Total Income</p>
                   <p className="text-xs font-bold" style={{ color: "#1B5E20" }}>Rs. {totalIn.toLocaleString("en-PK")}</p>
                 </div>
-                <div className="flex-1 bg-white rounded-xl px-2 py-2.5 text-center">
-                  <p className="text-[10px] text-gray-400 mb-1">Total Expense</p>
+                <div className="flex-1 bg-white dark:bg-slate-800 rounded-xl px-2 py-2.5 text-center">
+                  <p className="text-[10px] text-gray-400 dark:text-slate-500 mb-1">Total Expense</p>
                   <p className="text-xs font-bold" style={{ color: "#B71C1C" }}>Rs. {totalOut.toLocaleString("en-PK")}</p>
                 </div>
-                <div className="flex-1 bg-white rounded-xl px-2 py-2.5 text-center">
-                  <p className="text-[10px] text-gray-400 mb-1">Balance</p>
+                <div className="flex-1 bg-white dark:bg-slate-800 rounded-xl px-2 py-2.5 text-center">
+                  <p className="text-[10px] text-gray-400 dark:text-slate-500 mb-1">Balance</p>
                   <p className="text-xs font-bold" style={{ color: net >= 0 ? "#1B5E20" : "#B71C1C" }}>
                     {net >= 0 ? "+" : "−"}Rs. {Math.abs(net).toLocaleString("en-PK")}
                   </p>
@@ -659,21 +659,21 @@ export default function LedgerPage() {
         })()}
 
         {/* Upload Proof */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Upload Proof</label>
-        <div className="w-full h-24 border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center mb-4 gap-1" style={{ backgroundColor: "#F9F9F9" }}>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Upload Proof</label>
+        <div className="w-full h-24 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl flex flex-col items-center justify-center mb-4 gap-1" style={{ backgroundColor: "#F9F9F9" }}>
           <Camera size={22} color="#C0C0C0" />
-          <p className="text-gray-400 text-sm font-medium">Not available right now</p>
-          <p className="text-gray-300 text-xs">Wait for update</p>
+          <p className="text-gray-400 dark:text-slate-500 text-sm font-medium">Not available right now</p>
+          <p className="text-gray-300 dark:text-slate-600 text-xs">Wait for update</p>
         </div>
 
         {/* Location */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Location (Optional)</label>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Location (Optional)</label>
         <div className="flex gap-2 mb-1">
-          <div className="flex-1 flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3">
+          <div className="flex-1 flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3">
             <MapPin size={18} color="#9E9E9E" className="mr-2 shrink-0" />
             <input type="text" placeholder="Location" value={incomeLocation.location?.address || ""}
               onChange={(e) => incomeLocation.setLocation(incomeLocation.location ? { ...incomeLocation.location, address: e.target.value } : null)}
-              className="flex-1 outline-none text-gray-800 text-sm bg-transparent" />
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-sm bg-transparent" />
           </div>
           <button onClick={incomeLocation.detect} disabled={incomeLocation.detecting}
             className="px-4 rounded-2xl flex items-center justify-center active:scale-95 transition-transform disabled:opacity-60"
@@ -681,15 +681,15 @@ export default function LedgerPage() {
             {incomeLocation.detecting ? <Loader2 size={20} color="#1B5E20" className="animate-spin" /> : <MapPin size={20} color="#1B5E20" />}
           </button>
         </div>
-        {incomeLocation.location && <p className="text-green-700 text-xs mb-4 ml-1">✅ Location detected</p>}
+        {incomeLocation.location && <p className="text-green-700 dark:text-green-400 text-xs mb-4 ml-1">✅ Location detected</p>}
         {!incomeLocation.location && <div className="mb-4" />}
 
         {/* Notes */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Notes (Optional)</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3 mb-8 bg-white">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Notes (Optional)</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-8 bg-white dark:bg-slate-800">
           <textarea placeholder="Enter notes" value={incomeForm.notes}
             onChange={(e) => setIncomeForm({ ...incomeForm, notes: e.target.value })}
-            rows={3} className="w-full outline-none text-gray-800 text-base bg-transparent resize-none" />
+            rows={3} className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none" />
         </div>
 
         <button onClick={handleAddIncome} disabled={saving}
@@ -705,7 +705,7 @@ export default function LedgerPage() {
   // ADD EXPENSE FORM
   // ══════════════════════════════════════════════════════════
   if (view === "addExpense") return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
       <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
         <button onClick={goBack} className="text-white mr-3"><ArrowLeft size={24} /></button>
         <h1 className="text-white text-xl font-bold">Add Expense</h1>
@@ -713,11 +713,11 @@ export default function LedgerPage() {
 
       <div className="flex-1 px-5 pt-6 pb-10 overflow-y-auto">
         {formError && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>
+          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{formError}</div>
         )}
 
         {/* Category grid */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-3 block">Category</label>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-3 block">Category</label>
         <div className="grid grid-cols-3 gap-2 mb-6">
           {Object.entries(expenseCategories).map(([key, cfg]) => (
             <button key={key} type="button" onClick={() => setExpenseForm({ ...expenseForm, category: key })}
@@ -736,26 +736,26 @@ export default function LedgerPage() {
         </div>
 
         {/* Amount */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Amount (Rs.)</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 focus-within:border-green-700 bg-white">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Amount (Rs.)</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 focus-within:border-green-700 bg-white dark:bg-slate-800">
           <input type="number" placeholder="e.g. 12,500" value={expenseForm.amount}
             onChange={(e) => setExpenseForm({ ...expenseForm, amount: e.target.value })}
-            className="w-full outline-none text-gray-800 text-xl font-semibold bg-transparent" />
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-xl font-semibold bg-transparent" />
         </div>
 
         {/* Date */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Date</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white flex items-center">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Date</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-white dark:bg-slate-800 flex items-center">
           <input type="date" value={expenseForm.date}
             onChange={(e) => setExpenseForm({ ...expenseForm, date: e.target.value })}
-            className="flex-1 outline-none text-gray-800 text-base bg-transparent [&::-webkit-calendar-picker-indicator]:hidden" />
-          <span className="text-gray-400 text-sm">
+            className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent [&::-webkit-calendar-picker-indicator]:hidden" />
+          <span className="text-gray-400 dark:text-slate-500 text-sm">
             {expenseForm.date ? new Date(expenseForm.date + "T00:00:00").toLocaleDateString("en-PK", { day: "numeric", month: "short", year: "numeric" }) : ""}
           </span>
         </div>
 
         {/* Crop Cycle — required, drives Season auto-fill */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Crop Cycle</label>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Crop Cycle</label>
         {cropCycles.length === 0 ? (
           <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
             style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
@@ -767,9 +767,9 @@ export default function LedgerPage() {
             </Link>
           </div>
         ) : (
-          <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+          <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-white dark:bg-slate-800">
             <select value={expenseForm.cropCycleId} onChange={(e) => onExpenseCropCycleChange(e.target.value)}
-              className="w-full outline-none text-gray-800 text-base bg-transparent">
+              className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
               <option value="">— Select crop cycle —</option>
               {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.crop})</option>)}
             </select>
@@ -779,7 +779,7 @@ export default function LedgerPage() {
         {/* Season — auto-filled from crop cycle, editable */}
         {cropCycles.length > 0 && (
           <>
-            <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Season (auto-filled, editable)</label>
+            <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Season (auto-filled, editable)</label>
             {expenseForm.cropCycleId && !expenseForm.seasonId ? (
               <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
                 style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
@@ -791,17 +791,17 @@ export default function LedgerPage() {
                 </Link>
               </div>
             ) : (
-              <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+              <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-white dark:bg-slate-800">
                 <input type="text" value={expenseForm.seasonId ? (cropCycles.find(c=>c.id===expenseForm.cropCycleId)?.seasonName || "") : ""}
                   readOnly
-                  className="w-full outline-none text-gray-500 text-base bg-transparent" placeholder="No season linked" />
+                  className="w-full outline-none text-gray-500 dark:text-slate-400 text-base bg-transparent" placeholder="No season linked" />
               </div>
             )}
           </>
         )}
 
         {/* Farmer — picks farmer first; parcel auto-fills from their linked parcel */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Farmer</label>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Farmer</label>
         {farmers.length === 0 ? (
           <div className="border-2 border-dashed rounded-2xl px-4 py-3.5 mb-4 flex items-center justify-between gap-2"
             style={{ borderColor: "#FFCC80", backgroundColor: "#FFF8E1" }}>
@@ -813,14 +813,14 @@ export default function LedgerPage() {
             </Link>
           </div>
         ) : (
-          <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+          <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-white dark:bg-slate-800">
             <select value={expenseForm.farmerId}
               onChange={(e) => {
                 const fId = e.target.value;
                 const linked = parcels.find((p) => p.assignedFarmer === fId);
                 setExpenseForm({ ...expenseForm, farmerId: fId, parcelId: linked?.id || "" });
               }}
-              className="w-full outline-none text-gray-800 text-base bg-transparent">
+              className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
               <option value="">— Select farmer —</option>
               {farmers.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
             </select>
@@ -828,11 +828,11 @@ export default function LedgerPage() {
         )}
 
         {/* Parcel — read-only, auto-filled from the selected farmer's linked parcel */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Parcel</label>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Parcel</label>
         {!expenseForm.farmerId ? (
-          <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-gray-50 flex items-center gap-2">
+          <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-gray-50 dark:bg-slate-900 flex items-center gap-2">
             <MapPin size={16} color="#9CA3AF" />
-            <span className="text-gray-400 text-sm">Select a farmer first</span>
+            <span className="text-gray-400 dark:text-slate-500 text-sm">Select a farmer first</span>
           </div>
         ) : (() => {
           const linked = parcels.find((p) => p.assignedFarmer === expenseForm.farmerId);
@@ -840,7 +840,7 @@ export default function LedgerPage() {
             <div className="border-2 rounded-2xl px-4 py-3.5 mb-4 flex items-center gap-2"
               style={{ borderColor: "#A5D6A7", backgroundColor: "#F1F8E9" }}>
               <MapPin size={16} color="#2E7D32" />
-              <span className="text-gray-800 text-base font-medium flex-1">{linked.name}</span>
+              <span className="text-gray-800 dark:text-slate-100 text-base font-medium flex-1">{linked.name}</span>
               <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: "#C8E6C9", color: "#1B5E20" }}>Auto</span>
             </div>
           ) : (
@@ -871,16 +871,16 @@ export default function LedgerPage() {
             <div className="rounded-2xl px-4 py-4 mb-4" style={{ backgroundColor: "#F1F8E9", border: "1.5px solid #A5D6A7" }}>
               <p className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: "#2E7D32" }}>📊 Khata Breakdown — {farmers.find(f => f.id === expenseForm.farmerId)?.name}</p>
               <div className="flex gap-2">
-                <div className="flex-1 bg-white rounded-xl px-2 py-2.5 text-center">
-                  <p className="text-[10px] text-gray-400 mb-1">Total Income</p>
+                <div className="flex-1 bg-white dark:bg-slate-800 rounded-xl px-2 py-2.5 text-center">
+                  <p className="text-[10px] text-gray-400 dark:text-slate-500 mb-1">Total Income</p>
                   <p className="text-xs font-bold" style={{ color: "#1B5E20" }}>Rs. {totalIn.toLocaleString("en-PK")}</p>
                 </div>
-                <div className="flex-1 bg-white rounded-xl px-2 py-2.5 text-center">
-                  <p className="text-[10px] text-gray-400 mb-1">Total Expense</p>
+                <div className="flex-1 bg-white dark:bg-slate-800 rounded-xl px-2 py-2.5 text-center">
+                  <p className="text-[10px] text-gray-400 dark:text-slate-500 mb-1">Total Expense</p>
                   <p className="text-xs font-bold" style={{ color: "#B71C1C" }}>Rs. {totalOut.toLocaleString("en-PK")}</p>
                 </div>
-                <div className="flex-1 bg-white rounded-xl px-2 py-2.5 text-center">
-                  <p className="text-[10px] text-gray-400 mb-1">Balance</p>
+                <div className="flex-1 bg-white dark:bg-slate-800 rounded-xl px-2 py-2.5 text-center">
+                  <p className="text-[10px] text-gray-400 dark:text-slate-500 mb-1">Balance</p>
                   <p className="text-xs font-bold" style={{ color: net >= 0 ? "#1B5E20" : "#B71C1C" }}>
                     {net >= 0 ? "+" : "−"}Rs. {Math.abs(net).toLocaleString("en-PK")}
                   </p>
@@ -891,31 +891,31 @@ export default function LedgerPage() {
         })()}
 
         {/* Dealer */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Dealer (Optional)</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3.5 mb-4 bg-white">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Dealer (Optional)</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 mb-4 bg-white dark:bg-slate-800">
           <select value={expenseForm.dealerId} onChange={(e) => setExpenseForm({ ...expenseForm, dealerId: e.target.value })}
-            className="w-full outline-none text-gray-800 text-base bg-transparent">
+            className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent">
             <option value="">— No dealer —</option>
             {dealers.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
           </select>
         </div>
 
         {/* Upload Receipt */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Receipt Photo</label>
-        <div className="w-full h-24 border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center mb-4 gap-1" style={{ backgroundColor: "#F9F9F9" }}>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Receipt Photo</label>
+        <div className="w-full h-24 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl flex flex-col items-center justify-center mb-4 gap-1" style={{ backgroundColor: "#F9F9F9" }}>
           <Camera size={22} color="#C0C0C0" />
-          <p className="text-gray-400 text-sm font-medium">Not available right now</p>
-          <p className="text-gray-300 text-xs">Wait for update</p>
+          <p className="text-gray-400 dark:text-slate-500 text-sm font-medium">Not available right now</p>
+          <p className="text-gray-300 dark:text-slate-600 text-xs">Wait for update</p>
         </div>
 
         {/* Location */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Location (Optional)</label>
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Location (Optional)</label>
         <div className="flex gap-2 mb-1">
-          <div className="flex-1 flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3">
+          <div className="flex-1 flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3">
             <MapPin size={18} color="#9E9E9E" className="mr-2 shrink-0" />
             <input type="text" placeholder="Location" value={expenseLocation.location?.address || ""}
               onChange={(e) => expenseLocation.setLocation(expenseLocation.location ? { ...expenseLocation.location, address: e.target.value } : null)}
-              className="flex-1 outline-none text-gray-800 text-sm bg-transparent" />
+              className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-sm bg-transparent" />
           </div>
           <button onClick={expenseLocation.detect} disabled={expenseLocation.detecting}
             className="px-4 rounded-2xl flex items-center justify-center active:scale-95 transition-transform disabled:opacity-60"
@@ -923,23 +923,23 @@ export default function LedgerPage() {
             {expenseLocation.detecting ? <Loader2 size={20} color="#1B5E20" className="animate-spin" /> : <MapPin size={20} color="#1B5E20" />}
           </button>
         </div>
-        {expenseLocation.location && <p className="text-green-700 text-xs mb-4 ml-1">✅ Location detected</p>}
+        {expenseLocation.location && <p className="text-green-700 dark:text-green-400 text-xs mb-4 ml-1">✅ Location detected</p>}
         {!expenseLocation.location && <div className="mb-4" />}
 
         {/* Description */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Description (Optional)</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3 mb-4 bg-white">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Description (Optional)</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-4 bg-white dark:bg-slate-800">
           <textarea placeholder="Brief description of this expense" value={expenseForm.description}
             onChange={(e) => setExpenseForm({ ...expenseForm, description: e.target.value })}
-            rows={2} className="w-full outline-none text-gray-800 text-base bg-transparent resize-none" />
+            rows={2} className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none" />
         </div>
 
         {/* Notes */}
-        <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-2 block">Notes (Optional)</label>
-        <div className="border border-gray-200 rounded-2xl px-4 py-3 mb-8 bg-white">
+        <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-2 block">Notes (Optional)</label>
+        <div className="border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 mb-8 bg-white dark:bg-slate-800">
           <textarea placeholder="Enter notes" value={expenseForm.notes}
             onChange={(e) => setExpenseForm({ ...expenseForm, notes: e.target.value })}
-            rows={3} className="w-full outline-none text-gray-800 text-base bg-transparent resize-none" />
+            rows={3} className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none" />
         </div>
 
         <button onClick={handleAddExpense} disabled={saving}
@@ -1007,12 +1007,12 @@ export default function LedgerPage() {
 
         return createPortal(
           <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40" onClick={() => { setDetailEntry(null); setEditMode(false); setEditSaved(false); }}>
-            <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-white dark:bg-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="px-6 pt-6 pb-6 overflow-y-auto flex-1 min-h-0">
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <h2 className="text-lg font-bold text-gray-800">{editMode ? "Edit Entry" : `${cfg?.emoji || (isCredit ? "💰" : "📋")} ${label}`}</h2>
-                  {(detailEntry as any).edited && !editMode && <p className="text-gray-400 text-xs italic">Edited</p>}
+                  <h2 className="text-lg font-bold text-gray-800 dark:text-slate-100">{editMode ? "Edit Entry" : `${cfg?.emoji || (isCredit ? "💰" : "📋")} ${label}`}</h2>
+                  {(detailEntry as any).edited && !editMode && <p className="text-gray-400 dark:text-slate-500 text-xs italic">Edited</p>}
                 </div>
                 <button onClick={() => { setDetailEntry(null); setEditMode(false); setEditSaved(false); }}><X size={22} color="#9CA3AF" /></button>
               </div>
@@ -1022,48 +1022,48 @@ export default function LedgerPage() {
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E8F5E9" }}>
                     <CheckCircle size={36} color="#1B5E20" />
                   </div>
-                  <p className="text-gray-800 font-bold text-base mb-1">Changes saved</p>
-                  <p className="text-gray-400 text-sm">This entry has been updated.</p>
+                  <p className="text-gray-800 dark:text-slate-100 font-bold text-base mb-1">Changes saved</p>
+                  <p className="text-gray-400 dark:text-slate-500 text-sm">This entry has been updated.</p>
                 </div>
               ) : !editMode ? (
                 <>
                   <div className="space-y-3 mb-6">
-                    <div className="flex justify-between items-center py-2 border-b border-gray-50">
-                      <span className="text-gray-500 text-sm">Amount</span>
+                    <div className="flex justify-between items-center py-2 border-b border-gray-50 dark:border-slate-800">
+                      <span className="text-gray-500 dark:text-slate-400 text-sm">Amount</span>
                       <span className="font-bold text-base" style={{ color: isCredit ? "#1B5E20" : "#B71C1C" }}>
                         {isCredit ? "+" : "−"}{fmtPKR(detailEntry.amount)}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center py-2 border-b border-gray-50">
-                      <span className="text-gray-500 text-sm">Type</span>
-                      <span className="text-gray-800 text-sm font-medium">{isCredit ? "Credit" : "Debit"}</span>
+                    <div className="flex justify-between items-center py-2 border-b border-gray-50 dark:border-slate-800">
+                      <span className="text-gray-500 dark:text-slate-400 text-sm">Type</span>
+                      <span className="text-gray-800 dark:text-slate-100 text-sm font-medium">{isCredit ? "Credit" : "Debit"}</span>
                     </div>
-                    <div className="flex justify-between items-center py-2 border-b border-gray-50">
-                      <span className="text-gray-500 text-sm">Date</span>
-                      <span className="text-gray-800 text-sm font-medium">{fmtDate(detailEntry.date)}</span>
+                    <div className="flex justify-between items-center py-2 border-b border-gray-50 dark:border-slate-800">
+                      <span className="text-gray-500 dark:text-slate-400 text-sm">Date</span>
+                      <span className="text-gray-800 dark:text-slate-100 text-sm font-medium">{fmtDate(detailEntry.date)}</span>
                     </div>
                     {detailEntry.parcelName && (
-                      <div className="flex justify-between items-center py-2 border-b border-gray-50">
-                        <span className="text-gray-500 text-sm">Parcel</span>
-                        <span className="text-gray-800 text-sm font-medium">{detailEntry.parcelName}</span>
+                      <div className="flex justify-between items-center py-2 border-b border-gray-50 dark:border-slate-800">
+                        <span className="text-gray-500 dark:text-slate-400 text-sm">Parcel</span>
+                        <span className="text-gray-800 dark:text-slate-100 text-sm font-medium">{detailEntry.parcelName}</span>
                       </div>
                     )}
                     {detailEntry.dealerName && (
-                      <div className="flex justify-between items-center py-2 border-b border-gray-50">
-                        <span className="text-gray-500 text-sm">Dealer</span>
-                        <span className="text-gray-800 text-sm font-medium">{detailEntry.dealerName}</span>
+                      <div className="flex justify-between items-center py-2 border-b border-gray-50 dark:border-slate-800">
+                        <span className="text-gray-500 dark:text-slate-400 text-sm">Dealer</span>
+                        <span className="text-gray-800 dark:text-slate-100 text-sm font-medium">{detailEntry.dealerName}</span>
                       </div>
                     )}
                     {(detailEntry as any).description && (detailEntry as any).description !== (detailEntry.categoryLabel || detailEntry.category) && (
-                      <div className="py-2 border-b border-gray-50">
-                        <span className="text-gray-500 text-sm block mb-1">Description</span>
-                        <span className="text-gray-800 text-sm">{(detailEntry as any).description}</span>
+                      <div className="py-2 border-b border-gray-50 dark:border-slate-800">
+                        <span className="text-gray-500 dark:text-slate-400 text-sm block mb-1">Description</span>
+                        <span className="text-gray-800 dark:text-slate-100 text-sm">{(detailEntry as any).description}</span>
                       </div>
                     )}
                     {detailEntry.notes && (
                       <div className="py-2">
-                        <span className="text-gray-500 text-sm block mb-1">Notes</span>
-                        <span className="text-gray-800 text-sm">{detailEntry.notes}</span>
+                        <span className="text-gray-500 dark:text-slate-400 text-sm block mb-1">Notes</span>
+                        <span className="text-gray-800 dark:text-slate-100 text-sm">{detailEntry.notes}</span>
                       </div>
                     )}
                   </div>
@@ -1071,7 +1071,7 @@ export default function LedgerPage() {
                   {photoUrl && (
                     <button
                       onClick={() => setReceiptViewUrl(photoUrl)}
-                      className="w-full mb-3 py-3 rounded-2xl border-2 border-gray-200 text-gray-700 font-semibold text-sm flex items-center justify-center gap-2"
+                      className="w-full mb-3 py-3 rounded-2xl border-2 border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-200 font-semibold text-sm flex items-center justify-center gap-2"
                     >
                       <Receipt size={16} /> View Receipt
                     </button>
@@ -1080,39 +1080,39 @@ export default function LedgerPage() {
               ) : (
                 <>
                   <div className="mb-4">
-                    <label className="text-gray-600 text-sm font-medium mb-2 block">Amount (Rs.)</label>
+                    <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Amount (Rs.)</label>
                     <input
                       type="number"
                       value={editForm.amount}
                       onChange={(e) => setEditForm({ ...editForm, amount: e.target.value })}
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700"
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700"
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="text-gray-600 text-sm font-medium mb-2 block">Date</label>
+                    <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Date</label>
                     <input
                       type="date"
                       value={editForm.date}
                       onChange={(e) => setEditForm({ ...editForm, date: e.target.value })}
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700"
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700"
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="text-gray-600 text-sm font-medium mb-2 block">Description</label>
+                    <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Description</label>
                     <textarea
                       value={editForm.description}
                       onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                       rows={2}
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base resize-none focus:border-green-700"
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base resize-none focus:border-green-700"
                     />
                   </div>
                   <div className="mb-2">
-                    <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
+                    <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
                     <textarea
                       value={editForm.notes}
                       onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })}
                       rows={2}
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base resize-none focus:border-green-700"
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base resize-none focus:border-green-700"
                     />
                   </div>
                 </>
@@ -1122,7 +1122,7 @@ export default function LedgerPage() {
                   sibling) so it is always reachable by scrolling — even when
                   the on-screen keyboard shrinks the visible viewport on mobile,
                   which `dvh`-based max-heights alone can't account for. */}
-              <div className="pt-4 mt-2 border-t border-gray-100">
+              <div className="pt-4 mt-2 border-t border-gray-100 dark:border-slate-700/60">
                 {editSaved ? (
                   <button
                     onClick={() => { setDetailEntry(null); setEditMode(false); setEditSaved(false); }}
@@ -1174,7 +1174,7 @@ export default function LedgerPage() {
             <Printer size={14} /> Print
           </button>
         </div>
-        <div className="flex items-center gap-2 bg-white/15 rounded-2xl px-4 py-2.5">
+        <div className="flex items-center gap-2 bg-white dark:bg-slate-800/15 rounded-2xl px-4 py-2.5">
           <Search size={16} color="rgba(255,255,255,0.7)" />
           <input type="text" placeholder="Search entries…" value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -1185,8 +1185,8 @@ export default function LedgerPage() {
       <div className="px-4 pt-4">
 
         {/* ── Account Summary card ── */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm mb-4">
-          <p className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-3">Account Summary</p>
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm mb-4">
+          <p className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-3">Account Summary</p>
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="rounded-xl p-3" style={{ backgroundColor: "#E8F5E9" }}>
               <p className="text-xs font-semibold mb-1" style={{ color: "#1B5E20" }}>Total Credit</p>
@@ -1197,25 +1197,25 @@ export default function LedgerPage() {
               <p className="text-lg font-bold" style={{ color: "#B71C1C" }}>{fmtPKR(totalDebit)}</p>
             </div>
           </div>
-          <div className="border-t border-gray-100 pt-3 text-center">
-            <p className="text-gray-500 text-xs font-medium mb-0.5">Net Balance</p>
+          <div className="border-t border-gray-100 dark:border-slate-700/60 pt-3 text-center">
+            <p className="text-gray-500 dark:text-slate-400 text-xs font-medium mb-0.5">Net Balance</p>
             <p className="text-3xl font-bold" style={{ color: netBalance >= 0 ? "#1B1B1B" : "#B71C1C" }}>
               {fmtPKR(Math.abs(netBalance))}
-              {netBalance < 0 && <span className="text-base ml-1 text-red-600">(deficit)</span>}
+              {netBalance < 0 && <span className="text-base ml-1 text-red-600 dark:text-red-400">(deficit)</span>}
             </p>
           </div>
         </div>
 
         {/* ── Month selector ── */}
-        <div className="bg-white rounded-2xl px-4 py-3 shadow-sm mb-4 flex items-center justify-between">
-          <button onClick={prevMonth} className="w-8 h-8 flex items-center justify-center rounded-lg active:bg-gray-100">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl px-4 py-3 shadow-sm mb-4 flex items-center justify-between">
+          <button onClick={prevMonth} className="w-8 h-8 flex items-center justify-center rounded-lg active:bg-gray-100 dark:bg-slate-800/70">
             <ChevronLeft size={20} color="#6B7280" />
           </button>
           <div className="text-center">
-            <p className="text-gray-700 text-sm font-semibold">{monthLabel}</p>
-            <p className="text-gray-400 text-xs">{rangeLabel}</p>
+            <p className="text-gray-700 dark:text-slate-200 text-sm font-semibold">{monthLabel}</p>
+            <p className="text-gray-400 dark:text-slate-500 text-xs">{rangeLabel}</p>
           </div>
-          <button onClick={nextMonth} className="w-8 h-8 flex items-center justify-center rounded-lg active:bg-gray-100">
+          <button onClick={nextMonth} className="w-8 h-8 flex items-center justify-center rounded-lg active:bg-gray-100 dark:bg-slate-800/70">
             <ChevronRight size={20} color="#6B7280" />
           </button>
         </div>
@@ -1223,15 +1223,15 @@ export default function LedgerPage() {
         {/* ── Transaction list ── */}
         {loading ? (
           <div className="flex justify-center py-16">
-            <Loader2 size={28} className="animate-spin text-green-700" />
+            <Loader2 size={28} className="animate-spin text-green-700 dark:text-green-400" />
           </div>
         ) : filteredEntries.length === 0 ? (
           <div className="flex flex-col items-center justify-center pt-16 text-center">
             <div className="text-6xl mb-4">📒</div>
-            <p className="text-gray-600 font-semibold mb-2">
+            <p className="text-gray-600 dark:text-slate-300 font-semibold mb-2">
               {search ? "No matching entries" : `No entries for ${monthLabel}`}
             </p>
-            <p className="text-gray-400 text-sm mb-6">
+            <p className="text-gray-400 dark:text-slate-500 text-sm mb-6">
               {search ? "Try a different search" : "Add income or expense to see them here"}
             </p>
           </div>
@@ -1250,7 +1250,7 @@ export default function LedgerPage() {
                   tabIndex={0}
                   onClick={() => { setDetailEntry(entry); setEditMode(false); }}
                   onKeyDown={(e) => e.key === "Enter" && (setDetailEntry(entry), setEditMode(false))}
-                  className="w-full bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform cursor-pointer select-none">
+                  className="w-full bg-white dark:bg-slate-800 rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform cursor-pointer select-none">
 
                   {/* Category icon */}
                   <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
@@ -1260,16 +1260,16 @@ export default function LedgerPage() {
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-gray-800 font-semibold text-sm leading-tight">
+                    <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm leading-tight">
                       {label}
-                      {(entry as any).edited && <span className="text-gray-400 font-normal italic text-xs"> (edited)</span>}
+                      {(entry as any).edited && <span className="text-gray-400 dark:text-slate-500 font-normal italic text-xs"> (edited)</span>}
                     </p>
-                    <p className="text-gray-400 text-xs mt-0.5 truncate">
+                    <p className="text-gray-400 dark:text-slate-500 text-xs mt-0.5 truncate">
                       {entry.dealerName ? `${entry.dealerName} · ` : ""}
                       {entry.parcelName ? `${entry.parcelName} · ` : ""}
                       {fmtDate(entry.date)}
                     </p>
-                    {entry.notes ? <p className="text-gray-400 text-xs truncate">{entry.notes}</p> : null}
+                    {entry.notes ? <p className="text-gray-400 dark:text-slate-500 text-xs truncate">{entry.notes}</p> : null}
                   </div>
 
                   {/* Amount + receipt */}

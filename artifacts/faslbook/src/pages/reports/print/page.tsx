@@ -45,10 +45,10 @@ function Select({ value, onChange, children, disabled }: {
   return (
     <div className="relative">
       <select value={value} disabled={disabled} onChange={e => onChange(e.target.value)}
-        className="w-full appearance-none bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-800 font-medium pr-8 focus:outline-none focus:ring-2 focus:ring-green-600/30 disabled:opacity-50">
+        className="w-full appearance-none bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-sm text-gray-800 dark:text-slate-100 font-medium pr-8 focus:outline-none focus:ring-2 focus:ring-green-600/30 disabled:opacity-50">
         {children}
       </select>
-      <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+      <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 pointer-events-none" />
     </div>
   );
 }
@@ -56,9 +56,9 @@ function Select({ value, onChange, children, disabled }: {
 function DateInput({ value, onChange, label }: { value: string; onChange: (v: string) => void; label: string }) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-[10px] font-semibold text-gray-400 uppercase">{label}</label>
+      <label className="text-[10px] font-semibold text-gray-400 dark:text-slate-500 uppercase">{label}</label>
       <input type="date" value={value} onChange={e => onChange(e.target.value)}
-        className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-600/30" />
+        className="w-full border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-sm text-gray-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-green-600/30" />
     </div>
   );
 }
@@ -536,13 +536,13 @@ export default function PrintHubPage() {
       <style>{PRINT_CSS}</style>
 
       {/* ═══ SCREEN UI (hidden on print) ═══ */}
-      <div className="no-print min-h-screen bg-gray-50 pb-24">
+      <div className="no-print min-h-screen bg-gray-50 dark:bg-slate-900 pb-24">
 
         {/* Header */}
         <div className="px-4 pt-10 pb-5" style={{ backgroundColor:"#1B5E20" }}>
           <div className="flex items-center gap-3">
             <button onClick={() => navigate("/reports")}
-              className="p-1.5 rounded-full hover:bg-white/15 active:scale-95 transition-transform">
+              className="p-1.5 rounded-full hover:bg-white dark:bg-slate-800/15 active:scale-95 transition-transform">
               <ArrowLeft size={20} color="white" />
             </button>
             <div>
@@ -555,8 +555,8 @@ export default function PrintHubPage() {
         <div className="px-4 py-4 flex flex-col gap-3">
 
           {/* Report type grid */}
-          <div className="bg-white rounded-2xl shadow-sm p-4">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-3">Select Report Type</p>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-4">
+            <p className="text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wide mb-3">Select Report Type</p>
             <div className="grid grid-cols-2 gap-2">
               {REPORTS.map(r => (
                 <button key={r.key} onClick={() => setActiveReport(r.key)}
@@ -568,7 +568,7 @@ export default function PrintHubPage() {
                   <span style={{ fontSize:18, lineHeight:1 }}>{r.icon}</span>
                   <div>
                     <p className="font-bold text-xs leading-tight" style={{ color:activeReport===r.key?"#1B5E20":"#374151" }}>{r.label}</p>
-                    <p className="text-gray-400 text-[10px] mt-0.5 leading-snug">{r.desc}</p>
+                    <p className="text-gray-400 dark:text-slate-500 text-[10px] mt-0.5 leading-snug">{r.desc}</p>
                   </div>
                 </button>
               ))}
@@ -576,18 +576,18 @@ export default function PrintHubPage() {
           </div>
 
           {/* Filters */}
-          <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col gap-3">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">Filters</p>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-4 flex flex-col gap-3">
+            <p className="text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wide">Filters</p>
 
             {activeReport==="ledger" && (
               <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-semibold text-gray-400 uppercase">Farmer</label>
+                <label className="text-[10px] font-semibold text-gray-400 dark:text-slate-500 uppercase">Farmer</label>
                 {loading ? (
-                  <div className="flex items-center gap-2 py-2 px-3 text-sm text-gray-400">
+                  <div className="flex items-center gap-2 py-2 px-3 text-sm text-gray-400 dark:text-slate-500">
                     <Loader2 size={14} className="animate-spin" /> Loading…
                   </div>
                 ) : farmers.length === 0 ? (
-                  <p className="text-xs text-orange-600 px-1 py-2">
+                  <p className="text-xs text-orange-600 dark:text-orange-400 px-1 py-2">
                     No farmers added yet. Add farmers in the Team section first.
                   </p>
                 ) : (
@@ -601,7 +601,7 @@ export default function PrintHubPage() {
 
             {activeReport==="parcel" && (
               <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-semibold text-gray-400 uppercase">Parcel</label>
+                <label className="text-[10px] font-semibold text-gray-400 dark:text-slate-500 uppercase">Parcel</label>
                 <Select value={selectedParcel} onChange={setSelectedParcel} disabled={loading||!parcels.length}>
                   {!parcels.length && <option value="">No parcels found</option>}
                   {parcels.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -611,7 +611,7 @@ export default function PrintHubPage() {
 
             {activeReport==="dealer" && (
               <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-semibold text-gray-400 uppercase">Dealer</label>
+                <label className="text-[10px] font-semibold text-gray-400 dark:text-slate-500 uppercase">Dealer</label>
                 <Select value={selectedDealer} onChange={setSelectedDealer} disabled={loading}>
                   <option value="">All Dealers</option>
                   {dealersList.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
@@ -621,9 +621,9 @@ export default function PrintHubPage() {
 
             {activeReport==="cropCycle" && (
               <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-semibold text-gray-400 uppercase">Crop Cycle</label>
+                <label className="text-[10px] font-semibold text-gray-400 dark:text-slate-500 uppercase">Crop Cycle</label>
                 {loading ? (
-                  <div className="flex items-center gap-2 py-2 px-3 text-sm text-gray-400">
+                  <div className="flex items-center gap-2 py-2 px-3 text-sm text-gray-400 dark:text-slate-500">
                     <Loader2 size={14} className="animate-spin" /> Loading…
                   </div>
                 ) : (
@@ -639,13 +639,13 @@ export default function PrintHubPage() {
 
             {activeReport==="custom" && (
               <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-semibold text-gray-400 uppercase">Custom Account</label>
+                <label className="text-[10px] font-semibold text-gray-400 dark:text-slate-500 uppercase">Custom Account</label>
                 {loading ? (
-                  <div className="flex items-center gap-2 py-2 px-3 text-sm text-gray-400">
+                  <div className="flex items-center gap-2 py-2 px-3 text-sm text-gray-400 dark:text-slate-500">
                     <Loader2 size={14} className="animate-spin" /> Loading…
                   </div>
                 ) : customProfilesList.length === 0 ? (
-                  <p className="text-xs text-orange-600 px-1 py-2">No custom accounts added yet.</p>
+                  <p className="text-xs text-orange-600 dark:text-orange-400 px-1 py-2">No custom accounts added yet.</p>
                 ) : (
                   <Select value={selectedCustomProfile} onChange={setSelectedCustomProfile}>
                     {customProfilesList.map(p => (
@@ -658,13 +658,13 @@ export default function PrintHubPage() {
 
             {activeReport==="labour" && (
               <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-semibold text-gray-400 uppercase">Labour Contractor</label>
+                <label className="text-[10px] font-semibold text-gray-400 dark:text-slate-500 uppercase">Labour Contractor</label>
                 {loading ? (
-                  <div className="flex items-center gap-2 py-2 px-3 text-sm text-gray-400">
+                  <div className="flex items-center gap-2 py-2 px-3 text-sm text-gray-400 dark:text-slate-500">
                     <Loader2 size={14} className="animate-spin" /> Loading…
                   </div>
                 ) : labourContractorsList.length === 0 ? (
-                  <p className="text-xs text-orange-600 px-1 py-2">No labour contractors added yet.</p>
+                  <p className="text-xs text-orange-600 dark:text-orange-400 px-1 py-2">No labour contractors added yet.</p>
                 ) : (
                   <Select value={selectedContractor} onChange={setSelectedContractor}>
                     <option value="">All Contractors</option>
@@ -684,7 +684,7 @@ export default function PrintHubPage() {
             )}
 
             {activeReport==="summary" && (
-              <p className="text-xs text-gray-400 italic">Uses all data available for your farm.</p>
+              <p className="text-xs text-gray-400 dark:text-slate-500 italic">Uses all data available for your farm.</p>
             )}
 
             <button onClick={() => window.print()} disabled={generating}
@@ -698,8 +698,8 @@ export default function PrintHubPage() {
           </div>
 
           {/* Screen preview */}
-          <div className="bg-white rounded-2xl shadow-sm p-4">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-3">Preview</p>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-4">
+            <p className="text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wide mb-3">Preview</p>
             {renderTemplate(false)}
           </div>
 

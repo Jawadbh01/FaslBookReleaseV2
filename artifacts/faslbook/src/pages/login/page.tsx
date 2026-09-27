@@ -190,7 +190,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="h-full bg-white flex flex-col overflow-y-auto">
+    <div className="h-full bg-white dark:bg-slate-800 flex flex-col overflow-y-auto">
       {/* Banner */}
       <div
         className="relative flex items-center px-5 overflow-hidden shrink-0"
@@ -198,7 +198,7 @@ export default function LoginPage() {
       >
         <div className="absolute inset-0" style={{ backgroundColor: "rgba(5,40,5,0.58)" }} />
         <div className="relative z-10 flex items-center gap-3">
-          <div className="bg-white rounded-xl p-1.5 shadow-md shrink-0" style={{ width: 44, height: 44 }}>
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-1.5 shadow-md shrink-0" style={{ width: 44, height: 44 }}>
             <img src={ASSETS.logo} alt="FaslBook" className="w-full h-full object-contain rounded-lg"
               onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
           </div>
@@ -214,25 +214,25 @@ export default function LoginPage() {
       </div>
 
       {/* Login card */}
-      <div className="flex-1 bg-white rounded-t-3xl -mt-3 px-5 pt-8 pb-8">
+      <div className="flex-1 bg-white dark:bg-slate-800 rounded-t-3xl -mt-3 px-5 pt-8 pb-8">
 
         {error && (
-          <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 text-amber-800 text-sm px-4 py-3 rounded-xl mb-5">
+          <div className="flex items-start gap-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-amber-800 text-sm px-4 py-3 rounded-xl mb-5">
             <AlertCircle size={16} className="shrink-0 mt-0.5" color="#D97706" />
             <span>{error}</span>
           </div>
         )}
 
-        <p className="text-gray-400 text-xs text-center mb-5 font-medium">
+        <p className="text-gray-400 dark:text-slate-500 text-xs text-center mb-5 font-medium">
           FOR LANDLORDS &amp; MANAGERS ONLY
         </p>
 
         <div className="flex flex-col gap-3">
           <button onClick={() => doAuth(signInWithGoogle)}
-            className="flex items-center gap-3 w-full bg-white border border-gray-200 rounded-2xl px-4 py-3.5 shadow-sm active:scale-95 transition-transform"
+            className="flex items-center gap-3 w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3.5 shadow-sm active:scale-95 transition-transform"
             style={{ WebkitTapHighlightColor: "transparent" }}>
-            <div className="bg-red-50 rounded-full p-2 shrink-0"><Chrome size={20} color="#EA4335" /></div>
-            <span className="text-gray-800 font-semibold text-[15px]">Continue with Google</span>
+            <div className="bg-red-50 dark:bg-red-950/40 rounded-full p-2 shrink-0"><Chrome size={20} color="#EA4335" /></div>
+            <span className="text-gray-800 dark:text-slate-100 font-semibold text-[15px]">Continue with Google</span>
           </button>
 
           <button disabled
@@ -248,11 +248,11 @@ export default function LoginPage() {
           </button>
 
           <button disabled
-            className="flex items-center gap-3 w-full border-2 border-gray-100 rounded-2xl px-4 py-3.5 opacity-40 cursor-not-allowed bg-gray-50">
-            <div className="rounded-full p-2 bg-gray-100 shrink-0"><Phone size={20} color="#9CA3AF" /></div>
+            className="flex items-center gap-3 w-full border-2 border-gray-100 dark:border-slate-700/60 rounded-2xl px-4 py-3.5 opacity-40 cursor-not-allowed bg-gray-50 dark:bg-slate-900">
+            <div className="rounded-full p-2 bg-gray-100 dark:bg-slate-800/70 shrink-0"><Phone size={20} color="#9CA3AF" /></div>
             <div className="flex flex-col items-start">
-              <span className="font-semibold text-[15px] text-gray-400">Continue with Phone (OTP)</span>
-              <span className="text-xs text-gray-400">Not available right now</span>
+              <span className="font-semibold text-[15px] text-gray-400 dark:text-slate-500">Continue with Phone (OTP)</span>
+              <span className="text-xs text-gray-400 dark:text-slate-500">Not available right now</span>
             </div>
           </button>
 
@@ -267,13 +267,13 @@ export default function LoginPage() {
         </div>
 
         <div className="flex items-center gap-3 my-5">
-          <div className="flex-1 h-px bg-gray-200" />
-          <span className="text-gray-400 text-xs">OR</span>
-          <div className="flex-1 h-px bg-gray-200" />
+          <div className="flex-1 h-px bg-gray-200 dark:bg-slate-700" />
+          <span className="text-gray-400 dark:text-slate-500 text-xs">OR</span>
+          <div className="flex-1 h-px bg-gray-200 dark:bg-slate-700" />
         </div>
 
         <div className="text-center">
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 dark:text-slate-400 text-sm">
             New to FaslBook?{" "}
             <button onClick={() => { window.location.href = "/role-select"; }}
               className="font-bold" style={{ color: "#1B5E20" }}>
@@ -283,7 +283,7 @@ export default function LoginPage() {
         </div>
 
         <div className="mt-6 px-4 py-3 rounded-2xl" style={{ backgroundColor: "#F1F8E9" }}>
-          <p className="text-green-700 text-xs text-center">
+          <p className="text-green-700 dark:text-green-400 text-xs text-center">
             🌾 <strong>Farmers</strong> are added by the Landlord or Manager — no separate login needed
           </p>
         </div>

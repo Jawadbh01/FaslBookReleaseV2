@@ -127,10 +127,10 @@ export default function SeasonsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-24">
       <div className="px-4 pt-10 pb-6" style={{ backgroundColor: "#1B5E20" }}>
         <div className="flex items-center gap-3">
-          <button onClick={() => window.history.back()} className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-white/10">
+          <button onClick={() => window.history.back()} className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-white dark:bg-slate-800/10">
             <ChevronLeft size={24} color="white" />
           </button>
           <div className="flex-1">
@@ -152,15 +152,15 @@ export default function SeasonsPage() {
       <div className="px-4 pt-4">
         {loading ? (
           <div className="flex justify-center pt-20">
-            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: "#1B5E20" }} />
+            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: "#1B5E20" }} />
           </div>
         ) : cropCycles.length === 0 ? (
           <div className="flex flex-col items-center justify-center pt-16 text-center">
             <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E8F5E9" }}>
               <Sprout size={36} color="#1B5E20" />
             </div>
-            <p className="text-gray-600 font-semibold mb-2">No crop cycles yet</p>
-            <p className="text-gray-400 text-sm mb-6">Every transaction belongs to a crop cycle</p>
+            <p className="text-gray-600 dark:text-slate-300 font-semibold mb-2">No crop cycles yet</p>
+            <p className="text-gray-400 dark:text-slate-500 text-sm mb-6">Every transaction belongs to a crop cycle</p>
             {canEdit && (
               <button
                 onClick={openCreate}
@@ -178,16 +178,16 @@ export default function SeasonsPage() {
               return (
                 <div
                   key={c.id}
-                  className="bg-white rounded-2xl p-4 shadow-sm active:scale-[0.99] transition-transform cursor-pointer"
+                  className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm active:scale-[0.99] transition-transform cursor-pointer"
                   onClick={() => navigate(`/crop-cycles/${c.id}`)}
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <p className="font-bold text-gray-800 text-base">{c.name}</p>
-                      <p className="text-gray-500 text-xs">
+                      <p className="font-bold text-gray-800 dark:text-slate-100 text-base">{c.name}</p>
+                      <p className="text-gray-500 dark:text-slate-400 text-xs">
                         {c.crop}{c.seasonName ? ` • ${c.seasonName}` : ""}
                       </p>
-                      <p className="text-gray-400 text-xs mt-0.5">{fmtDate(c.startDate)} – {fmtDate(c.endDate)}</p>
+                      <p className="text-gray-400 dark:text-slate-500 text-xs mt-0.5">{fmtDate(c.startDate)} – {fmtDate(c.endDate)}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <span
@@ -212,7 +212,7 @@ export default function SeasonsPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 mb-3 text-xs text-gray-500">
+                  <div className="flex items-center gap-4 mb-3 text-xs text-gray-500 dark:text-slate-400">
                     {stats.farmerNames.length > 0 && (
                       <div className="flex items-center gap-1">
                         <User size={12} />
@@ -228,17 +228,17 @@ export default function SeasonsPage() {
                   <div className="grid grid-cols-3 gap-2">
                     <div className="rounded-xl p-2 text-center" style={{ backgroundColor: "#E8F5E9" }}>
                       <TrendingUp size={12} color="#1B5E20" className="mx-auto mb-1" />
-                      <p className="text-[10px] text-gray-500">Income</p>
+                      <p className="text-[10px] text-gray-500 dark:text-slate-400">Income</p>
                       <p className="font-bold text-xs" style={{ color: "#1B5E20" }}>{fmt(stats.income)}</p>
                     </div>
                     <div className="rounded-xl p-2 text-center" style={{ backgroundColor: "#FFEBEE" }}>
                       <TrendingDown size={12} color="#C62828" className="mx-auto mb-1" />
-                      <p className="text-[10px] text-gray-500">Expenses</p>
+                      <p className="text-[10px] text-gray-500 dark:text-slate-400">Expenses</p>
                       <p className="font-bold text-xs" style={{ color: "#C62828" }}>{fmt(stats.expense)}</p>
                     </div>
                     <div className="rounded-xl p-2 text-center" style={{ backgroundColor: stats.profit >= 0 ? "#E3F2FD" : "#FFEBEE" }}>
                       <Wallet size={12} color={stats.profit >= 0 ? "#1565C0" : "#C62828"} className="mx-auto mb-1" />
-                      <p className="text-[10px] text-gray-500">Profit</p>
+                      <p className="text-[10px] text-gray-500 dark:text-slate-400">Profit</p>
                       <p className="font-bold text-xs" style={{ color: stats.profit >= 0 ? "#1565C0" : "#C62828" }}>{fmt(stats.profit)}</p>
                     </div>
                   </div>
@@ -251,42 +251,42 @@ export default function SeasonsPage() {
 
       {showForm && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40" onClick={() => setShowForm(false)}>
-          <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
             <div className="px-6 pt-6 pb-6 overflow-y-auto flex-1 min-h-0">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-lg font-bold text-gray-800">{editing ? "Edit Crop Cycle" : "New Crop Cycle"}</h2>
+                <h2 className="text-lg font-bold text-gray-800 dark:text-slate-100">{editing ? "Edit Crop Cycle" : "New Crop Cycle"}</h2>
                 <button onClick={() => setShowForm(false)}><X size={22} color="#9CA3AF" /></button>
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-4">{error}</div>
+                <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-4">{error}</div>
               )}
 
               <div className="mb-4">
-                <label className="text-gray-600 text-sm font-medium mb-2 block">Crop Cycle Name</label>
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Crop Cycle Name</label>
                 <input
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="e.g. Wheat 2026"
-                  className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700"
+                  className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700"
                 />
               </div>
 
               <div className="mb-4">
-                <label className="text-gray-600 text-sm font-medium mb-2 block">Crop</label>
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Crop</label>
                 <input
                   type="text"
                   value={form.crop}
                   onChange={(e) => setForm({ ...form, crop: e.target.value })}
                   placeholder="e.g. Wheat"
-                  className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700"
+                  className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700"
                 />
               </div>
 
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-gray-600 text-sm font-medium">Season (optional)</label>
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium">Season (optional)</label>
                   {canEdit && (
                     <button
                       type="button"
@@ -303,33 +303,33 @@ export default function SeasonsPage() {
                   <div className="border-2 rounded-2xl p-4 mb-3" style={{ borderColor: "#1B5E20", backgroundColor: "#F9FFF9" }}>
                     <div className="flex items-center gap-2 mb-3">
                       <CalendarDays size={16} color="#1B5E20" />
-                      <p className="text-sm font-bold text-gray-700">Add New Season</p>
+                      <p className="text-sm font-bold text-gray-700 dark:text-slate-200">Add New Season</p>
                       <button onClick={() => setShowSeasonForm(false)} className="ml-auto">
                         <X size={16} color="#9CA3AF" />
                       </button>
                     </div>
                     {seasonError && (
-                      <p className="text-red-600 text-xs bg-red-50 px-3 py-2 rounded-xl mb-3">{seasonError}</p>
+                      <p className="text-red-600 dark:text-red-400 text-xs bg-red-50 dark:bg-red-950/40 px-3 py-2 rounded-xl mb-3">{seasonError}</p>
                     )}
                     <input
                       type="text"
                       value={seasonForm.name}
                       onChange={(e) => setSeasonForm({ ...seasonForm, name: e.target.value })}
                       placeholder="Season name e.g. Rabi 2026"
-                      className="w-full border-2 border-gray-200 rounded-xl px-3 py-2 outline-none text-gray-800 text-sm focus:border-green-700 mb-2"
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 outline-none text-gray-800 dark:text-slate-100 text-sm focus:border-green-700 mb-2"
                     />
                     <div className="grid grid-cols-2 gap-2 mb-3">
                       <div>
-                        <p className="text-xs text-gray-400 mb-1">Start Date</p>
+                        <p className="text-xs text-gray-400 dark:text-slate-500 mb-1">Start Date</p>
                         <input type="date" value={seasonForm.startDate}
                           onChange={(e) => setSeasonForm({ ...seasonForm, startDate: e.target.value })}
-                          className="w-full border-2 border-gray-200 rounded-xl px-3 py-2 outline-none text-gray-800 text-xs focus:border-green-700" />
+                          className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 outline-none text-gray-800 dark:text-slate-100 text-xs focus:border-green-700" />
                       </div>
                       <div>
-                        <p className="text-xs text-gray-400 mb-1">End Date</p>
+                        <p className="text-xs text-gray-400 dark:text-slate-500 mb-1">End Date</p>
                         <input type="date" value={seasonForm.endDate}
                           onChange={(e) => setSeasonForm({ ...seasonForm, endDate: e.target.value })}
-                          className="w-full border-2 border-gray-200 rounded-xl px-3 py-2 outline-none text-gray-800 text-xs focus:border-green-700" />
+                          className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 outline-none text-gray-800 dark:text-slate-100 text-xs focus:border-green-700" />
                       </div>
                     </div>
                     <button
@@ -346,7 +346,7 @@ export default function SeasonsPage() {
                 <select
                   value={form.seasonId}
                   onChange={(e) => setForm({ ...form, seasonId: e.target.value })}
-                  className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700 bg-white"
+                  className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700 bg-white dark:bg-slate-800"
                 >
                   <option value="">No season</option>
                   {seasons.map((s) => (
@@ -357,27 +357,27 @@ export default function SeasonsPage() {
 
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div>
-                  <label className="text-gray-600 text-sm font-medium mb-2 block">Start Date</label>
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Start Date</label>
                   <input
                     type="date"
                     value={form.startDate}
                     onChange={(e) => setForm({ ...form, startDate: e.target.value })}
-                    className="w-full border-2 border-gray-200 rounded-2xl px-3 py-3 outline-none text-gray-800 text-sm focus:border-green-700"
+                    className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-3 py-3 outline-none text-gray-800 dark:text-slate-100 text-sm focus:border-green-700"
                   />
                 </div>
                 <div>
-                  <label className="text-gray-600 text-sm font-medium mb-2 block">End Date</label>
+                  <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">End Date</label>
                   <input
                     type="date"
                     value={form.endDate}
                     onChange={(e) => setForm({ ...form, endDate: e.target.value })}
-                    className="w-full border-2 border-gray-200 rounded-2xl px-3 py-3 outline-none text-gray-800 text-sm focus:border-green-700"
+                    className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-3 py-3 outline-none text-gray-800 dark:text-slate-100 text-sm focus:border-green-700"
                   />
                 </div>
               </div>
 
               <div className="mb-6">
-                <label className="text-gray-600 text-sm font-medium mb-3 block">Status</label>
+                <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-3 block">Status</label>
                 <div className="flex gap-3">
                   {(["Active", "Completed"] as const).map((st) => (
                     <button
@@ -394,7 +394,7 @@ export default function SeasonsPage() {
                     </button>
                   ))}
                 </div>
-                <p className="text-gray-400 text-xs mt-2">Multiple crop cycles can be Active at the same time.</p>
+                <p className="text-gray-400 dark:text-slate-500 text-xs mt-2">Multiple crop cycles can be Active at the same time.</p>
               </div>
 
               <button

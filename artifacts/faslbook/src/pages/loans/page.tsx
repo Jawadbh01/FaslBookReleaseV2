@@ -288,7 +288,7 @@ export default function LoansPage() {
   // ── Add Loan Form ──────────────────────────────────────────
   if (showAdd) {
     return (
-      <div className="min-h-screen bg-white flex flex-col">
+      <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
         <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
           <button onClick={() => { setShowAdd(false); setError(""); }} className="text-white mr-3">
             <X size={24} />
@@ -300,11 +300,11 @@ export default function LoansPage() {
         </div>
         <div className="flex-1 px-6 pt-6 pb-10 overflow-y-auto">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>
           )}
 
           <div className="mb-5">
-            <label className="text-gray-600 text-sm font-medium mb-3 block">Lender Type</label>
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-3 block">Lender Type</label>
             <div className="grid grid-cols-3 gap-2">
               {lenderTypes.map(({ val, label, icon: Icon, color, bg }) => (
                 <button
@@ -326,66 +326,66 @@ export default function LoansPage() {
           </div>
 
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Lender Name *</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Lender Name *</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <User size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <input
                 type="text"
                 placeholder="e.g. Hassan Bhai, Bank Alfalah"
                 value={form.lenderName}
                 onChange={(e) => setForm({ ...form, lenderName: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Amount (Rs.) *</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
-              <span className="text-gray-400 mr-2 font-medium">Rs.</span>
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Amount (Rs.) *</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <span className="text-gray-400 dark:text-slate-500 mr-2 font-medium">Rs.</span>
               <input
                 type="number"
                 placeholder="0"
                 value={form.amount}
                 onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Borrow Date</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Borrow Date</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <Calendar size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <input
                 type="date"
                 value={form.borrowDate}
                 onChange={(e) => setForm({ ...form, borrowDate: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Due Date (Optional)</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Due Date (Optional)</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <Calendar size={20} color="#9E9E9E" className="mr-3 shrink-0" />
               <input
                 type="date"
                 value={form.dueDate}
                 onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Crop Cycle *</label>
-            <div className="border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700 bg-white">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Crop Cycle *</label>
+            <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700 bg-white dark:bg-slate-800">
               <select
                 value={form.cropCycleId}
                 onChange={(e) => setForm({ ...form, cropCycleId: e.target.value })}
-                className="w-full outline-none text-gray-800 text-base bg-transparent"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               >
                 <option value="">— Select crop cycle —</option>
                 {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.crop})</option>)}
@@ -394,14 +394,14 @@ export default function LoansPage() {
           </div>
 
           <div className="mb-8">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
-            <div className="border-2 border-gray-200 rounded-2xl px-4 py-3">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
+            <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3">
               <textarea
                 placeholder="Purpose, conditions etc..."
                 value={form.notes}
                 onChange={(e) => setForm({ ...form, notes: e.target.value })}
                 rows={3}
-                className="w-full outline-none text-gray-800 text-base bg-transparent resize-none"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none"
               />
             </div>
           </div>
@@ -423,7 +423,7 @@ export default function LoansPage() {
   if (showPay && selectedLoan) {
     const remaining = (selectedLoan.amount || 0) - paidAmountFor(selectedLoan.id);
     return (
-      <div className="min-h-screen bg-white flex flex-col">
+      <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col">
         <div className="flex items-center px-4 pt-12 pb-6" style={{ backgroundColor: "#1B5E20" }}>
           <button onClick={() => { setShowPay(false); setError(""); }} className="text-white mr-3">
             <X size={24} />
@@ -435,32 +435,32 @@ export default function LoansPage() {
         </div>
         <div className="flex-1 px-6 pt-6 pb-10">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mb-5">{error}</div>
           )}
           <div className="rounded-2xl p-4 mb-6" style={{ backgroundColor: "#FFF3E0" }}>
             <p className="text-orange-800 text-xs font-medium mb-1">Remaining Balance</p>
-            <p className="text-orange-700 font-bold text-2xl">{fmt(remaining)}</p>
+            <p className="text-orange-700 dark:text-orange-400 font-bold text-2xl">{fmt(remaining)}</p>
           </div>
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Payment Amount *</label>
-            <div className="flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
-              <span className="text-gray-400 mr-2 font-medium">Rs.</span>
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Payment Amount *</label>
+            <div className="flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
+              <span className="text-gray-400 dark:text-slate-500 mr-2 font-medium">Rs.</span>
               <input
                 type="number"
                 placeholder="0"
                 value={payAmount}
                 onChange={(e) => setPayAmount(e.target.value)}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               />
             </div>
           </div>
           <div className="mb-4">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Crop Cycle *</label>
-            <div className="border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700 bg-white">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Crop Cycle *</label>
+            <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700 bg-white dark:bg-slate-800">
               <select
                 value={payCropCycleId}
                 onChange={(e) => setPayCropCycleId(e.target.value)}
-                className="w-full outline-none text-gray-800 text-base bg-transparent"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent"
               >
                 <option value="">— Select crop cycle —</option>
                 {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.crop})</option>)}
@@ -468,14 +468,14 @@ export default function LoansPage() {
             </div>
           </div>
           <div className="mb-8">
-            <label className="text-gray-600 text-sm font-medium mb-2 block">Notes</label>
-            <div className="border-2 border-gray-200 rounded-2xl px-4 py-3">
+            <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">Notes</label>
+            <div className="border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3">
               <textarea
                 placeholder="Optional..."
                 value={payNote}
                 onChange={(e) => setPayNote(e.target.value)}
                 rows={2}
-                className="w-full outline-none text-gray-800 text-base bg-transparent resize-none"
+                className="w-full outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent resize-none"
               />
             </div>
           </div>
@@ -494,7 +494,7 @@ export default function LoansPage() {
 
   // ── Main List ──────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-24">
       <div className="px-4 pt-12 pb-5" style={{ backgroundColor: "#1B5E20" }}>
         <div className="flex items-center justify-between">
           <div>
@@ -514,34 +514,34 @@ export default function LoansPage() {
       </div>
 
       <div className="px-4 pt-4">
-        <div className="bg-white rounded-2xl p-4 shadow-sm mb-4">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm mb-4">
           <div className="grid grid-cols-3 gap-3">
             <div className="rounded-xl p-3 text-center" style={{ backgroundColor: "#FFEBEE" }}>
               <p className="text-red-500 text-xs mb-1">Borrowed</p>
-              <p className="text-red-700 font-bold text-sm">{fmt(totalBorrowed)}</p>
+              <p className="text-red-700 dark:text-red-400 font-bold text-sm">{fmt(totalBorrowed)}</p>
             </div>
             <div className="rounded-xl p-3 text-center" style={{ backgroundColor: "#E8F5E9" }}>
-              <p className="text-green-600 text-xs mb-1">Paid</p>
-              <p className="text-green-700 font-bold text-sm">{fmt(totalPaid)}</p>
+              <p className="text-green-600 dark:text-green-400 text-xs mb-1">Paid</p>
+              <p className="text-green-700 dark:text-green-400 font-bold text-sm">{fmt(totalPaid)}</p>
             </div>
             <div className="rounded-xl p-3 text-center" style={{ backgroundColor: "#FFF3E0" }}>
-              <p className="text-orange-600 text-xs mb-1">Remaining</p>
-              <p className="text-orange-700 font-bold text-sm">{fmt(totalRemaining)}</p>
+              <p className="text-orange-600 dark:text-orange-400 text-xs mb-1">Remaining</p>
+              <p className="text-orange-700 dark:text-orange-400 font-bold text-sm">{fmt(totalRemaining)}</p>
             </div>
           </div>
         </div>
 
         {loading ? (
           <div className="flex justify-center pt-20">
-            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100" style={{ borderTopColor: "#1B5E20" }} />
+            <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-100 dark:border-slate-700/60" style={{ borderTopColor: "#1B5E20" }} />
           </div>
         ) : loans.length === 0 ? (
           <div className="flex flex-col items-center justify-center pt-16 text-center">
             <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E8F5E9" }}>
               <HandCoins size={36} color="#1B5E20" />
             </div>
-            <p className="text-gray-600 font-semibold mb-2">No loans recorded</p>
-            <p className="text-gray-400 text-sm mb-6">Track borrowed money here</p>
+            <p className="text-gray-600 dark:text-slate-300 font-semibold mb-2">No loans recorded</p>
+            <p className="text-gray-400 dark:text-slate-500 text-sm mb-6">Track borrowed money here</p>
             {canEdit && (
               <button
                 onClick={() => setShowAdd(true)}
@@ -564,15 +564,15 @@ export default function LoansPage() {
               const isFullyPaid = remaining <= 0;
 
               return (
-                <div key={loan.id} className="bg-white rounded-2xl p-4 shadow-sm">
+                <div key={loan.id} className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: lt.bg }}>
                         <LIcon size={22} color={lt.color} />
                       </div>
                       <div>
-                        <p className="font-bold text-gray-800 text-base">{loan.lenderName}</p>
-                        <p className="text-gray-500 text-xs capitalize">{lt.label} • {fmtDate(loan.borrowDate)}</p>
+                        <p className="font-bold text-gray-800 dark:text-slate-100 text-base">{loan.lenderName}</p>
+                        <p className="text-gray-500 dark:text-slate-400 text-xs capitalize">{lt.label} • {fmtDate(loan.borrowDate)}</p>
                       </div>
                     </div>
                     <div
@@ -586,22 +586,22 @@ export default function LoansPage() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 mb-3">
-                    <div className="bg-gray-50 rounded-xl p-2">
-                      <p className="text-gray-400 text-xs mb-0.5">Borrowed</p>
-                      <p className="text-gray-800 font-bold text-sm">{fmt(loan.amount || 0)}</p>
+                    <div className="bg-gray-50 dark:bg-slate-900 rounded-xl p-2">
+                      <p className="text-gray-400 dark:text-slate-500 text-xs mb-0.5">Borrowed</p>
+                      <p className="text-gray-800 dark:text-slate-100 font-bold text-sm">{fmt(loan.amount || 0)}</p>
                     </div>
-                    <div className="bg-gray-50 rounded-xl p-2">
-                      <p className="text-gray-400 text-xs mb-0.5">Paid</p>
+                    <div className="bg-gray-50 dark:bg-slate-900 rounded-xl p-2">
+                      <p className="text-gray-400 dark:text-slate-500 text-xs mb-0.5">Paid</p>
                       <p className="font-bold text-sm" style={{ color: "#1B5E20" }}>{fmt(loanPaid)}</p>
                     </div>
                   </div>
 
                   <div className="mb-3">
-                    <div className="flex justify-between text-xs text-gray-400 mb-1">
+                    <div className="flex justify-between text-xs text-gray-400 dark:text-slate-500 mb-1">
                       <span>Repayment Progress</span>
                       <span>{Math.round(paidPct)}%</span>
                     </div>
-                    <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-100 dark:bg-slate-800/70 rounded-full overflow-hidden">
                       <div
                         className="h-full rounded-full transition-all"
                         style={{ width: `${paidPct}%`, backgroundColor: isFullyPaid ? "#1B5E20" : "#E65100" }}

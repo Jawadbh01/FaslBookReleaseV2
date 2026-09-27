@@ -335,26 +335,26 @@ export default function LabourContractorsPage() {
       {contractorModal && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40"
           onClick={() => setContractorModal(null)}>
-          <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col"
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col"
             onClick={(e) => e.stopPropagation()}>
-            <div className="px-6 pt-6 pb-2 flex items-center justify-between border-b border-gray-100">
-              <h2 className="font-bold text-gray-800 text-base">
+            <div className="px-6 pt-6 pb-2 flex items-center justify-between border-b border-gray-100 dark:border-slate-700/60">
+              <h2 className="font-bold text-gray-800 dark:text-slate-100 text-base">
                 {contractorModal === "add" ? "Add Contractor" : "Edit Contractor"}
               </h2>
               <button onClick={() => setContractorModal(null)}><X size={20} color="#9CA3AF" /></button>
             </div>
             <div className="px-6 py-5 overflow-y-auto flex-1 space-y-4">
-              {cError && <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-3 py-2 rounded-xl">{cError}</div>}
+              {cError && <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-3 py-2 rounded-xl">{cError}</div>}
 
               {cDelConfirm ? (
                 <div className="text-center py-4">
                   <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3" style={{ backgroundColor: "#FFEBEE" }}>
                     <Trash2 size={24} color="#C62828" />
                   </div>
-                  <p className="font-bold text-gray-800 mb-1">Delete {cTarget?.name}?</p>
-                  <p className="text-gray-500 text-sm mb-4">All harvest records for this contractor will remain.</p>
+                  <p className="font-bold text-gray-800 dark:text-slate-100 mb-1">Delete {cTarget?.name}?</p>
+                  <p className="text-gray-500 dark:text-slate-400 text-sm mb-4">All harvest records for this contractor will remain.</p>
                   <div className="flex gap-3">
-                    <button onClick={() => setCDelConfirm(false)} className="flex-1 py-3 rounded-2xl border-2 border-gray-200 font-semibold text-sm text-gray-700">Cancel</button>
+                    <button onClick={() => setCDelConfirm(false)} className="flex-1 py-3 rounded-2xl border-2 border-gray-200 dark:border-slate-700 font-semibold text-sm text-gray-700 dark:text-slate-200">Cancel</button>
                     <button onClick={confirmDeleteContractor} disabled={cDeleting}
                       className="flex-1 py-3 rounded-2xl text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60"
                       style={{ backgroundColor: "#C62828" }}>
@@ -365,30 +365,30 @@ export default function LabourContractorsPage() {
               ) : (
                 <>
                   <div>
-                    <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Name *</label>
+                    <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Name *</label>
                     <input value={cForm.name} onChange={(e) => setCForm({ ...cForm, name: e.target.value })} placeholder="Contractor name"
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700" />
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                   </div>
                   <div>
-                    <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Phone (Optional)</label>
+                    <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Phone (Optional)</label>
                     <input value={cForm.phone} onChange={(e) => setCForm({ ...cForm, phone: e.target.value })} placeholder="03XX-XXXXXXX"
-                      type="tel" className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700" />
+                      type="tel" className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                   </div>
                   <div>
-                    <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Team Size (Workers)</label>
+                    <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Team Size (Workers)</label>
                     <input value={cForm.teamSize} onChange={(e) => setCForm({ ...cForm, teamSize: e.target.value })} placeholder="e.g. 12"
                       type="number" inputMode="numeric" min="1"
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700" />
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                   </div>
                   <div>
-                    <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Notes (Optional)</label>
+                    <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Notes (Optional)</label>
                     <textarea value={cForm.notes} onChange={(e) => setCForm({ ...cForm, notes: e.target.value })} rows={2}
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base resize-none focus:border-green-700" />
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base resize-none focus:border-green-700" />
                   </div>
                   <div className="flex gap-3 pt-1">
                     {contractorModal === "edit" && (
                       <button onClick={() => setCDelConfirm(true)}
-                        className="py-3 px-4 rounded-2xl border-2 border-red-200 text-red-600 font-bold active:scale-95 transition-transform flex items-center justify-center">
+                        className="py-3 px-4 rounded-2xl border-2 border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 font-bold active:scale-95 transition-transform flex items-center justify-center">
                         <Trash2 size={18} />
                       </button>
                     )}
@@ -410,12 +410,12 @@ export default function LabourContractorsPage() {
       {selectedRecord && !recordModal && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40"
           onClick={() => setSelectedRecord(null)}>
-          <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col"
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[85dvh] flex flex-col"
             onClick={(e) => e.stopPropagation()}>
-            <div className="px-6 pt-6 pb-2 flex items-center justify-between border-b border-gray-100">
+            <div className="px-6 pt-6 pb-2 flex items-center justify-between border-b border-gray-100 dark:border-slate-700/60">
               <div>
-                <h2 className="font-bold text-gray-800 text-base">Harvest Record</h2>
-                <p className="text-gray-400 text-xs">{selectedRecord.contractorName}</p>
+                <h2 className="font-bold text-gray-800 dark:text-slate-100 text-base">Harvest Record</h2>
+                <p className="text-gray-400 dark:text-slate-500 text-xs">{selectedRecord.contractorName}</p>
               </div>
               <button onClick={() => setSelectedRecord(null)}><X size={20} color="#9CA3AF" /></button>
             </div>
@@ -432,13 +432,13 @@ export default function LabourContractorsPage() {
                 ["Advance Paid",  fmt(selectedRecord.advancePaid)],
                 ["Remaining",     fmt(selectedRecord.remainingBalance)],
               ].filter((row): row is [string, string] => row !== null).map(([label, value]) => (
-                <div key={label} className="flex justify-between items-center py-2.5 border-b border-gray-50 last:border-0">
-                  <span className="text-gray-500 text-sm">{label}</span>
-                  <span className="text-gray-800 text-sm font-semibold">{value}</span>
+                <div key={label} className="flex justify-between items-center py-2.5 border-b border-gray-50 dark:border-slate-800 last:border-0">
+                  <span className="text-gray-500 dark:text-slate-400 text-sm">{label}</span>
+                  <span className="text-gray-800 dark:text-slate-100 text-sm font-semibold">{value}</span>
                 </div>
               ))}
               <div className="flex justify-between items-center py-2.5">
-                <span className="text-gray-500 text-sm">Status</span>
+                <span className="text-gray-500 dark:text-slate-400 text-sm">Status</span>
                 <span className="px-3 py-1 rounded-full text-xs font-bold"
                   style={{ backgroundColor: STATUS_CONFIG[selectedRecord.paymentStatus].bg, color: STATUS_CONFIG[selectedRecord.paymentStatus].color }}>
                   {STATUS_CONFIG[selectedRecord.paymentStatus].label}
@@ -446,8 +446,8 @@ export default function LabourContractorsPage() {
               </div>
               {selectedRecord.notes && (
                 <div className="py-2">
-                  <p className="text-gray-400 text-xs mb-1">Notes</p>
-                  <p className="text-gray-700 text-sm">{selectedRecord.notes}</p>
+                  <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">Notes</p>
+                  <p className="text-gray-700 dark:text-slate-200 text-sm">{selectedRecord.notes}</p>
                 </div>
               )}
               {canEdit && (
@@ -458,7 +458,7 @@ export default function LabourContractorsPage() {
                     <Pencil size={16} /> Edit
                   </button>
                   <button onClick={() => navigate(`/labour-contractors/${selectedRecord.contractorId}`)}
-                    className="py-3.5 px-4 rounded-2xl border-2 border-gray-200 text-gray-700 font-bold text-sm active:scale-95 transition-transform flex items-center justify-center gap-1">
+                    className="py-3.5 px-4 rounded-2xl border-2 border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-200 font-bold text-sm active:scale-95 transition-transform flex items-center justify-center gap-1">
                     Profile <ChevronRight size={14} />
                   </button>
                 </div>
@@ -473,10 +473,10 @@ export default function LabourContractorsPage() {
       {recordModal && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40"
           onClick={() => setRecordModal(null)}>
-          <div className="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[92dvh] flex flex-col"
+          <div className="bg-white dark:bg-slate-800 w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl max-h-[92dvh] flex flex-col"
             onClick={(e) => e.stopPropagation()}>
-            <div className="px-6 pt-6 pb-2 flex items-center justify-between border-b border-gray-100">
-              <h2 className="font-bold text-gray-800 text-base">
+            <div className="px-6 pt-6 pb-2 flex items-center justify-between border-b border-gray-100 dark:border-slate-700/60">
+              <h2 className="font-bold text-gray-800 dark:text-slate-100 text-base">
                 {recordModal === "add" ? "Add Harvest Record" : "Edit Harvest Record"}
               </h2>
               <button onClick={() => setRecordModal(null)}><X size={20} color="#9CA3AF" /></button>
@@ -487,8 +487,8 @@ export default function LabourContractorsPage() {
                 <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "#E8F5E9" }}>
                   <CheckCircle size={44} color="#1B5E20" />
                 </div>
-                <h2 className="text-xl font-bold text-gray-800 mb-1">Record Saved!</h2>
-                <p className="text-gray-500 text-sm mb-2">Expense transaction created automatically.</p>
+                <h2 className="text-xl font-bold text-gray-800 dark:text-slate-100 mb-1">Record Saved!</h2>
+                <p className="text-gray-500 dark:text-slate-400 text-sm mb-2">Expense transaction created automatically.</p>
                 <p className="text-2xl font-bold mb-8" style={{ color: "#C62828" }}>−{fmt(total)}</p>
                 <button onClick={() => setRecordModal(null)}
                   className="w-full py-4 rounded-2xl text-white font-bold text-base"
@@ -501,10 +501,10 @@ export default function LabourContractorsPage() {
                 <div className="w-14 h-14 rounded-full flex items-center justify-center mb-3" style={{ backgroundColor: "#FFEBEE" }}>
                   <Trash2 size={24} color="#C62828" />
                 </div>
-                <p className="font-bold text-gray-800 mb-1">Delete this record?</p>
-                <p className="text-gray-500 text-sm mb-6">This will also remove the linked expense transaction from your Khata.</p>
+                <p className="font-bold text-gray-800 dark:text-slate-100 mb-1">Delete this record?</p>
+                <p className="text-gray-500 dark:text-slate-400 text-sm mb-6">This will also remove the linked expense transaction from your Khata.</p>
                 <div className="flex gap-3 w-full">
-                  <button onClick={() => setRDelConfirm(false)} className="flex-1 py-3 rounded-2xl border-2 border-gray-200 font-semibold text-sm text-gray-700">Cancel</button>
+                  <button onClick={() => setRDelConfirm(false)} className="flex-1 py-3 rounded-2xl border-2 border-gray-200 dark:border-slate-700 font-semibold text-sm text-gray-700 dark:text-slate-200">Cancel</button>
                   <button onClick={confirmDeleteRecord} disabled={rDeleting}
                     className="flex-1 py-3 rounded-2xl text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-60"
                     style={{ backgroundColor: "#C62828" }}>
@@ -514,43 +514,43 @@ export default function LabourContractorsPage() {
               </div>
             ) : (
               <div className="overflow-y-auto flex-1 px-6 py-5 space-y-4">
-                {rError && <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-3 py-2 rounded-xl">{rError}</div>}
+                {rError && <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-3 py-2 rounded-xl">{rError}</div>}
 
                 <div>
-                  <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Contractor *</label>
+                  <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Contractor *</label>
                   <select value={rForm.contractorId} onChange={(e) => setRForm({ ...rForm, contractorId: e.target.value })}
-                    className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base bg-white focus:border-green-700">
+                    className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base bg-white dark:bg-slate-800 focus:border-green-700">
                     <option value="">— Select Contractor —</option>
                     {contractors.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.teamSize} workers)</option>)}
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Crop Cycle *</label>
+                  <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Crop Cycle *</label>
                   <select value={rForm.cropCycleId} onChange={(e) => setRForm({ ...rForm, cropCycleId: e.target.value })}
-                    className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base bg-white focus:border-green-700">
+                    className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base bg-white dark:bg-slate-800 focus:border-green-700">
                     <option value="">— Select Crop Cycle —</option>
                     {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name} {c.status === "Active" ? "✓" : ""}</option>)}
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Parcel *</label>
+                  <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Parcel *</label>
                   <select value={rForm.parcelId} onChange={(e) => setRForm({ ...rForm, parcelId: e.target.value })}
-                    className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base bg-white focus:border-green-700">
+                    className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base bg-white dark:bg-slate-800 focus:border-green-700">
                     <option value="">— Select Parcel —</option>
                     {parcels.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
                   </select>
                 </div>
 
                 <div>
-                  <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Harvest Date</label>
+                  <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Harvest Date</label>
                   <input type="date" value={rForm.harvestDate} onChange={(e) => setRForm({ ...rForm, harvestDate: e.target.value })}
-                    className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700" />
+                    className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                 </div>
 
                 <div>
-                  <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Payment Type</label>
+                  <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Payment Type</label>
                   <div className="grid grid-cols-3 gap-2">
                     {(["perAcre", "perMaund", "fixed"] as HarvestPaymentType[]).map((pt) => (
                       <button key={pt} onClick={() => setRForm({ ...rForm, paymentType: pt })}
@@ -568,38 +568,38 @@ export default function LabourContractorsPage() {
 
                 <div className={`grid gap-3 ${rForm.paymentType !== "fixed" ? "grid-cols-2" : "grid-cols-1"}`}>
                   <div>
-                    <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
+                    <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
                       {rForm.paymentType === "fixed" ? "Fixed Amount (Rs.)" : "Rate (Rs.)"}
                     </label>
                     <input type="number" inputMode="numeric" value={rForm.rate}
                       onChange={(e) => setRForm({ ...rForm, rate: e.target.value })} placeholder="e.g. 5000"
-                      className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700" />
+                      className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                   </div>
                   {rForm.paymentType !== "fixed" && (
                     <div>
-                      <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
+                      <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">
                         {rForm.paymentType === "perAcre" ? "Acres" : "Maunds"}
                       </label>
                       <input type="number" inputMode="decimal" value={rForm.quantity}
                         onChange={(e) => setRForm({ ...rForm, quantity: e.target.value })} placeholder="e.g. 10"
-                        className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700" />
+                        className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                     </div>
                   )}
                 </div>
 
                 {/* Auto-calculated total */}
                 {total > 0 && (
-                  <div className="bg-gray-50 rounded-2xl px-4 py-3 flex items-center justify-between">
-                    <span className="text-gray-500 text-sm">Total Amount</span>
+                  <div className="bg-gray-50 dark:bg-slate-900 rounded-2xl px-4 py-3 flex items-center justify-between">
+                    <span className="text-gray-500 dark:text-slate-400 text-sm">Total Amount</span>
                     <span className="font-bold text-lg" style={{ color: "#C62828" }}>{fmt(total)}</span>
                   </div>
                 )}
 
                 <div>
-                  <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Advance Paid (Rs.)</label>
+                  <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Advance Paid (Rs.)</label>
                   <input type="number" inputMode="numeric" value={rForm.advancePaid}
                     onChange={(e) => setRForm({ ...rForm, advancePaid: e.target.value })} placeholder="0"
-                    className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base focus:border-green-700" />
+                    className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base focus:border-green-700" />
                 </div>
 
                 {/* Remaining balance */}
@@ -614,15 +614,15 @@ export default function LabourContractorsPage() {
                 )}
 
                 <div>
-                  <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Notes (Optional)</label>
+                  <label className="text-gray-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wide mb-1.5 block">Notes (Optional)</label>
                   <textarea value={rForm.notes} onChange={(e) => setRForm({ ...rForm, notes: e.target.value })} rows={2}
-                    className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 outline-none text-gray-800 text-base resize-none focus:border-green-700" />
+                    className="w-full border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 outline-none text-gray-800 dark:text-slate-100 text-base resize-none focus:border-green-700" />
                 </div>
 
                 <div className="flex gap-3 pt-1 pb-2">
                   {recordModal === "edit" && (
                     <button onClick={() => setRDelConfirm(true)}
-                      className="py-3.5 px-4 rounded-2xl border-2 border-red-200 text-red-600 font-bold active:scale-95 transition-transform flex items-center justify-center">
+                      className="py-3.5 px-4 rounded-2xl border-2 border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 font-bold active:scale-95 transition-transform flex items-center justify-center">
                       <Trash2 size={18} />
                     </button>
                   )}
@@ -679,10 +679,10 @@ export default function LabourContractorsPage() {
           <>
             {/* Search */}
             <div className="flex items-center gap-2 mb-3">
-              <div className="flex-1 flex items-center gap-2 bg-white rounded-2xl px-3 py-2.5 border border-gray-200">
+              <div className="flex-1 flex items-center gap-2 bg-white dark:bg-slate-800 rounded-2xl px-3 py-2.5 border border-gray-200 dark:border-slate-700">
                 <Search size={16} color="#9CA3AF" />
                 <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search contractor, parcel…"
-                  className="flex-1 outline-none text-gray-800 text-sm bg-transparent" />
+                  className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-sm bg-transparent" />
                 {search && <button onClick={() => setSearch("")}><X size={14} color="#9CA3AF" /></button>}
               </div>
               <button onClick={() => setShowFilters((v) => !v)}
@@ -697,31 +697,31 @@ export default function LabourContractorsPage() {
 
             {/* Filter panel */}
             {showFilters && (
-              <div className="bg-white rounded-2xl p-4 mb-3 space-y-3 shadow-sm">
+              <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 mb-3 space-y-3 shadow-sm">
                 <div className="flex items-center justify-between mb-1">
-                  <p className="font-semibold text-gray-700 text-sm">Filters</p>
+                  <p className="font-semibold text-gray-700 dark:text-slate-200 text-sm">Filters</p>
                   {hasFilters && (
                     <button onClick={() => { setFilterContractor(""); setFilterCropCycle(""); setFilterParcel(""); setFilterStatus(""); }}
                       className="text-xs font-semibold" style={{ color: "#1B5E20" }}>Clear All</button>
                   )}
                 </div>
                 <select value={filterContractor} onChange={(e) => setFilterContractor(e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none bg-white text-gray-700">
+                  className="w-full border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm outline-none bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200">
                   <option value="">All Contractors</option>
                   {contractors.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
                 <select value={filterCropCycle} onChange={(e) => setFilterCropCycle(e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none bg-white text-gray-700">
+                  className="w-full border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm outline-none bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200">
                   <option value="">All Crop Cycles</option>
                   {cropCycles.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
                 <select value={filterParcel} onChange={(e) => setFilterParcel(e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none bg-white text-gray-700">
+                  className="w-full border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm outline-none bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200">
                   <option value="">All Parcels</option>
                   {parcels.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
                 </select>
                 <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value as any)}
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none bg-white text-gray-700">
+                  className="w-full border border-gray-200 dark:border-slate-700 rounded-xl px-3 py-2 text-sm outline-none bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-200">
                   <option value="">All Statuses</option>
                   <option value="pending">Pending</option>
                   <option value="partial">Partial</option>
@@ -751,7 +751,7 @@ export default function LabourContractorsPage() {
             ) : filteredRecords.length === 0 ? (
               <div className="text-center py-16">
                 <p className="text-4xl mb-3">🌾</p>
-                <p className="text-gray-500 text-sm">{hasFilters || search ? "No records match your filters" : "No harvest records yet"}</p>
+                <p className="text-gray-500 dark:text-slate-400 text-sm">{hasFilters || search ? "No records match your filters" : "No harvest records yet"}</p>
                 {canEdit && !hasFilters && !search && (
                   <button onClick={openAddRecord} className="mt-4 px-5 py-2.5 rounded-xl text-white text-sm font-semibold" style={{ backgroundColor: "#1B5E20" }}>
                     Add First Record
@@ -764,24 +764,24 @@ export default function LabourContractorsPage() {
                   const sc = STATUS_CONFIG[r.paymentStatus];
                   return (
                     <button key={r.id} onClick={() => setSelectedRecord(r)}
-                      className="w-full bg-white rounded-2xl px-4 py-3.5 text-left shadow-sm active:scale-[0.98] transition-transform">
+                      className="w-full bg-white dark:bg-slate-800 rounded-2xl px-4 py-3.5 text-left shadow-sm active:scale-[0.98] transition-transform">
                       <div className="flex items-start gap-3">
                         <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5" style={{ backgroundColor: "#FFF8E1" }}>
                           <Wheat size={18} color="#F9A825" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2">
-                            <p className="text-gray-800 font-semibold text-sm leading-tight truncate">{r.contractorName}</p>
+                            <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm leading-tight truncate">{r.contractorName}</p>
                             <span className="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0"
                               style={{ backgroundColor: sc.bg, color: sc.color }}>
                               {sc.label}
                             </span>
                           </div>
-                          <p className="text-gray-400 text-xs mt-0.5">
+                          <p className="text-gray-400 dark:text-slate-500 text-xs mt-0.5">
                             {r.parcelName} · {r.cropCycleName} · {fmtDate(r.harvestDate)}
                           </p>
                           <div className="flex items-center justify-between mt-1.5">
-                            <p className="text-xs text-gray-500">{PAYMENT_TYPE_LABELS[r.paymentType]}</p>
+                            <p className="text-xs text-gray-500 dark:text-slate-400">{PAYMENT_TYPE_LABELS[r.paymentType]}</p>
                             <div className="text-right">
                               <p className="font-bold text-sm" style={{ color: "#C62828" }}>{fmt(r.totalAmount)}</p>
                               {r.remainingBalance > 0 && (
@@ -805,7 +805,7 @@ export default function LabourContractorsPage() {
             {contractors.length === 0 ? (
               <div className="text-center py-16">
                 <p className="text-4xl mb-3">👷</p>
-                <p className="text-gray-500 text-sm">No contractors yet</p>
+                <p className="text-gray-500 dark:text-slate-400 text-sm">No contractors yet</p>
                 {canEdit && (
                   <button onClick={openAddContractor} className="mt-4 px-5 py-2.5 rounded-xl text-white text-sm font-semibold" style={{ backgroundColor: "#1B5E20" }}>
                     Add First Contractor
@@ -815,14 +815,14 @@ export default function LabourContractorsPage() {
             ) : (
               <div className="space-y-2">
                 {contractorStats.map((c) => (
-                  <div key={c.id} className="bg-white rounded-2xl px-4 py-4 shadow-sm">
+                  <div key={c.id} className="bg-white dark:bg-slate-800 rounded-2xl px-4 py-4 shadow-sm">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0" style={{ backgroundColor: "#E8F5E9" }}>
                         <Users size={20} color="#1B5E20" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
-                          <p className="text-gray-800 font-bold text-base leading-tight truncate">{c.name}</p>
+                          <p className="text-gray-800 dark:text-slate-100 font-bold text-base leading-tight truncate">{c.name}</p>
                           {canEdit && (
                             <button onClick={() => openEditContractor(c)}
                               className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "#F5F5F5" }}>
@@ -831,11 +831,11 @@ export default function LabourContractorsPage() {
                           )}
                         </div>
                         <div className="flex items-center gap-3 mt-0.5">
-                          <span className="text-gray-400 text-xs flex items-center gap-1">
+                          <span className="text-gray-400 dark:text-slate-500 text-xs flex items-center gap-1">
                             <Users size={11} /> {c.teamSize} workers
                           </span>
                           {c.phone && (
-                            <span className="text-gray-400 text-xs flex items-center gap-1">
+                            <span className="text-gray-400 dark:text-slate-500 text-xs flex items-center gap-1">
                               <Phone size={11} /> {c.phone}
                             </span>
                           )}
@@ -844,17 +844,17 @@ export default function LabourContractorsPage() {
                     </div>
                     {c.totalJobs > 0 && (
                       <>
-                        <div className="mt-3 pt-3 border-t border-gray-50 grid grid-cols-3 gap-2">
+                        <div className="mt-3 pt-3 border-t border-gray-50 dark:border-slate-800 grid grid-cols-3 gap-2">
                           <div className="text-center">
-                            <p className="text-gray-400 text-[10px]">Total Jobs</p>
-                            <p className="text-gray-800 font-bold text-sm">{c.totalJobs}</p>
+                            <p className="text-gray-400 dark:text-slate-500 text-[10px]">Total Jobs</p>
+                            <p className="text-gray-800 dark:text-slate-100 font-bold text-sm">{c.totalJobs}</p>
                           </div>
                           <div className="text-center">
-                            <p className="text-gray-400 text-[10px]">Total Paid</p>
+                            <p className="text-gray-400 dark:text-slate-500 text-[10px]">Total Paid</p>
                             <p className="font-bold text-sm" style={{ color: "#1B5E20" }}>Rs. {Math.round(c.totalPaid).toLocaleString("en-PK")}</p>
                           </div>
                           <div className="text-center">
-                            <p className="text-gray-400 text-[10px]">Pending</p>
+                            <p className="text-gray-400 dark:text-slate-500 text-[10px]">Pending</p>
                             <p className="font-bold text-sm" style={{ color: c.totalPending > 0 ? "#E65100" : "#1B5E20" }}>
                               Rs. {Math.round(c.totalPending).toLocaleString("en-PK")}
                             </p>

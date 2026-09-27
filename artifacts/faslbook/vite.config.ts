@@ -47,6 +47,22 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (/[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/.test(id)) return "react-vendor";
+            if (id.includes("firebase") || id.includes("@firebase")) return "firebase";
+            if (id.includes("exceljs") || /[\\/]node_modules[\\/]xlsx/.test(id)) return "spreadsheet";
+            if (id.includes("jspdf") || id.includes("html2canvas") || id.includes("dompurify") || id.includes("purify")) return "pdf-export";
+            if (id.includes("i18next") || id.includes("react-i18next")) return "i18n";
+            if (id.includes("recharts") || id.includes("d3-")) return "charts";
+            return "vendor";
+          }
+        },
+      },
+    },
   },
   server: {
     port,

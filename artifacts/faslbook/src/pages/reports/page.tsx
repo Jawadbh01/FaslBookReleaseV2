@@ -92,12 +92,12 @@ export default function ReportsPage() {
   const net = totalIncome - totalExpense;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-28">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 pb-28">
       {/* Header */}
       <div className="px-4 pt-10 pb-6" style={{ backgroundColor:"#1B5E20" }}>
         <div className="flex items-center justify-between mb-1">
           <h1 className="text-white font-bold text-2xl">Reports</h1>
-          <button className="p-2 rounded-full hover:bg-white/10 transition-colors">
+          <button className="p-2 rounded-full hover:bg-white dark:bg-slate-800/10 transition-colors">
             <Calendar size={22} color="white" />
           </button>
         </div>
@@ -110,7 +110,7 @@ export default function ReportsPage() {
               { label:"Expense", value:totalExpense, Icon:TrendingDown, clr:"#EF9A9A" },
               { label:"Net",     value:net,          Icon:BarChart2,   clr:net>=0?"#A5D6A7":"#EF9A9A" },
             ].map(({ label, value, Icon, clr }) => (
-              <div key={label} className="bg-white/10 rounded-2xl p-3">
+              <div key={label} className="bg-white dark:bg-slate-800/10 rounded-2xl p-3">
                 <Icon size={14} color={clr} />
                 <p className="text-xs text-green-300 mt-1">{label}</p>
                 <p className="text-white font-bold text-xs leading-tight">{fmtPKR(value)}</p>
@@ -124,7 +124,7 @@ export default function ReportsPage() {
       <div className="px-4 pt-5 pb-2">
         <button
           onClick={() => navigate("/reports/print")}
-          className="w-full bg-white rounded-2xl shadow-sm p-4 flex items-center gap-4 active:scale-95 transition-transform"
+          className="w-full bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-4 flex items-center gap-4 active:scale-95 transition-transform"
           style={{ border:"2px solid #1B5E20" }}
         >
           <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
@@ -132,8 +132,8 @@ export default function ReportsPage() {
             <Printer size={26} color="white" />
           </div>
           <div className="flex-1 text-left">
-            <p className="font-bold text-base text-gray-900">Print Reports</p>
-            <p className="text-xs text-gray-500 mt-0.5 leading-snug">
+            <p className="font-bold text-base text-gray-900 dark:text-slate-50">Print Reports</p>
+            <p className="text-xs text-gray-500 dark:text-slate-400 mt-0.5 leading-snug">
               Professional A4 reports — Farmer Khata, Parcel, Godown, Expenses, Sales, Farm Summary
             </p>
           </div>
@@ -143,21 +143,21 @@ export default function ReportsPage() {
 
       {/* ── Other report cards ── */}
       <div className="px-4 py-3">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Analytics &amp; Data</p>
+        <p className="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wide mb-3">Analytics &amp; Data</p>
         <div className="grid grid-cols-2 gap-3">
           {REPORT_CARDS.filter(c => c.key !== "print").map((card) => (
             <button
               key={card.key}
               onClick={() => navigate(card.href)}
-              className="bg-white rounded-2xl p-4 text-left shadow-sm active:scale-95 transition-transform flex flex-col gap-2"
+              className="bg-white dark:bg-slate-800 rounded-2xl p-4 text-left shadow-sm active:scale-95 transition-transform flex flex-col gap-2"
             >
               <div className="w-11 h-11 rounded-xl flex items-center justify-center"
                 style={{ backgroundColor:card.bg }}>
                 <card.Icon size={22} color={card.color} />
               </div>
               <div className="flex-1">
-                <p className="font-bold text-sm text-gray-800 leading-tight">{card.title}</p>
-                <p className="text-xs text-gray-400 mt-0.5 leading-snug">{card.description}</p>
+                <p className="font-bold text-sm text-gray-800 dark:text-slate-100 leading-tight">{card.title}</p>
+                <p className="text-xs text-gray-400 dark:text-slate-500 mt-0.5 leading-snug">{card.description}</p>
               </div>
               <div className="flex justify-end">
                 <ChevronRight size={14} color="#BDBDBD" />
@@ -169,8 +169,8 @@ export default function ReportsPage() {
 
       {/* ── Quick export strip ── */}
       <div className="px-4 pt-2">
-        <div className="bg-white rounded-2xl shadow-sm p-4">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-4">
+          <p className="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wide mb-3">
             Export Overview Data
           </p>
           <div className="grid grid-cols-3 gap-2">

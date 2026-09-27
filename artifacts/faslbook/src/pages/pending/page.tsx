@@ -58,7 +58,7 @@ export default function PendingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 text-center">
+    <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col items-center justify-center px-6 text-center">
       {/* Icon */}
       <div
         className="w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-lg"
@@ -67,17 +67,17 @@ export default function PendingPage() {
         <Clock size={48} color="#1B5E20" />
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-2">
+      <h1 className="text-2xl font-bold text-gray-800 dark:text-slate-100 mb-2">
         Waiting for Approval
       </h1>
-      <p className="text-gray-500 text-sm mb-8">
+      <p className="text-gray-500 dark:text-slate-400 text-sm mb-8">
         منظوری کا انتظار ہے
       </p>
 
       {/* Requests */}
       {loading ? (
         <div
-          className="animate-spin rounded-full h-8 w-8 border-4 border-gray-100 mb-8"
+          className="animate-spin rounded-full h-8 w-8 border-4 border-gray-100 dark:border-slate-700/60 mb-8"
           style={{ borderTopColor: "#1B5E20" }}
         />
       ) : (
@@ -96,10 +96,10 @@ export default function PendingPage() {
                   <Wheat size={20} color="white" />
                 </div>
                 <div className="flex-1">
-                  <p className="font-bold text-gray-800">
+                  <p className="font-bold text-gray-800 dark:text-slate-100">
                     {req.farmName}
                   </p>
-                  <p className="text-green-700 text-xs font-mono">
+                  <p className="text-green-700 dark:text-green-400 text-xs font-mono">
                     {req.farmId}
                   </p>
                 </div>
@@ -120,7 +120,7 @@ export default function PendingPage() {
         </div>
       )}
 
-      <p className="text-gray-400 text-xs mb-8">
+      <p className="text-gray-400 dark:text-slate-500 text-xs mb-8">
         The landlord will approve your request shortly.
         This page will automatically redirect when approved.
       </p>
@@ -128,7 +128,7 @@ export default function PendingPage() {
       {/* Logout */}
       <button
         onClick={handleLogout}
-        className="flex items-center gap-2 text-gray-400 text-sm"
+        className="flex items-center gap-2 text-gray-400 dark:text-slate-500 text-sm"
       >
         <LogOut size={16} />
         Logout and use different account

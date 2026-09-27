@@ -68,28 +68,28 @@ export default function OfflinePage() {
         <WifiOff size={44} color="#C62828" />
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-2">You're Offline</h1>
-      <p className="text-gray-500 text-sm mb-1">No internet connection detected.</p>
+      <h1 className="text-2xl font-bold text-gray-800 dark:text-slate-100 mb-2">You're Offline</h1>
+      <p className="text-gray-500 dark:text-slate-400 text-sm mb-1">No internet connection detected.</p>
 
       {hasCache ? (
-        <p className="text-green-700 text-sm font-medium mb-2">
+        <p className="text-green-700 dark:text-green-400 text-sm font-medium mb-2">
           ✓ Saved data is available — you can continue working.
         </p>
       ) : (
-        <p className="text-red-600 text-sm font-medium mb-2">
+        <p className="text-red-600 dark:text-red-400 text-sm font-medium mb-2">
           No saved data found. Download data first to use offline.
         </p>
       )}
 
       {hasCache && cacheInfo && (
-        <p className="text-gray-400 text-xs mb-6">
+        <p className="text-gray-400 dark:text-slate-500 text-xs mb-6">
           Last downloaded {formatLastSynced(cacheInfo.downloadedAt)} · {cacheInfo.documents} records
         </p>
       )}
       {!hasCache && <div className="mb-6" />}
 
       {error && (
-        <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 text-xs px-4 py-2.5 rounded-xl mb-4 max-w-xs">
+        <div className="flex items-center gap-2 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-xs px-4 py-2.5 rounded-xl mb-4 max-w-xs">
           <AlertCircle size={14} className="shrink-0" />
           <span>{error}</span>
         </div>
@@ -141,7 +141,7 @@ export default function OfflinePage() {
       </div>
 
       <div className="mt-10 px-4 py-4 rounded-2xl max-w-xs w-full" style={{ backgroundColor: "#FFF8E1" }}>
-        <p className="text-amber-700 text-xs text-center">
+        <p className="text-amber-700 dark:text-amber-400 text-xs text-center">
           💡 <strong>Tip:</strong> Download your farm data while connected so it stays available offline. Any changes you make offline sync automatically once you reconnect.
         </p>
       </div>

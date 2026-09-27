@@ -243,7 +243,7 @@ export default function ProfilePage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => window.history.back()}
-            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-white dark:bg-slate-800/10 transition-colors"
           >
             <ChevronLeft size={24} color="white" />
           </button>
@@ -258,7 +258,7 @@ export default function ProfilePage() {
           style={{ backgroundColor: dark ? "#1E293B" : "white" }}
         >
           {error && (
-            <div className="w-full bg-red-50 border border-red-200 text-red-600 text-xs px-3 py-2 rounded-xl mb-3 text-center">{error}</div>
+            <div className="w-full bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-xs px-3 py-2 rounded-xl mb-3 text-center">{error}</div>
           )}
           <label htmlFor="photoInput" className="relative mb-3 cursor-pointer block" style={{ display: "inline-block" }}>
             {photoUrl ? (
@@ -659,7 +659,7 @@ function Toggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
       role="switch"
     >
       <span
-        className="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-200"
+        className="absolute top-0.5 w-5 h-5 bg-white dark:bg-slate-800 rounded-full shadow-sm transition-transform duration-200"
         style={{ transform: on ? "translateX(26px)" : "translateX(2px)" }}
       />
     </button>

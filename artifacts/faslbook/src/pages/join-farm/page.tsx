@@ -109,17 +109,17 @@ export default function JoinFarmPage() {
   // Success screen
   if (requested) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 text-center">
+      <div className="min-h-screen bg-white dark:bg-slate-800 flex flex-col items-center justify-center px-6 text-center">
         <div
           className="w-24 h-24 rounded-full flex items-center justify-center mb-6 shadow-lg"
           style={{ backgroundColor: "#E8F5E9" }}
         >
           <CheckCircle size={52} color="#1B5E20" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-slate-100 mb-2">
           Request Sent! 🎉
         </h1>
-        <p className="text-gray-500 text-sm mb-2">
+        <p className="text-gray-500 dark:text-slate-400 text-sm mb-2">
           Your request to join
         </p>
         <div
@@ -129,9 +129,9 @@ export default function JoinFarmPage() {
           <p className="font-bold text-lg" style={{ color: "#1B5E20" }}>
             {farm?.name}
           </p>
-          <p className="text-green-700 text-sm">{farm?.farmId}</p>
+          <p className="text-green-700 dark:text-green-400 text-sm">{farm?.farmId}</p>
         </div>
-        <p className="text-gray-400 text-sm mb-8">
+        <p className="text-gray-400 dark:text-slate-500 text-sm mb-8">
           The landlord will review your request and approve it shortly.
           You will be notified once approved.
         </p>
@@ -147,7 +147,7 @@ export default function JoinFarmPage() {
   }
 
   return (
-    <div className="h-full bg-white flex flex-col">
+    <div className="h-full bg-white dark:bg-slate-800 flex flex-col">
       {/* Header */}
       <div
         className="px-4 pt-12 pb-8"
@@ -160,7 +160,7 @@ export default function JoinFarmPage() {
           <ArrowLeft size={24} />
         </button>
         <div className="flex items-center gap-3">
-          <div className="bg-white rounded-full p-2 shadow">
+          <div className="bg-white dark:bg-slate-800 rounded-full p-2 shadow">
             <Wheat size={28} color="#1B5E20" />
           </div>
           <div>
@@ -178,11 +178,11 @@ export default function JoinFarmPage() {
 
         {/* Farm ID Input */}
         <div className="mb-2">
-          <label className="text-gray-600 text-sm font-medium mb-2 block">
+          <label className="text-gray-600 dark:text-slate-300 text-sm font-medium mb-2 block">
             Farm ID
           </label>
           <div className="flex gap-3">
-            <div className="flex-1 flex items-center border-2 border-gray-200 rounded-2xl px-4 py-3 focus-within:border-green-700">
+            <div className="flex-1 flex items-center border-2 border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-3 focus-within:border-green-700">
               <Building2
                 size={20}
                 color="#9E9E9E"
@@ -193,7 +193,7 @@ export default function JoinFarmPage() {
                 placeholder="e.g. FB-7H9D4K"
                 value={farmId}
                 onChange={(e) => setFarmId(e.target.value.toUpperCase())}
-                className="flex-1 outline-none text-gray-800 text-base bg-transparent font-mono tracking-widest"
+                className="flex-1 outline-none text-gray-800 dark:text-slate-100 text-base bg-transparent font-mono tracking-widest"
                 maxLength={9}
               />
             </div>
@@ -212,7 +212,7 @@ export default function JoinFarmPage() {
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl mt-3 mb-4">
+          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl mt-3 mb-4">
             {error}
           </div>
         )}
@@ -234,31 +234,31 @@ export default function JoinFarmPage() {
                 <Wheat size={24} color="white" />
               </div>
               <div>
-                <p className="font-bold text-gray-800 text-lg">
+                <p className="font-bold text-gray-800 dark:text-slate-100 text-lg">
                   {farm.name}
                 </p>
-                <p className="text-green-700 text-sm font-mono">
+                <p className="text-green-700 dark:text-green-400 text-sm font-mono">
                   {farm.farmId}
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3 mb-5">
-              <div className="bg-white rounded-xl p-3">
-                <p className="text-gray-400 text-xs mb-1">Village</p>
-                <p className="text-gray-800 font-semibold text-sm">
+              <div className="bg-white dark:bg-slate-800 rounded-xl p-3">
+                <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">Village</p>
+                <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm">
                   {farm.village}
                 </p>
               </div>
-              <div className="bg-white rounded-xl p-3">
-                <p className="text-gray-400 text-xs mb-1">District</p>
-                <p className="text-gray-800 font-semibold text-sm">
+              <div className="bg-white dark:bg-slate-800 rounded-xl p-3">
+                <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">District</p>
+                <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm">
                   {farm.district}
                 </p>
               </div>
-              <div className="bg-white rounded-xl p-3 col-span-2">
-                <p className="text-gray-400 text-xs mb-1">Province</p>
-                <p className="text-gray-800 font-semibold text-sm">
+              <div className="bg-white dark:bg-slate-800 rounded-xl p-3 col-span-2">
+                <p className="text-gray-400 dark:text-slate-500 text-xs mb-1">Province</p>
+                <p className="text-gray-800 dark:text-slate-100 font-semibold text-sm">
                   {farm.province}
                 </p>
               </div>
@@ -284,7 +284,7 @@ export default function JoinFarmPage() {
             className="mt-8 px-4 py-4 rounded-2xl"
             style={{ backgroundColor: "#F5F5F5" }}
           >
-            <p className="text-gray-500 text-xs text-center">
+            <p className="text-gray-500 dark:text-slate-400 text-xs text-center">
               Ask your landlord for the Farm ID. It looks like{" "}
               <strong className="font-mono">FB-7H9D4K</strong>
             </p>
@@ -298,7 +298,7 @@ export default function JoinFarmPage() {
               await signOut(auth);
               window.location.replace("/login");
             }}
-            className="flex items-center gap-2 text-gray-400 text-sm"
+            className="flex items-center gap-2 text-gray-400 dark:text-slate-500 text-sm"
           >
             <LogOut size={16} />
             Logout and use different account
